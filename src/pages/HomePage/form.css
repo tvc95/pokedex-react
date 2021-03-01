@@ -1,0 +1,12 @@
+.form-control:focus {
+  color: #fff;
+  /* background: #31a5a5 */
+}
+
+body {
+  margin: 0;
+  background: url("../../assets/images/backgroundlanding.png") !important;
+  background-color: #CD3232 !important;
+  background-repeat: repeat-x !important;
+  -webkit-font-smoothing: antialiased;
+}
