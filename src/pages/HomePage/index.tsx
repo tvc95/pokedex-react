@@ -53,15 +53,15 @@ const HomePage: React.FC = () => (
 
       <MainContent fluid className="d-flex justify-content-center align-items-center">
         <MDBRow center middle>
-          <LandingTextCol md="6" middle>
+          <LandingTextCol lg="6" middle>
             <LandingText>
               An up-to-date Pokédex featuring all 893 Pokémon, including the new Galar region
             </LandingText>
-            <NatDexBTN>National Dex</NatDexBTN>
+            <NatDexBTN color="red darken-1">National Dex</NatDexBTN>
             <RegDexBtn>Regional Dex</RegDexBtn>
           </LandingTextCol>
 
-          <LandingImageCol md="6">
+          <LandingImageCol lg="6" className="d-none d-lg-block">
             <Pokedex src={PokedexImg} alt="Pokédex" />
           </LandingImageCol>
         </MDBRow>

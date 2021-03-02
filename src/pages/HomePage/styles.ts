@@ -109,6 +109,10 @@ export const MainContent = styled(MDBContainer)`
 `;
 
 export const LandingTextCol = styled(MDBCol)`
+    @media(min-width: 768px) and (max-width: 991px) {
+      padding-left: 3.5rem;
+      padding-right: 3.5rem;
+    }
     @media(min-width: 1200px) {
       padding-left: 4rem;
     }
@@ -121,6 +125,10 @@ export const LandingText = styled.p`
     font-weight: 300;
     font-size: 2rem;
     color: white;
+
+    @media(min-width: 768px) and (max-width: 991px) {
+      font-size: 3.6rem;
+    }
 
     @media(min-width: 1200px) {
       font-size: 3.2rem;
