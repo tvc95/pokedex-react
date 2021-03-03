@@ -4,7 +4,18 @@ import {
   MDBCol,
   MDBContainer, MDBInputGroup, MDBJumbotron, MDBRow,
 } from 'mdbreact';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+import backgroundImage from '../../assets/images/bg2.png';
+
+export const Body = createGlobalStyle`
+  body {
+    margin: 0;
+    background: url(${backgroundImage}) !important;
+    background-color: #CD3232 !important;
+    background-repeat: repeat-x !important;
+    -webkit-font-smoothing: antialiased;
+  }
+`;
 
 export const Title = styled.h1`
   font-size: 48px;
@@ -105,6 +116,9 @@ export const MainContent = styled(MDBContainer)`
   border: none;
   /* Grid */
   padding: 2rem;
+  
+  box-shadow: 0px -8px 10px 2px rgba(0, 0, 0, 0.1) ;
+
 
 `;
 
@@ -113,8 +127,8 @@ export const LandingTextCol = styled(MDBCol)`
       padding-left: 3.5rem;
       padding-right: 3.5rem;
     }
-    @media(min-width: 1200px) {
-      padding-left: 4rem;
+    @media(min-width: 1440px) {
+      /* padding-left: 4rem; */
     }
 `;
 
@@ -127,19 +141,13 @@ export const LandingText = styled.p`
     color: white;
 
     @media(min-width: 768px) and (max-width: 991px) {
-      font-size: 3.6rem;
+      font-size: 2.6rem;
     }
 
-    @media(min-width: 1200px) {
-      font-size: 3.2rem;
-      padding-right: 2rem;
-      font-weight: 500;
-    }
-
-    @media(min-width: 3840px) {
-      font-size: 6.6rem;
-      padding-right: 2rem;
-      font-weight: 500;
+    @media(min-width: 1440px) {
+      font-size: 2.8rem;
+      /* padding-right: 2rem; */
+      /* font-weight: 500; */
     }
 `;
 
@@ -153,6 +161,7 @@ export const NatDexBTN = styled(MDBBtn)`
   font-size: 1.4rem;
   text-transform: capitalize;
   color: white;
+  border: 2px solid #b34545;
 
   :hover {
     background: #e74848 !important;
@@ -160,6 +169,11 @@ export const NatDexBTN = styled(MDBBtn)`
 
   :active{
     background: #b83737 !important;
+  }
+
+  @media(max-width: 1023px) {
+      width: 100%;
+      margin: 0rem 0rem 1rem 0rem;
   }
 
 `;
@@ -174,6 +188,7 @@ export const RegDexBtn = styled(MDBBtn)`
   font-size: 1.4rem;
   text-transform: capitalize;
   color: white;
+  border: 2px solid #348585;
 
   :hover {
     background: #4bc2c2 !important;
@@ -181,6 +196,11 @@ export const RegDexBtn = styled(MDBBtn)`
 
   :active{
     background: #31a5a5 !important;
+  }
+
+  @media(max-width: 1023px) {
+      width: 100%;
+      margin: 0rem 0rem 1rem 0rem;
   }
 
 `;

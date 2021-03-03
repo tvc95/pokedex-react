@@ -18,6 +18,7 @@ import {
   Pokedex,
   LandingTextCol,
   LandingImageCol,
+  Body,
 } from './styles';
 import './form.css';
 import HomeNavbar from '../../components/Navbars/HomeNavbar/HomeNavbar';
@@ -26,6 +27,7 @@ import PokedexImg from '../../assets/images/img_pokedex.png';
 
 const HomePage: React.FC = () => (
   <div>
+    <Body />
     <HomeNavbar />
     <MDBContainer>
       <JumbotronLogo className="d-flex justify-content-center align-items-center">
@@ -52,19 +54,21 @@ const HomePage: React.FC = () => (
       </BackgroundContainer>
 
       <MainContent fluid className="d-flex justify-content-center align-items-center">
-        <MDBRow center middle>
-          <LandingTextCol lg="6" middle>
-            <LandingText>
-              An up-to-date Pokédex featuring all 893 Pokémon, including the new Galar region
-            </LandingText>
-            <NatDexBTN color="red darken-1">National Dex</NatDexBTN>
-            <RegDexBtn>Regional Dex</RegDexBtn>
-          </LandingTextCol>
+        <MDBContainer>
+          <MDBRow center middle>
+            <LandingTextCol lg="6" middle>
+              <LandingText>
+                An up-to-date Pokédex featuring all 893 Pokémon, including the new Galar region
+              </LandingText>
+              <NatDexBTN color="red darken-1">National Dex</NatDexBTN>
+              <RegDexBtn>Regional Dex</RegDexBtn>
+            </LandingTextCol>
 
-          <LandingImageCol lg="6" className="d-none d-lg-block">
-            <Pokedex src={PokedexImg} alt="Pokédex" />
-          </LandingImageCol>
-        </MDBRow>
+            <LandingImageCol lg="6" className="d-none d-lg-block">
+              <Pokedex src={PokedexImg} alt="Pokédex" />
+            </LandingImageCol>
+          </MDBRow>
+        </MDBContainer>
       </MainContent>
     </BackgroundLayer>
   </div>
