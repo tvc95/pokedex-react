@@ -1,5 +1,6 @@
 import { MDBCol, MDBContainer } from 'mdbreact';
 import React from 'react';
+import PokemonBtn from '../../components/Buttons/PokemonBtn/PokemonBtn';
 import HomeNavbar from '../../components/Navbars/HomeNavbar/HomeNavbar';
 import {
   BackgroundContainer,
@@ -41,6 +42,11 @@ const PokemonListPg: React.FC = () => (
 
       <MainContent fluid className="d-flex justify-content-center align-items-center">
         <h1>Henlo</h1>
+        <PokemonBtn
+          pkmnIconPath="https://cdn.bulbagarden.net/upload/3/38/002MS8.png"
+          pkmnName="Ivysaur"
+          pkmnNumber={2}
+        />
       </MainContent>
 
     </BackgroundLayer>
