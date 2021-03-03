@@ -11,9 +11,9 @@ const PokemonBtn: React.FC<PokemonBtnProps> = (
   { pkmnIconPath, pkmnName, pkmnNumber }: PokemonBtnProps,
 ) => (
   <PokemonBtnLink to={`/data/pokemon/${pkmnName}`}>
-    <PokemonIcon src={`${pkmnIconPath}`} alt={`${pkmnNumber}_${pkmnName}`} />
+    <PokemonIcon src={`${pkmnIconPath}`} alt={`${pkmnNumber}-${pkmnName}`} />
     <br />
-    {pkmnName}
+    {pkmnName.charAt(0).toUpperCase() + pkmnName.slice(1)}
   </PokemonBtnLink>
 );
 

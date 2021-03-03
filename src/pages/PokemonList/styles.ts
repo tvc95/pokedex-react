@@ -1,7 +1,18 @@
 import {
   MDBBtn, MDBContainer, MDBInputGroup, MDBRow,
 } from 'mdbreact';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+import backgroundImage from '../../assets/images/backgroundlanding.png';
+
+export const Body = createGlobalStyle`
+  body {
+    margin: 0;
+    background: url(${backgroundImage}) !important;
+    background-color: #CD3232 !important;
+    background-repeat: repeat-x !important;
+    -webkit-font-smoothing: antialiased;
+  }
+`;
 
 export const Jumbotron = styled.h2`
   background: none;
