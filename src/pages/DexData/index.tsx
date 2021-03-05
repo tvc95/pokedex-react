@@ -74,9 +74,8 @@ const DexData: React.FC = () => {
       <MDBContainer fluid style={{ marginTop: '1rem' }}>
         <h1>Dex data</h1>
         <MDBRow className="align-items-center">
-          <h1>Dex data</h1>
           <MDBCol xs="12" lg="6" id="pokemon-image-slides">
-            <h1>Pokemon Art Carousel</h1>
+            <PkmnArtCarousel length={3} />
           </MDBCol>
         </MDBRow>
 

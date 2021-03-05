@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   MDBCol, MDBContainer, MDBRow,
@@ -60,7 +61,9 @@ const HomePage: React.FC = () => (
               <LandingText>
                 An up-to-date Pokédex featuring all 893 Pokémon, including the new Galar region
               </LandingText>
-              <NatDexBTN color="red darken-1">National Dex</NatDexBTN>
+              <Link to="/dexlist">
+                <NatDexBTN color="red darken-1">National Dex</NatDexBTN>
+              </Link>
               <RegDexBtn>Regional Dex</RegDexBtn>
             </LandingTextCol>
 
