@@ -8,7 +8,7 @@ const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={HomePage} />
     <Route path="/dexlist" component={PokemonListPg} />
-    <Route path="/data" component={DexData} />
+    <Route path="/data/pokemon/:pkmnName" component={DexData} />
   </Switch>
 );
 
