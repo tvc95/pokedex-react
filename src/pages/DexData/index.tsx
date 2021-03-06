@@ -10,6 +10,7 @@ import PkmnArtCarousel from '../../components/Carousels/PokemonArtCarousel/PkmnA
 const DexData: React.FC = () => {
   const location = useLocation();
   const [pathName] = useState(location.pathname);
+  const [pkmnDexData, setPkmnDexData] = useState([]);
 
   const pkmnQuery = gql`
     query pokemon {
@@ -52,6 +53,26 @@ const DexData: React.FC = () => {
 
   const { loading, data } = useQuery(pkmnQuery);
 
+  const fetchPokemonData = () => {
+    if (!loading) {
+      axios.get(data.pokemon.species.url)
+        .then((response) => {
+          if (response.status >= 200 && response.status <= 299) {
+            return response.data;
+          }
+          throw Error(response.data.message);
+        })
+        .then((pkmnFullData) => {
+          setPkmnDexData(pkmnFullData);
+          console.log(pkmnDexData);
+        });
+    }
+  };
+
+  useEffect(() => {
+    fetchPokemonData();
+  }, []);
+
   if (loading) {
     return (
       <div>
@@ -72,10 +93,33 @@ const DexData: React.FC = () => {
         url={data.pokemon.species.url}
       />
       <MDBContainer fluid style={{ marginTop: '1rem' }}>
-        <h1>Dex data</h1>
         <MDBRow className="align-items-center">
           <MDBCol xs="12" lg="6" id="pokemon-image-slides">
-            <PkmnArtCarousel length={3} />
+            <PkmnArtCarousel
+              length={3}
+              pkmnName={data.pokemon.name}
+            />
+          </MDBCol>
+
+          <MDBCol xs="12" lg="6" id="pkmn-info-p1">
+            <div id="description">
+              <h3>Description</h3>
+              <p id="flavor-txt">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Ab numquam nulla, exercitationem necessitatibus veniam explicabo quia aspernatur
+                ad inventore, voluptate soluta consequatur? Ex fugiat illum quisquam. Fugit
+                placeat quae unde.
+              </p>
+              <p>
+                <small>
+                  <em>
+                    First introduced in Generation I (Pokémon Red/Blue/Green/Yellow)
+                  </em>
+                </small>
+              </p>
+            </div>
+            <br />
+            <div id="a" />
           </MDBCol>
         </MDBRow>
 

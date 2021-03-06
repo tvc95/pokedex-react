@@ -14,7 +14,6 @@ const PkmnBtnList: React.FC = () => {
         previous
         nextOffset
         prevOffset
-        params
         results {
           url
           name

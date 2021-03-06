@@ -1,85 +1,73 @@
-/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import {
-  MDBCarousel, MDBCarouselInner, MDBCarouselItem, MDBView, MDBContainer, MDBCarouselCaption,
+  MDBCarouselInner, MDBCarouselItem, MDBView, MDBContainer,
 } from
   'mdbreact';
 import * as pokemonImages from '../../../misc/PokemonImageLinks';
-import { PkmnArt } from './styles';
+import {
+  Carousel, Description, PkmnArt, PkmnArtCaption,
+} from './styles';
 
 interface Props {
   length: number;
+  pkmnName: string;
 }
 
-const PkmnArtCarousel: React.FC<Props> = ({ length }: Props) => {
+const PkmnArtCarousel: React.FC<Props> = ({ length, pkmnName }: Props) => {
   const hello = '';
   return (
     <MDBContainer>
-      <MDBCarousel
+      <Carousel
         activeItem={1}
         length={length}
         showControls
         showIndicators
-        className="z-depth-1"
       >
         <MDBCarouselInner>
           {pokemonImages.venusaur.links.baseForms.map((baseForm, idx) => (
-            <MDBCarouselItem itemId={`${idx + 1}`} key={idx}>
+            <MDBCarouselItem itemId={`${idx + 1}`} key={baseForm.url}>
               <MDBView>
                 <PkmnArt
-                  src={baseForm.toString()}
+                  src={baseForm.url.toString()}
                   alt="Base form"
                 />
               </MDBView>
-              <MDBCarouselCaption>
-                <p>
-                  [fetch varieties[idx]]
-                </p>
-              </MDBCarouselCaption>
+              <PkmnArtCaption>
+                <Description>{baseForm.description}</Description>
+              </PkmnArtCaption>
             </MDBCarouselItem>
           ))}
           {pokemonImages.venusaur.links.megas.map((megaForm, idx) => (
             <MDBCarouselItem
               itemId={`${(idx + 1) + (pokemonImages.venusaur.links.baseForms.length)}`}
-              key={idx}
+              key={megaForm.url}
             >
               <MDBView>
                 <PkmnArt
-                  src={megaForm.toString()}
+                  src={megaForm.url.toString()}
                   alt="Mega Evo"
                 />
               </MDBView>
-              <MDBCarouselCaption>
-                <p>
-                  {' '}
-                  Fetch varieties[idx +
-                  {' '}
-                  {pokemonImages.venusaur.links.baseForms.length}
-                  ]
-                </p>
-              </MDBCarouselCaption>
+              <PkmnArtCaption>
+                <Description>{megaForm.description}</Description>
+              </PkmnArtCaption>
             </MDBCarouselItem>
           ))}
-          {pokemonImages.venusaur.links.gmax.map((gmax, idx) => (
-            <MDBCarouselItem itemId={`${(idx + 1) + (pokemonImages.venusaur.links.baseForms.length) + (pokemonImages.venusaur.links.megas.length)}`} key={idx}>
+          {pokemonImages.venusaur.links.gmax.map((gmaxForm, idx) => (
+            <MDBCarouselItem itemId={`${(idx + 1) + (pokemonImages.venusaur.links.baseForms.length) + (pokemonImages.venusaur.links.megas.length)}`} key={gmaxForm.url}>
               <MDBView>
                 <PkmnArt
-                  src={gmax.toString()}
+                  src={gmaxForm.url.toString()}
                   alt="GMAX form"
                 />
               </MDBView>
-              <MDBCarouselCaption>
-                <p>
-                  Fetch varieties[idx +
-                  {' '}
-                  {pokemonImages.venusaur.links.megas.length}
-                  ]
-                </p>
-              </MDBCarouselCaption>
+              <PkmnArtCaption>
+                <Description>{gmaxForm.description}</Description>
+              </PkmnArtCaption>
             </MDBCarouselItem>
           ))}
         </MDBCarouselInner>
-      </MDBCarousel>
+      </Carousel>
     </MDBContainer>
   );
 };
