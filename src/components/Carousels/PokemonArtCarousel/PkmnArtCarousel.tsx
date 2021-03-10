@@ -16,7 +16,7 @@ interface Props {
 const PkmnArtCarousel: React.FC<Props> = ({ length, pkmnName }: Props) => {
   const hello = '';
   return (
-    <MDBContainer>
+    <>
       <Carousel
         activeItem={1}
         length={length}
@@ -68,7 +68,7 @@ const PkmnArtCarousel: React.FC<Props> = ({ length, pkmnName }: Props) => {
           ))}
         </MDBCarouselInner>
       </Carousel>
-    </MDBContainer>
+    </>
   );
 };
 

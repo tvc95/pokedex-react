@@ -7,6 +7,7 @@ import axios from 'axios';
 import DexNavbar from '../../components/Navbars/DexNavbar/DexNavbar';
 import PokemonHeader from '../../containers/PokemonHeader/PokemonHeader';
 import PkmnArtCarousel from '../../components/Carousels/PokemonArtCarousel/PkmnArtCarousel';
+import { PkmnImageSlides } from './styles';
 
 interface Pokemon {
   name: string;
@@ -25,7 +26,7 @@ interface Pokemon {
     url: string;
   };
   flavor_text_entries: Array<FlavorText>;
-  form_descriptions: Array<any>;
+  form_descriptions: Array<unknown>;
   generation: {
     name: string;
   };
@@ -66,12 +67,36 @@ interface Ability {
   is_hidden: boolean;
 }
 
+interface PokemonVariety {
+  abilities: Array<Ability>;
+  name: string;
+  stats: Array<{
+    base_stat: number;
+    effort: number;
+    stat: {
+      name: string;
+    }
+  }>;
+  types: Array<{
+    slot: number;
+    type: {
+      name: string;
+      url: string;
+    };
+  }>;
+  weight: number;
+
+}
+
 const DexData: React.FC = () => {
+  /// States and Hooks
   const location = useLocation();
   const [pathName] = useState(location.pathname);
   const [pkmnDexData, setPkmnDexData] = useState<Pokemon | null>(null);
+  const [pkmnVarieties, setPkmnVarieties] = useState<PokemonVariety[]>([]);
   const [genName, setGenName] = useState('');
 
+  /// GraphQL queries
   const pkmnQuery = gql`
     query pokemon {
       pokemon(name: "${pathName.slice(13)}") {
@@ -110,44 +135,9 @@ const DexData: React.FC = () => {
       }
     }
   `;
-
-  const megaQuery = gql`
-    query pokemon {
-      pokemon(name: "${pathName.slice(13)}-mega") {
-        name
-        types {
-          slot
-          type {
-            name
-          }
-        }
-        id
-        order
-        height
-        weight
-        abilities {
-          ability {
-            name
-          }
-          is_hidden
-        }
-        stats {
-          stat {
-            name
-          }
-          base_stat
-        }
-        forms {
-          url
-          name
-        }
-      }
-    }
-  `;
-
   const { loading, data } = useQuery(pkmnQuery);
-  // const { loadingMega, megaData } = useQuery(megaQuery);
 
+  /// Helper functions
   const formatGenText = (text: string) => {
     const [gen, number] = text.split('-');
 
@@ -156,18 +146,49 @@ const DexData: React.FC = () => {
     return outputText;
   };
 
+  /**
+   * useEffect() will be responsible for all Pokémon data fetching
+   * in the page
+   */
   useEffect(() => {
     async function fetchPkmnData(): Promise<void> {
       const response = await axios.get(data.pokemon.species.url);
 
       setPkmnDexData(response.data);
+
+      const varieties: Array<PokemonVariety> = [];
+
+      // Get Pokémon Varieties data (if applicable) -> Megas, G-MAX, Alternate forms?
+      response.data.varieties.map(async (variety: {
+        is_default: boolean;
+        pokemon: {
+          name: string;
+          url: string;
+        }
+      }) => {
+        if (!variety.is_default) {
+          const varietyResponse = await axios.get(variety.pokemon.url);
+
+          varieties.push({
+            abilities: varietyResponse.data.abilities,
+            name: varietyResponse.data.name,
+            stats: varietyResponse.data.stats,
+            types: varietyResponse.data.types,
+            weight: varietyResponse.data.weight,
+          });
+        }
+        return variety;
+      });
+
+      setPkmnVarieties(varieties);
+
       setGenName(formatGenText(response.data.generation.name));
-      // console.log(pkmnDexData);
     }
 
     fetchPkmnData();
-  }, [data.pokemon.species.url, pkmnDexData]);
+  }, [data.pokemon.species.url]);
 
+  /// Render DOM
   if (loading) {
     return (
       <div>
@@ -189,12 +210,12 @@ const DexData: React.FC = () => {
       />
       <MDBContainer fluid style={{ marginTop: '1rem' }}>
         <MDBRow className="align-items-center">
-          <MDBCol xs="12" lg="6" id="pokemon-image-slides">
+          <PkmnImageSlides xs="12" lg="6">
             <PkmnArtCarousel
               length={3}
               pkmnName={data.pokemon.name}
             />
-          </MDBCol>
+          </PkmnImageSlides>
 
           <MDBCol xs="12" lg="6" id="pkmn-info-p1">
             <div id="description">
@@ -233,6 +254,17 @@ const DexData: React.FC = () => {
                 ))}
               </ul>
 
+              {pkmnVarieties.map((variety) => (
+                <ul key={variety.name}>
+                  {variety.abilities.map((ability) => (
+                    <li key={ability.ability.name}>
+                      <div className={`is-hidden-${ability.is_hidden.toString()}`}>
+                        <span>{ability.ability.name}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ))}
             </div>
           </MDBCol>
         </MDBRow>

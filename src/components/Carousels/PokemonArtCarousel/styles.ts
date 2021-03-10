@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import {
-  MDBCarousel, MDBCarouselCaption, MDBCarouselInner, MDBCarouselItem,
+  MDBCarousel, MDBCarouselCaption,
 } from 'mdbreact';
 import styled from 'styled-components';
 
@@ -61,7 +61,7 @@ export const PkmnArt = styled.img`
   }
 
   @media(min-width: 768px) and (max-width: 1199px) {
-    width: 27rem;
+    width: 30rem;
   }
 
   @media (min-width: 1200px){
