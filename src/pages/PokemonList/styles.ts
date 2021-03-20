@@ -1,5 +1,5 @@
 import {
-  MDBBtn, MDBContainer, MDBInputGroup, MDBRow,
+  MDBBtn, MDBContainer, MDBInputGroup, MDBJumbotron, MDBRow,
 } from 'mdbreact';
 import styled, { createGlobalStyle } from 'styled-components';
 import backgroundImage from '../../assets/images/backgroundlanding.png';
@@ -14,9 +14,10 @@ export const Body = createGlobalStyle`
   }
 `;
 
-export const Jumbotron = styled.h2`
+export const Jumbotron = styled(MDBJumbotron)`
   background: none;
   box-shadow: none;
+  padding: 0 2rem;
 `;
 
 export const Title = styled.h1`

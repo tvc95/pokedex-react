@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
 import { MDBCol, MDBContainer, MDBRow } from 'mdbreact';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 import axios from 'axios';
+
 import DexNavbar from '../../components/Navbars/DexNavbar/DexNavbar';
 import PokemonHeader from '../../containers/PokemonHeader/PokemonHeader';
 import PkmnArtCarousel from '../../components/Carousels/PokemonArtCarousel/PkmnArtCarousel';
+
 import {
   List, PkmnImageSlides, PkmnPhysicalInfo, PokemonInfoI, PokemonInfoII, SubTitle,
 } from './styles';
@@ -90,6 +93,10 @@ interface PokemonVariety {
 
 }
 
+/**
+ * Page component
+ * @returns
+ */
 const DexData: React.FC = () => {
   /// States and Hooks
   const location = useLocation();
@@ -141,6 +148,11 @@ const DexData: React.FC = () => {
   const { loading, data } = useQuery(pkmnQuery);
 
   /// Helper functions
+  /**
+   * Formats text ("First introduced in Generation (Roman number)")
+   * @param text (Ex.: "generation-x")
+   * @returns the formatted input text
+   */
   const formatGenText = (text: string) => {
     const [gen, number] = text.split('-');
 
@@ -149,6 +161,13 @@ const DexData: React.FC = () => {
     return outputText;
   };
 
+  /**
+   * This function gets the string value from the Pokémon's leveling
+   * rate and converts it to a percentual proportion, in order to apply
+   * to the Leveling Rate progress bar UI
+   * @param rate (string)
+   * @returns a decimal number from 0 to 1, indicating the Pokémon's leveling rate
+   */
   const getGrowthRate = (rate: string) => {
     switch (rate) {
       case 'fluctuating':
@@ -170,17 +189,19 @@ const DexData: React.FC = () => {
 
   /**
    * useEffect() will be responsible for all Pokémon data fetching
-   * in the page
+   * in the page. It is made to run only once, every time the user
+   * enters a specific pokémon dex info page. This avoids problems
+   * of performance.
    */
   useEffect(() => {
-    async function fetchPkmnData(): Promise<void> {
-      const response = await axios.get(data.pokemon.species.url);
+    async function fetchPkmnData(pokedata: any): Promise<void> {
+      const response = await axios.get(pokedata.pokemon.species.url);
 
       setPkmnDexData(response.data);
 
       const varieties: Array<PokemonVariety> = [];
 
-      // Get Pokémon Varieties data (if applicable) -> Megas, G-MAX, Alternate forms?
+      // Get Pokémon Varieties data (if applicable) -> Megas, G-MAX, Alternate forms, etc.
       response.data.varieties.map(async (variety: {
         is_default: boolean;
         pokemon: {
@@ -208,8 +229,10 @@ const DexData: React.FC = () => {
       setGrowthRate(getGrowthRate(response.data.growth_rate.name));
     }
 
-    fetchPkmnData();
-  }, [data.pokemon.species.url]);
+    if (data) {
+      fetchPkmnData(data);
+    }
+  }, [data]);
 
   /// Render DOM
   if (loading || pkmnDexData === null) {
