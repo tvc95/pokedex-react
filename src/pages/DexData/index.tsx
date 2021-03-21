@@ -13,6 +13,7 @@ import PkmnArtCarousel from '../../components/Carousels/PokemonArtCarousel/PkmnA
 import {
   List, PkmnImageSlides, PkmnPhysicalInfo, PokemonInfoI, PokemonInfoII, SubTitle,
 } from './styles';
+import PkmnEvoChart from '../../containers/PkmnEvoChart';
 
 interface Pokemon {
   name: string;
@@ -392,7 +393,12 @@ const DexData: React.FC = () => {
                 </div>
               </div>
             </div>
-            <br />
+
+            <div id="evo-chart">
+              <SubTitle>Evolution Chart</SubTitle>
+              <PkmnEvoChart url={pkmnDexData.evolution_chain.url} pkmnName={data.pokemon.name} />
+
+            </div>
           </PokemonInfoII>
         </MDBRow>
 
