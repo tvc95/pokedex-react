@@ -397,7 +397,6 @@ const DexData: React.FC = () => {
             <div id="evo-chart">
               <SubTitle>Evolution Chart</SubTitle>
               <PkmnEvoChart url={pkmnDexData.evolution_chain.url} pkmnName={data.pokemon.name} />
-
             </div>
           </PokemonInfoII>
         </MDBRow>

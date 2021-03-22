@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Container } from './styles';
 
 interface EvoDetails {
@@ -31,15 +32,7 @@ interface EvoDetails {
 interface EvolutionChain {
   id: number;
   baby_trigger_item: Record<string, unknown> | null;
-  chain: {
-    species: {
-      name: string;
-      url: string;
-    },
-    is_baby: boolean,
-    evolution_details: Array<EvoDetails>,
-    evolves_to: Array<PokemonEvo>
-  };
+  chain: Chain;
 }
 
 interface PokemonEvo {
@@ -61,39 +54,32 @@ interface Chain {
   species: {
     name: string;
     url: string;
-  },
+  };
   is_baby: boolean;
   evolution_details: Array<EvoDetails>;
   evolves_to: Array<PokemonEvo>;
 }
 
-const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps) => {
-  const [evoChain, setEvoChain] = useState<EvolutionChain>({
-    id: 0,
-    baby_trigger_item: null,
-    chain: {
-      species: {
-        name: '',
-        url: '',
-      },
-      is_baby: false,
-      evolution_details: [],
-      evolves_to: [],
-    },
-  });
-  const [loading, setLoading] = useState(true);
+interface ChainProps {
+  chain: Chain;
+  loadEvoChains: boolean;
+  setLoadEvoChains: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  /// Helper functions
-  const renderEvolutions = (evolutions: Chain) => {
-    let stage = 0;
-    if (evolutions.evolves_to !== []) {
-      stage += 1;
-      evolutions.evolves_to.map((evolution) => {
-        renderEvolutions(evolution);
-        return (
+const RenderEvos: React.FC<ChainProps> = ({ chain, loadEvoChains, setLoadEvoChains }) => {
+  const [stage, setStage] = useState(0);
+
+  const getEvos = useCallback((evoChain) => {
+    if (evoChain.evolves_to !== []) {
+      setStage(stage + 1);
+      evoChain.evolves_to.map((evolution: Chain) => (
+        <>
           <Link to={`/data/pokemon/${evolution.species.name}`} key={evolution.species.name}>
             <Container>
-              <img src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evolution.species.name}.png`} alt={`${evolution.species.name}`} />
+              <img
+                src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evolution.species.name}.png`}
+                alt={`${evolution.species.name}`}
+              />
 
               <p>
                 <strong>
@@ -105,18 +91,35 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
               <p>{evolution.evolution_details[0].trigger.name}</p>
             </Container>
           </Link>
-        );
-      });
+          <RenderEvos chain={evolution} loadEvoChains={loadEvoChains} setLoadEvoChains={setLoadEvoChains} />
+        </>
+      ));
     }
     return null;
-  };
+  }, [loadEvoChains, setLoadEvoChains, stage]);
+
+  if (!loadEvoChains) {
+    setLoadEvoChains(true);
+    return getEvos(chain);
+  }
+
+  return null;
+};
+
+/**
+ * Function component for evolution charts
+ * @returns JSX.Element
+ */
+const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps) => {
+  const [evoChain, setEvoChain] = useState<EvolutionChain | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [loadEvoChains, setLoadEvoChains] = useState(false);
 
   useEffect(() => {
     async function fetchEvoChain(pokeurl: string): Promise<void> {
       const response = await axios.get(pokeurl);
       setEvoChain(response.data);
       setLoading(false);
-      console.log(response.data);
     }
 
     if (evoChain === null) {
@@ -138,7 +141,10 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
     <>
       <Link to={`/data/pokemon/${evoChain?.chain.species.name}`}>
         <Container>
-          <img src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evoChain?.chain.species.name}.png`} alt={`${evoChain?.chain.species.name}`} />
+          <img
+            src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evoChain?.chain.species.name}.png`}
+            alt={`${evoChain?.chain.species.name}`}
+          />
 
           <p><strong>Basic</strong></p>
 
@@ -149,7 +155,13 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
           )}
         </Container>
       </Link>
-      {/* {evoChain?.chain.evolves_to !== [] ? renderEvolutions(evoChain?.chain) : null} */}
+      {evoChain?.chain !== undefined ? (
+        <RenderEvos
+          chain={evoChain.chain}
+          loadEvoChains={loadEvoChains}
+          setLoadEvoChains={setLoadEvoChains}
+        />
+      ) : null}
     </>
   );
 };
