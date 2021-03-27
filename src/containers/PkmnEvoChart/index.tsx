@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Container } from './styles';
@@ -62,49 +62,45 @@ interface Chain {
 
 interface ChainProps {
   chain: Chain;
-  loadEvoChains: boolean;
-  setLoadEvoChains: React.Dispatch<React.SetStateAction<boolean>>;
+  stage: number;
 }
 
-const RenderEvos: React.FC<ChainProps> = ({ chain, loadEvoChains, setLoadEvoChains }) => {
-  const [stage, setStage] = useState(0);
-
-  const getEvos = useCallback((evoChain) => {
-    if (evoChain.evolves_to !== []) {
-      setStage(stage + 1);
-      evoChain.evolves_to.map((evolution: Chain) => (
-        <>
-          <Link to={`/data/pokemon/${evolution.species.name}`} key={evolution.species.name}>
-            <Container>
-              <img
-                src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evolution.species.name}.png`}
-                alt={`${evolution.species.name}`}
-              />
-
-              <p>
-                <strong>
-                  Stage
-                  {' '}
-                  {stage}
-                </strong>
-              </p>
-              <p>{evolution.evolution_details[0].trigger.name}</p>
-            </Container>
-          </Link>
-          <RenderEvos chain={evolution} loadEvoChains={loadEvoChains} setLoadEvoChains={setLoadEvoChains} />
-        </>
-      ));
-    }
-    return null;
-  }, [loadEvoChains, setLoadEvoChains, stage]);
-
-  if (!loadEvoChains) {
-    setLoadEvoChains(true);
-    return getEvos(chain);
-  }
-
-  return null;
-};
+/**
+ * Recursive function component that displays subsequent Pokémon evolution stages
+ * https://stackoverflow.com/questions/45286713/render-recursively-a-nested-data-in-react
+ * @param param0
+ * @returns
+ */
+const Evolution: React.FC<ChainProps> = ({ chain, stage }: ChainProps) => (
+  <>
+    {chain.evolves_to.map((evolution) => (
+      <>
+        <Link to={`/data/pokemon/${evolution.species.name}`} key={evolution.species.name}>
+          <Container>
+            <img
+              src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evolution.species.name}.png`}
+              alt={`${evolution.species.name}`}
+            />
+            <p>
+              <strong>
+                Stage
+                {' '}
+                {stage}
+              </strong>
+            </p>
+            <p>{evolution.evolution_details[0].trigger.name}</p>
+          </Container>
+        </Link>
+        {evolution.evolves_to && (
+          <Evolution
+            chain={evolution}
+            stage={2}
+          />
+        )}
+      </>
+    ))}
+  </>
+);
 
 /**
  * Function component for evolution charts
@@ -113,7 +109,6 @@ const RenderEvos: React.FC<ChainProps> = ({ chain, loadEvoChains, setLoadEvoChai
 const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps) => {
   const [evoChain, setEvoChain] = useState<EvolutionChain | null>(null);
   const [loading, setLoading] = useState(true);
-  const [loadEvoChains, setLoadEvoChains] = useState(false);
 
   useEffect(() => {
     async function fetchEvoChain(pokeurl: string): Promise<void> {
@@ -155,13 +150,12 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
           )}
         </Container>
       </Link>
-      {evoChain?.chain !== undefined ? (
-        <RenderEvos
+      {evoChain?.chain.evolves_to && (
+        <Evolution
           chain={evoChain.chain}
-          loadEvoChains={loadEvoChains}
-          setLoadEvoChains={setLoadEvoChains}
+          stage={1}
         />
-      ) : null}
+      )}
     </>
   );
 };

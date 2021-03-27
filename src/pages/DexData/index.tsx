@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
-import { MDBCol, MDBContainer, MDBRow } from 'mdbreact';
+import { MDBContainer, MDBRow } from 'mdbreact';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
@@ -11,6 +11,7 @@ import PokemonHeader from '../../containers/PokemonHeader/PokemonHeader';
 import PkmnArtCarousel from '../../components/Carousels/PokemonArtCarousel/PkmnArtCarousel';
 
 import {
+  EvoChartContainer,
   List, PkmnImageSlides, PkmnPhysicalInfo, PokemonInfoI, PokemonInfoII, SubTitle,
 } from './styles';
 import PkmnEvoChart from '../../containers/PkmnEvoChart';
@@ -396,7 +397,9 @@ const DexData: React.FC = () => {
 
             <div id="evo-chart">
               <SubTitle>Evolution Chart</SubTitle>
-              <PkmnEvoChart url={pkmnDexData.evolution_chain.url} pkmnName={data.pokemon.name} />
+              <EvoChartContainer id="evo-chart-container">
+                <PkmnEvoChart url={pkmnDexData.evolution_chain.url} pkmnName={data.pokemon.name} />
+              </EvoChartContainer>
             </div>
           </PokemonInfoII>
         </MDBRow>

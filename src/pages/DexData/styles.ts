@@ -129,7 +129,7 @@ export const PokemonInfoII = styled(MDBCol)`
   background-color: #F4E2E2;
   border-bottom-left-radius: 21px;
   border-bottom-right-radius: 21px;
-  margin-bottom: 2rem;
+  padding-bottom: 2rem;
 
   @media (min-width: 992px) {
     border-top-left-radius: 0px;
@@ -170,4 +170,13 @@ export const PokemonInfoII = styled(MDBCol)`
   #leveling-rate {
     
   }
+`;
+
+export const EvoChartContainer = styled.div`
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 1rem;
+  grid-template-columns:  repeat(auto-fill, minmax(104px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(104px, 1fr));
 `;
