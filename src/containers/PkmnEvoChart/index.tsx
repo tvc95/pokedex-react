@@ -119,6 +119,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
 
     if (evoChain === null) {
       fetchEvoChain(url);
+      console.log('hello');
     }
   }, [evoChain, url, pkmnName]);
 
