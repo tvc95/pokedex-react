@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
 import { MDBContainer, MDBRow } from 'mdbreact';
@@ -15,6 +16,7 @@ import {
   List, PkmnImageSlides, PkmnPhysicalInfo, PokemonInfoI, PokemonInfoII, SubTitle,
 } from './styles';
 import PkmnEvoChart from '../../containers/PkmnEvoChart';
+import PkmnAlternateForms from '../../containers/PkmnAltForms';
 
 interface Pokemon {
   name: string;
@@ -76,6 +78,10 @@ interface Ability {
 
 interface PokemonVariety {
   abilities: Array<Ability>;
+  forms: Array<{
+    name: string;
+    url: string;
+  }>;
   name: string;
   stats: Array<{
     base_stat: number;
@@ -92,7 +98,6 @@ interface PokemonVariety {
     };
   }>;
   weight: number;
-
 }
 
 /**
@@ -198,13 +203,12 @@ const DexData: React.FC = () => {
   useEffect(() => {
     async function fetchPkmnData(pokedata: any): Promise<void> {
       const response = await axios.get(pokedata.pokemon.species.url);
+      const varieties: Array<PokemonVariety> = [];
 
       setPkmnDexData(response.data);
 
-      const varieties: Array<PokemonVariety> = [];
-
       // Get Pokémon Varieties data (if applicable) -> Megas, G-MAX, Alternate forms, etc.
-      response.data.varieties.map(async (variety: {
+      await response.data.varieties.map(async (variety: {
         is_default: boolean;
         pokemon: {
           name: string;
@@ -216,17 +220,16 @@ const DexData: React.FC = () => {
 
           varieties.push({
             abilities: varietyResponse.data.abilities,
+            forms: varietyResponse.data.forms,
             name: varietyResponse.data.name,
             stats: varietyResponse.data.stats,
             types: varietyResponse.data.types,
             weight: varietyResponse.data.weight,
           });
         }
-        return variety;
       });
 
       setPkmnVarieties(varieties);
-
       setGenName(formatGenText(response.data.generation.name));
       setGrowthRate(getGrowthRate(response.data.growth_rate.name));
     }
@@ -395,11 +398,21 @@ const DexData: React.FC = () => {
               </div>
             </div>
 
-            <div id="evo-chart">
+            <div>
               <SubTitle>Evolution Chart</SubTitle>
               <EvoChartContainer id="evo-chart-container">
                 <PkmnEvoChart url={pkmnDexData.evolution_chain.url} pkmnName={data.pokemon.name} />
               </EvoChartContainer>
+            </div>
+            <hr />
+            <div id="forms">
+              <h4><strong>Alternate forms</strong></h4>
+              <PkmnAlternateForms pkmnVarieties={pkmnVarieties} pkmnName={data.pokemon.name} />
+            </div>
+            <hr />
+            <div id="regional-variants">
+              <h4><strong>Regional variants</strong></h4>
+              <p><strong>This Pokémon doesn't have any regional variants.</strong></p>
             </div>
           </PokemonInfoII>
         </MDBRow>
