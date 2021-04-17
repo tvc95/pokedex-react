@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Container } from './styles';
@@ -56,30 +56,36 @@ interface CompProps {
 }
 
 const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: CompProps) => {
+  /// React hooks
   const [pokeForms, setPokeForms] = useState<PokeForm[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  function getPokeForms(pokeVarieties: PokemonVariety[]) {
-    pokeVarieties.map(async (form) => {
-      const response = await axios.get(`${form.forms[0].url}`);
-
-      const data = {
-        form_name: response.data.form_name,
-        is_battle_only: response.data.is_battle_only,
-        is_mega: response.data.is_mega,
-        name: response.data.name,
-        names: response.data.names,
-      };
-      setPokeForms([...pokeForms, data]);
-    });
-  }
+  const [loading, setLoading] = useState(true); // sets to 'false' when pokeForms array is set
 
   useEffect(() => {
-    if (pokeForms.length !== pkmnVarieties.length) {
-      getPokeForms(pkmnVarieties);
+    const formsData: Array<PokeForm> = [];
+    const getPokeFormsData = () => {
+      pkmnVarieties.map((form) => {
+        axios.get(`${form.forms[0].url}`)
+          .then((response) => response.data)
+          .then((data) => {
+            formsData.push({
+              form_name: data.form_name,
+              is_battle_only: data.is_battle_only,
+              is_mega: data.is_mega,
+              name: data.name,
+              names: data.names,
+            });
+          });
+        return formsData;
+      });
+
+      console.log('formsData', formsData);
+    };
+
+    if (loading) {
+      getPokeFormsData();
       setLoading(false);
     }
-  }, [getPokeForms, pkmnVarieties, pokeForms]);
+  }, [pkmnVarieties, loading]);
 
   if (loading) {
     return (
@@ -91,11 +97,14 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
     );
   }
 
-  // return (
-  //   <div>
-  //     <p><strong>This Pokémon doesn't have any alternate forms.</strong></p>
-  //   </div>
-  // );
+  // If pkmnVarieties is null or undefined or an empty array
+  if (!pkmnVarieties || pkmnVarieties.length === 0) {
+    return (
+      <div>
+        <p><strong>This Pokémon doesn't have any alternate forms in this stage.</strong></p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -106,9 +115,10 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
               src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${pkmnVariety.name}.png`}
               alt={`${pkmnVariety.name}`}
             />
-            <p>{idx}</p>
 
-            <p><strong>{pokeForms[idx].form_name.toUpperCase()}</strong></p>
+            {pokeForms[idx].form_name && (
+              <p><strong>{pokeForms[idx].form_name.toUpperCase()}</strong></p>
+            )}
 
             {pkmnVariety.types.map((type) => (
               <p>{type.type.name}</p>
