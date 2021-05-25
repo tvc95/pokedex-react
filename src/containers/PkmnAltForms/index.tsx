@@ -58,53 +58,48 @@ interface CompProps {
 const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: CompProps) => {
   /// React hooks
   const [pokeForms, setPokeForms] = useState<PokeForm[]>([]);
-  const [loading, setLoading] = useState(true); // sets to 'false' when pokeForms array is set
+
+  /**
+   * [Callback function]
+   * Fetches all pertinent basic data from each Pokémon form
+   */
+  const fetchFormsData = useCallback(async (pokeVarieties: Array<PokemonVariety>) => {
+    const urls = pokeVarieties.map((form) => form.forms[0].url);
+
+    const formsData = urls.map(async (url) => {
+      const response = await axios.get(url);
+
+      const formData: PokeForm = {
+        form_name: response.data.form_name,
+        is_battle_only: response.data.is_battle_only,
+        is_mega: response.data.is_mega,
+        name: response.data.name,
+        names: response.data.names,
+      };
+
+      console.log(formData);
+
+      return formData;
+    });
+
+    const pkForms = await Promise.all(formsData);
+
+    setPokeForms(pkForms);
+  }, []);
 
   useEffect(() => {
-    const formsData: Array<PokeForm> = [];
-    const getPokeFormsData = () => {
-      pkmnVarieties.map((form) => {
-        axios.get(`${form.forms[0].url}`)
-          .then((response) => response.data)
-          .then((data) => {
-            formsData.push({
-              form_name: data.form_name,
-              is_battle_only: data.is_battle_only,
-              is_mega: data.is_mega,
-              name: data.name,
-              names: data.names,
-            });
-          });
-        return formsData;
-      });
-
-      console.log('formsData', formsData);
-    };
-
-    if (loading) {
-      getPokeFormsData();
-      setLoading(false);
-    }
-  }, [pkmnVarieties, loading]);
-
-  if (loading) {
-    return (
-      <div>
-        <div className="spinner-border text-info" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+    fetchFormsData(pkmnVarieties);
+    console.log(pkmnVarieties);
+  }, [fetchFormsData, pkmnVarieties]);
 
   // If pkmnVarieties is null or undefined or an empty array
-  if (!pkmnVarieties || pkmnVarieties.length === 0) {
-    return (
-      <div>
-        <p><strong>This Pokémon doesn't have any alternate forms in this stage.</strong></p>
-      </div>
-    );
-  }
+  // if (!pkmnVarieties || pkmnVarieties.length === 0) {
+  //   return (
+  //     <div>
+  //       <p><strong>This Pokémon doesn't have any alternate forms in this stage.</strong></p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
