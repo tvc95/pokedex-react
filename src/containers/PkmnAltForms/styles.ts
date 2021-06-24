@@ -18,3 +18,7 @@ export const Container = styled.div`
     margin-bottom: 0;
   }
 `;
+
+export const TypeSpan = styled.span`
+  display: inline-flex;
+`;

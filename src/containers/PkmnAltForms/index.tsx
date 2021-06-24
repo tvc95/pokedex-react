@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Container } from './styles';
+import { Container, TypeSpan } from './styles';
 
 interface Ability {
   ability: {
@@ -58,6 +58,7 @@ interface CompProps {
 const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: CompProps) => {
   /// React hooks
   const [pokeForms, setPokeForms] = useState<PokeForm[]>([]);
+  const [load, setLoad] = useState(false);
 
   /**
    * [Callback function]
@@ -77,52 +78,71 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
         names: response.data.names,
       };
 
-      console.log(formData);
-
       return formData;
     });
 
-    const pkForms = await Promise.all(formsData);
-
+    const pkForms = await Promise.all<PokeForm>(formsData);
     setPokeForms(pkForms);
   }, []);
 
   useEffect(() => {
-    fetchFormsData(pkmnVarieties);
-    console.log(pkmnVarieties);
-  }, [fetchFormsData, pkmnVarieties]);
+    const execute = async () => {
+      // console.log('varieties: ', pkmnVarieties);
+      // console.log('name: ', pkmnName);
+      if (!load) {
+        await fetchFormsData(pkmnVarieties);
+        setLoad(true);
+      }
+    };
 
-  // If pkmnVarieties is null or undefined or an empty array
-  // if (!pkmnVarieties || pkmnVarieties.length === 0) {
-  //   return (
-  //     <div>
-  //       <p><strong>This Pokémon doesn't have any alternate forms in this stage.</strong></p>
-  //     </div>
-  //   );
-  // }
+    execute();
+  }, [fetchFormsData, load, pkmnVarieties]);
 
-  return (
-    <>
-      {pkmnVarieties.map((pkmnVariety, idx) => (
-        <Link to={`/data/pokemon/${pkmnName}`} key={pkmnVariety.name}>
-          <Container>
-            <img
-              src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${pkmnVariety.name}.png`}
-              alt={`${pkmnVariety.name}`}
-            />
+  if (load) {
+    return (
+      <>
+        {pkmnVarieties.map((pkmnVariety, idx) => {
+          if (idx > 0) {
+            return (
+              <Link to={`/data/pokemon/${pkmnName}`} key={pkmnVariety.name}>
+                <Container>
+                  <img
+                    src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${pkmnVariety.name}.png`}
+                    alt={`${pkmnVariety.name}`}
+                  />
 
-            {pokeForms[idx].form_name && (
-              <p><strong>{pokeForms[idx].form_name.toUpperCase()}</strong></p>
-            )}
+                  {pokeForms[idx].form_name && (
+                    <p><strong>{pokeForms[idx].form_name.toUpperCase()}</strong></p>
+                  )}
 
-            {pkmnVariety.types.map((type) => (
-              <p>{type.type.name}</p>
-            ))}
-          </Container>
-        </Link>
-      ))}
-    </>
-  );
+                  <TypeSpan>
+                    {pkmnVariety.types.map((type) => {
+                      if (type.slot < 2) {
+                        return (
+                          <p>
+                            {type.type.name}
+                            {}
+                            /
+                            {' '}
+                          </p>
+                        );
+                      }
+                      return (
+                        <p>{type.type.name}</p>
+                      );
+                    })}
+                  </TypeSpan>
+                </Container>
+              </Link>
+            );
+          }
+          return null;
+        })}
+      </>
+    );
+  }
+
+  return null;
 };
 
 export default PkmnAlternateForms;

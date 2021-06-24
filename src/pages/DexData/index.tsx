@@ -1,8 +1,9 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
 import { MDBContainer, MDBRow } from 'mdbreact';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 import axios from 'axios';
@@ -194,6 +195,39 @@ const DexData: React.FC = () => {
     }
   };
 
+  const fetchPkmnData = useCallback(async (pkData: any) => {
+    const response = await axios.get(pkData.pokemon.species.url);
+
+    setPkmnDexData(response.data);
+
+    const varieties = await response.data.varieties.map(async (variety: {
+      is_default: boolean;
+      pokemon: {
+        name: string;
+        url: string;
+      }
+    }) => {
+      const varietyResponse = await axios.get(variety.pokemon.url);
+
+      const res: PokemonVariety = ({
+        abilities: varietyResponse.data.abilities,
+        forms: varietyResponse.data.forms,
+        name: varietyResponse.data.name,
+        stats: varietyResponse.data.stats,
+        types: varietyResponse.data.types,
+        weight: varietyResponse.data.weight,
+      });
+
+      return res;
+    });
+
+    const promises = await Promise.all<PokemonVariety>(varieties);
+    setPkmnVarieties(promises);
+
+    setGenName(formatGenText(response.data.generation.name));
+    setGrowthRate(getGrowthRate(response.data.growth_rate.name));
+  }, []);
+
   /**
    * useEffect() will be responsible for all Pokémon data fetching
    * in the page. It is made to run only once, every time the user
@@ -201,43 +235,16 @@ const DexData: React.FC = () => {
    * of performance.
    */
   useEffect(() => {
-    async function fetchPkmnData(pokedata: any): Promise<void> {
-      const response = await axios.get(pokedata.pokemon.species.url);
-      const varieties: Array<PokemonVariety> = [];
+    const execute = async () => {
+      if (data) {
+        await fetchPkmnData(data);
+        console.log(data);
+        console.log(pkmnVarieties);
+      }
+    };
 
-      setPkmnDexData(response.data);
-
-      // Get Pokémon Varieties data (if applicable) -> Megas, G-MAX, Alternate forms, etc.
-      await response.data.varieties.map(async (variety: {
-        is_default: boolean;
-        pokemon: {
-          name: string;
-          url: string;
-        }
-      }) => {
-        if (!variety.is_default) {
-          const varietyResponse = await axios.get(variety.pokemon.url);
-
-          varieties.push({
-            abilities: varietyResponse.data.abilities,
-            forms: varietyResponse.data.forms,
-            name: varietyResponse.data.name,
-            stats: varietyResponse.data.stats,
-            types: varietyResponse.data.types,
-            weight: varietyResponse.data.weight,
-          });
-        }
-      });
-
-      setPkmnVarieties(varieties);
-      setGenName(formatGenText(response.data.generation.name));
-      setGrowthRate(getGrowthRate(response.data.growth_rate.name));
-    }
-
-    if (data) {
-      fetchPkmnData(data);
-    }
-  }, [data]);
+    execute();
+  }, [data, fetchPkmnData, pkmnVarieties]);
 
   /// Render DOM
   if (loading || pkmnDexData === null) {
