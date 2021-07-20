@@ -35,14 +35,31 @@ const PkmnBtnList: React.FC = () => {
       ) : (
         <MDBContainer>
           <NationalDexContainer>
-            {data.pokemons.results.map((pokemon: { id: number; name: string; image: string }) => (
-              <PokemonBtn
-                key={pokemon.id}
-                pkmnIconPath={pokemon.image}
-                pkmnName={pokemon.name}
-                pkmnNumber={pokemon.id}
-              />
-            ))}
+            {data.pokemons.results.map((pokemon: { id: number; name: string; image: string }) => {
+              let name = '';
+              if (pokemon.name.includes('-')) {
+                if (!pokemon.name.includes('-o')) {
+                  name = pokemon.name.slice(0, pokemon.name.indexOf('-'));
+                } else {
+                  name = pokemon.name;
+                }
+              } else {
+                name = pokemon.name;
+              }
+
+              if (pokemon.id <= 898) {
+                return (
+                  <PokemonBtn
+                    key={pokemon.id}
+                    pkmnIconPath={pokemon.image}
+                    pkmnName={pokemon.name}
+                    trueName={name}
+                    pkmnNumber={pokemon.id}
+                  />
+                );
+              }
+              return null;
+            })}
           </NationalDexContainer>
 
           <MDBContainer className="d-flex justify-content-center">

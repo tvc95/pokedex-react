@@ -1,5 +1,13 @@
 /* eslint-disable import/prefer-default-export */
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+export const Linkk = styled(Link)`
+  width: 104px;
+  height: 104px;
+  
+  margin: 0.2rem auto;
+`;
 
 export const Container = styled.div`
   background-color: #cd323275;

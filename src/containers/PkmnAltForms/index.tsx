@@ -1,9 +1,12 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable camelcase */
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Container, TypeSpan } from './styles';
+import {
+  AltForms, Container, Linkk, RegionVariant, TypeSpan,
+} from './styles';
 
 interface Ability {
   ability: {
@@ -87,24 +90,73 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
 
   useEffect(() => {
     const execute = async () => {
-      // console.log('varieties: ', pkmnVarieties);
-      // console.log('name: ', pkmnName);
       if (!load) {
         await fetchFormsData(pkmnVarieties);
         setLoad(true);
       }
     };
 
-    execute();
+    if (pkmnVarieties.length > 1) {
+      execute();
+    }
   }, [fetchFormsData, load, pkmnVarieties]);
 
   if (load) {
     return (
-      <>
+      <AltForms>
         {pkmnVarieties.map((pkmnVariety, idx) => {
           if (idx > 0) {
+            // If form name is an unconventional form, dismiss it
+            if ((pokeForms[idx].name.slice(0, 12) !== 'pikachu-gmax' && pokeForms[idx].name.slice(0, 7) === 'pikachu') || pokeForms[idx].form_name === 'totem-alola') {
+              return null;
+            }
+
+            // If form name is not a mega/gmax/altered form, displays this form
+            // as a regional variant and introduces links to these specific forms
+            if (pokeForms[idx].form_name.slice(0, 4) !== 'mega' && pokeForms[idx].form_name !== 'gmax' && pokeForms[idx].form_name !== 'origin') {
+              return (
+                <Linkk to={`/data/pokemon/${pkmnVariety.name}`} key={pkmnVariety.name}>
+                  <RegionVariant>
+                    <img
+                      src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${pkmnVariety.name}.png`}
+                      alt={`${pkmnVariety.name}`}
+                    />
+
+                    {pokeForms[idx].form_name && (
+                      <p><strong>{pokeForms[idx].form_name.toUpperCase()}</strong></p>
+                    )}
+
+                    <TypeSpan>
+                      {pkmnVariety.types.map((type) => {
+                        if (pkmnVariety.types.length === 1) {
+                          return (
+                            <p>{type.type.name}</p>
+                          );
+                        }
+
+                        if (type.slot < 2) {
+                          return (
+                            <p>
+                              {type.type.name}
+                              { }
+                              /
+                              {' '}
+                            </p>
+                          );
+                        }
+                        return (
+                          <p>{type.type.name}</p>
+                        );
+                      })}
+                    </TypeSpan>
+                  </RegionVariant>
+                </Linkk>
+              );
+            }
+
+            // Renders mega/gmax/altered forms as a normal pokemon
             return (
-              <Link to={`/data/pokemon/${pkmnName}`} key={pkmnVariety.name}>
+              <Linkk to={`/data/pokemon/${pkmnName}`} key={pkmnVariety.name}>
                 <Container>
                   <img
                     src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${pkmnVariety.name}.png`}
@@ -117,11 +169,17 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
 
                   <TypeSpan>
                     {pkmnVariety.types.map((type) => {
+                      if (pkmnVariety.types.length === 1) {
+                        return (
+                          <p>{type.type.name}</p>
+                        );
+                      }
+
                       if (type.slot < 2) {
                         return (
                           <p>
                             {type.type.name}
-                            {}
+                            { }
                             /
                             {' '}
                           </p>
@@ -133,16 +191,20 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
                     })}
                   </TypeSpan>
                 </Container>
-              </Link>
+              </Linkk>
             );
           }
           return null;
         })}
-      </>
+      </AltForms>
     );
   }
 
-  return null;
+  return (
+    <>
+      <p><strong>This Pokémon doesn't have alternate forms or regional variants in this stage.</strong></p>
+    </>
+  );
 };
 
 export default PkmnAlternateForms;

@@ -2,8 +2,8 @@
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { Container } from './styles';
+import { useHistory } from 'react-router-dom';
+import { Container, Linkk } from './styles';
 
 interface EvoDetails {
   gender: unknown;
@@ -75,7 +75,7 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage }: ChainProps) => (
   <>
     {chain.evolves_to.map((evolution) => (
       <>
-        <Link to={`/data/pokemon/${evolution.species.name}`} key={evolution.species.name}>
+        <Linkk to={`/data/pokemon/${evolution.species.name}`} key={evolution.species.name} onClick={() => window.location.assign(`/data/pokemon/${evolution.species.name}`)}>
           <Container>
             <img
               src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evolution.species.name}.png`}
@@ -90,7 +90,7 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage }: ChainProps) => (
             </p>
             <p>{evolution.evolution_details[0].trigger.name}</p>
           </Container>
-        </Link>
+        </Linkk>
         {evolution.evolves_to && (
           <Evolution
             chain={evolution}
@@ -109,6 +109,7 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage }: ChainProps) => (
 const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps) => {
   const [evoChain, setEvoChain] = useState<EvolutionChain | null>(null);
   const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
   useEffect(() => {
     async function fetchEvoChain(pokeurl: string): Promise<void> {
@@ -134,7 +135,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
 
   return (
     <>
-      <Link to={`/data/pokemon/${evoChain?.chain.species.name}`}>
+      <Linkk to={`/data/pokemon/${evoChain?.chain.species.name}`} onClick={() => window.location.assign(`/data/pokemon/${evoChain?.chain.species.name}`)}>
         <Container>
           <img
             src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evoChain?.chain.species.name}.png`}
@@ -149,7 +150,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
             <p>Lv. 1</p>
           )}
         </Container>
-      </Link>
+      </Linkk>
       {evoChain?.chain.evolves_to && (
         <Evolution
           chain={evoChain.chain}

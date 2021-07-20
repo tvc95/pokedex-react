@@ -4,16 +4,19 @@ import { PokemonBtnLink, PokemonIcon } from './styles';
 interface PokemonBtnProps {
   pkmnIconPath: string;
   pkmnName: string;
+  trueName: string;
   pkmnNumber: number;
 }
 
 const PokemonBtn: React.FC<PokemonBtnProps> = (
-  { pkmnIconPath, pkmnName, pkmnNumber }: PokemonBtnProps,
+  {
+    pkmnIconPath, pkmnName, pkmnNumber, trueName,
+  }: PokemonBtnProps,
 ) => (
   <PokemonBtnLink to={`/data/pokemon/${pkmnName}`}>
-    <PokemonIcon src={`${pkmnIconPath}`} alt={`${pkmnNumber}-${pkmnName}`} />
+    <PokemonIcon src={`${pkmnIconPath}`} alt={`${pkmnNumber}-${trueName}`} />
     <br />
-    {pkmnName.charAt(0).toUpperCase() + pkmnName.slice(1)}
+    {trueName.charAt(0).toUpperCase() + trueName.slice(1)}
   </PokemonBtnLink>
 );
 
