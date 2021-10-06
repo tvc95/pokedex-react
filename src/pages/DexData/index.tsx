@@ -181,17 +181,19 @@ const DexData: React.FC = () => {
    */
   const getGrowthRate = (rate: string) => {
     switch (rate) {
-      case 'fluctuating':
+      case 'fast-then-very-slow':
         return 0.10;
       case 'slow':
         return 0.20;
       case 'medium-slow':
         return 0.40;
+      case 'medium':
+        return 0.5;
       case 'medium-fast':
         return 0.60;
       case 'fast':
         return 0.80;
-      case 'erratic':
+      case 'slow-then-very-fast':
         return 0.90;
       default:
         return 0;
@@ -341,20 +343,32 @@ const DexData: React.FC = () => {
               <div id="gender-ratio">
                 <SubTitle>Gender Ratio</SubTitle>
                 <div className="progress" style={{ height: '1.5rem' }}>
-                  <div className="progress-bar" role="progressbar" style={{ width: `${12.5 * (8 - pkmnDexData.gender_rate)}%` }}>
-                    <strong>
-                      {`${12.5 * (8 - pkmnDexData.gender_rate)}%`}
-                      {' '}
-                      (M)
-                    </strong>
-                  </div>
-                  <div className="progress-bar bg-danger" role="progressbar" style={{ width: `${12.5 * (pkmnDexData.gender_rate)}%` }}>
-                    <strong>
-                      {`${12.5 * (pkmnDexData.gender_rate)}%`}
-                      {' '}
-                      (F)
-                    </strong>
-                  </div>
+                  {pkmnDexData.gender_rate !== -1 ? (
+                    <>
+                      <div className="progress-bar" role="progressbar" style={{ width: `${12.5 * (8 - pkmnDexData.gender_rate)}%` }}>
+                        <strong>
+                          {`${12.5 * (8 - pkmnDexData.gender_rate)}%`}
+                          {' '}
+                          (M)
+                        </strong>
+                      </div>
+                      <div className="progress-bar bg-danger" role="progressbar" style={{ width: `${12.5 * (pkmnDexData.gender_rate)}%` }}>
+                        <strong>
+                          {`${12.5 * (pkmnDexData.gender_rate)}%`}
+                          {' '}
+                          (F)
+                        </strong>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="progress-bar bg-dark" role="progressbar" style={{ width: `${100}%` }}>
+                        <strong>
+                          Genderless
+                        </strong>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -366,6 +380,7 @@ const DexData: React.FC = () => {
                     m
                   </h3>
                 </div>
+
                 <div id="weight">
                   <h2>Weight</h2>
                   <h3>
@@ -373,6 +388,7 @@ const DexData: React.FC = () => {
                     kg
                   </h3>
                 </div>
+
                 <div id="catch-rate">
                   <h2>Catch rate</h2>
                   <h3>
@@ -381,7 +397,6 @@ const DexData: React.FC = () => {
                   </h3>
                 </div>
               </PkmnPhysicalInfo>
-
             </PokemonInfoI>
           </MDBRow>
 
@@ -417,14 +432,28 @@ const DexData: React.FC = () => {
                     role="progressbar"
                     style={{ width: `${100 * (growthRate)}%` }}
                   >
-                    <strong>
-                      {growthRate >= 0.4 && pkmnDexData.growth_rate.name}
-                    </strong>
+                    {pkmnDexData.growth_rate.name !== 'slow-then-very-fast' ? (
+                      <strong>
+                        {growthRate >= 0.4 && pkmnDexData.growth_rate.name}
+                      </strong>
+                    ) : (
+                      <strong>
+                        {growthRate >= 0.4 && 'erratic'}
+                      </strong>
+
+                    )}
                   </div>
                   <div className="progress-bar bg-dark" role="progressbar" style={{ width: `${100 - (100 * (growthRate))}%` }}>
-                    <strong>
-                      {growthRate < 0.4 && pkmnDexData.growth_rate.name}
-                    </strong>
+                    {pkmnDexData.growth_rate.name !== 'fast-then-very-slow' ? (
+                      <strong>
+                        {growthRate < 0.4 && pkmnDexData.growth_rate.name}
+                      </strong>
+                    ) : (
+                      <strong>
+                        {growthRate < 0.4 && 'fluctuating'}
+                      </strong>
+                    )}
+
                   </div>
                 </div>
               </div>

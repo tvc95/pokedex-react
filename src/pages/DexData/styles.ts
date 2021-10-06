@@ -67,7 +67,7 @@ export const List = styled.ul`
       font-weight: 600;
       color: white;
       text-transform: capitalize;
-      padding: 0rem 1rem;
+      padding: 2px 1rem;
     }
 
     .is-hidden-true span {
@@ -80,7 +80,7 @@ export const List = styled.ul`
       font-weight: 600;
       color: white;
       text-transform: capitalize;
-      padding: 0rem 1rem;
+      padding: 2px 1rem;
     }
 
     .is-hidden-true em {
