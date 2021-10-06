@@ -3,7 +3,6 @@
 /* eslint-disable camelcase */
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import {
   AltForms, Container, Linkk, RegionVariant, TypeSpan,
 } from './styles';
@@ -171,13 +170,13 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
                     {pkmnVariety.types.map((type) => {
                       if (pkmnVariety.types.length === 1) {
                         return (
-                          <p>{type.type.name}</p>
+                          <p key={type.slot}>{type.type.name}</p>
                         );
                       }
 
                       if (type.slot < 2) {
                         return (
-                          <p>
+                          <p key={type.slot}>
                             {type.type.name}
                             { }
                             /
@@ -186,7 +185,7 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
                         );
                       }
                       return (
-                        <p>{type.type.name}</p>
+                        <p key={type.slot}>{type.type.name}</p>
                       );
                     })}
                   </TypeSpan>

@@ -157,8 +157,8 @@ const DexData: React.FC = () => {
   `;
   const { loading, data } = useQuery(pkmnQuery);
 
-  /// Helper functions
   /**
+   * [Helper function]
    * Formats text ("First introduced in Generation (Roman number)")
    * @param text (Ex.: "generation-x")
    * @returns the formatted input text
@@ -172,6 +172,7 @@ const DexData: React.FC = () => {
   };
 
   /**
+   * [Helper function]
    * This function gets the string value from the Pokémon's leveling
    * rate and converts it to a percentual proportion, in order to apply
    * to the Leveling Rate progress bar UI
@@ -197,6 +198,10 @@ const DexData: React.FC = () => {
     }
   };
 
+  /**
+   * Fetches data from PokéAPI, including varieties info (mega evolutions and
+   * alternate forms)
+   */
   const fetchPkmnData = useCallback(async (pkData: any) => {
     const response = await axios.get(pkData.pokemon.species.url);
 
@@ -254,10 +259,7 @@ const DexData: React.FC = () => {
   }, [data, fetchPkmnData]);
 
   useEffect(() => {
-    // console.log(data);
-
     if (!loadData) {
-      // console.log(pkmnVarieties);
       if (pkmnVarieties.length !== 0) {
         setLoadData(true);
       }
@@ -269,11 +271,6 @@ const DexData: React.FC = () => {
       // window.location.assign(location.pathname);
     }
   }, [location.pathname]);
-
-  window.addEventListener('onpopstate', () => {
-    // Cancel the event
-    window.location.assign(location.pathname);
-  });
 
   /// Render DOM
   if (loading || pkmnDexData === null || pkmnVarieties === []) {
@@ -296,6 +293,7 @@ const DexData: React.FC = () => {
           number={data.pokemon.id}
           url={data.pokemon.species.url}
         />
+
         <MDBContainer fluid style={{ marginTop: '1rem' }}>
           <MDBRow className="align-items-center">
             <PkmnImageSlides xs="12" lg="6">
@@ -309,14 +307,10 @@ const DexData: React.FC = () => {
               <div id="description">
                 <SubTitle>Description</SubTitle>
                 <p id="flavor-txt">
-                  {pkmnDexData?.flavor_text_entries.map((entry) => {
-                    if (entry.language.name === 'en') {
-                      if (entry.version.name === 'sword' || entry.version.name === 'shield') {
-                        return (`${entry.flavor_text} `);
-                      }
-                    }
-                    return null;
-                  })}
+                  {pkmnDexData?.flavor_text_entries
+                    .filter((entry) => entry.language.name === 'en' && (entry.version.name === 'x' || entry.version.name === 'ultra-sun' || entry.version.name === 'sword'))
+                    .slice(0, 2)
+                    .map((entry) => (`${entry.flavor_text} `))}
                 </p>
                 <p>
                   <small>

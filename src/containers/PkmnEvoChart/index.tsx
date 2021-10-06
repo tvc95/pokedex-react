@@ -75,7 +75,11 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage }: ChainProps) => (
   <>
     {chain.evolves_to.map((evolution) => (
       <>
-        <Linkk to={`/data/pokemon/${evolution.species.name}`} key={evolution.species.name} onClick={() => window.location.assign(`/data/pokemon/${evolution.species.name}`)}>
+        <Linkk
+          to={`/data/pokemon/${evolution.species.name}`}
+          key={evolution.species.name}
+          onClick={() => window.location.assign(`/data/pokemon/${evolution.species.name}`)}
+        >
           <Container>
             <img
               src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evolution.species.name}.png`}
@@ -109,7 +113,7 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage }: ChainProps) => (
 const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps) => {
   const [evoChain, setEvoChain] = useState<EvolutionChain | null>(null);
   const [loading, setLoading] = useState(true);
-  const history = useHistory();
+  // const history = useHistory();
 
   useEffect(() => {
     async function fetchEvoChain(pokeurl: string): Promise<void> {
@@ -135,7 +139,10 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
 
   return (
     <>
-      <Linkk to={`/data/pokemon/${evoChain?.chain.species.name}`} onClick={() => window.location.assign(`/data/pokemon/${evoChain?.chain.species.name}`)}>
+      <Linkk
+        to={`/data/pokemon/${evoChain?.chain.species.name}`}
+        onClick={() => window.location.assign(`/data/pokemon/${evoChain?.chain.species.name}`)}
+      >
         <Container>
           <img
             src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evoChain?.chain.species.name}.png`}
