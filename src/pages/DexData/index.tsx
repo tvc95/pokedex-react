@@ -14,7 +14,7 @@ import PkmnArtCarousel from '../../components/Carousels/PokemonArtCarousel/PkmnA
 
 import {
   EvoChartContainer,
-  List, PkmnImageSlides, PkmnPhysicalInfo, PokemonInfoI, PokemonInfoII, PokemonStatsContainer, SubTitle,
+  List, PkmnImageSlides, PkmnPhysicalInfo, PokemonInfoI, PokemonInfoII, PokemonStatsContainer, PokemonTypeChart, SubTitle,
 } from './styles';
 
 import PkmnEvoChart from '../../containers/PkmnEvoChart';
@@ -496,6 +496,12 @@ const DexData: React.FC = () => {
               <SubTitle>Base Stats</SubTitle>
               <BaseStatsChart pkmnVarieties={pkmnVarieties} />
             </PokemonStatsContainer>
+          </MDBRow>
+
+          <MDBRow>
+            <PokemonTypeChart xs="12">
+              <SubTitle>Type Chart</SubTitle>
+            </PokemonTypeChart>
           </MDBRow>
         </MDBContainer>
       </>

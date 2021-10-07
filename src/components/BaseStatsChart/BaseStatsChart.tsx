@@ -1,9 +1,9 @@
 /* eslint-disable no-new */
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
-import { Chart, ChartType, registerables } from 'chart.js';
+import { Chart, registerables } from 'chart.js';
 import React, {
-  useState, useCallback, useEffect, useRef,
+  useState, useEffect, useRef,
 } from 'react';
 import { CanvasContainer } from './styles';
 
