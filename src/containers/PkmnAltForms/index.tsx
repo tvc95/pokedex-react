@@ -112,7 +112,8 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
 
             // If form name is not a mega/gmax/altered form, displays this form
             // as a regional variant and introduces links to these specific forms
-            if (pokeForms[idx].form_name.slice(0, 4) !== 'mega' && pokeForms[idx].form_name !== 'gmax' && pokeForms[idx].form_name !== 'origin') {
+            if ((pokeForms[idx].form_name.slice(0, 4) !== 'mega' && pokeForms[idx].form_name !== 'gmax' && pokeForms[idx].form_name !== 'origin')
+            && (pokeForms[idx].form_name === 'alola' || pokeForms[idx].form_name === 'galar')) {
               return (
                 <Linkk
                   to="#"
