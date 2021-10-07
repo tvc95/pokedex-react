@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
-import { MDBContainer, MDBRow } from 'mdbreact';
+import { MDBCol, MDBContainer, MDBRow } from 'mdbreact';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
@@ -14,8 +14,9 @@ import PkmnArtCarousel from '../../components/Carousels/PokemonArtCarousel/PkmnA
 
 import {
   EvoChartContainer,
-  List, PkmnImageSlides, PkmnPhysicalInfo, PokemonInfoI, PokemonInfoII, SubTitle,
+  List, PkmnImageSlides, PkmnPhysicalInfo, PokemonInfoI, PokemonInfoII, PokemonStatsContainer, SubTitle,
 } from './styles';
+
 import PkmnEvoChart from '../../containers/PkmnEvoChart';
 import PkmnAlternateForms from '../../containers/PkmnAltForms';
 
@@ -480,6 +481,16 @@ const DexData: React.FC = () => {
                 <PkmnAlternateForms pkmnVarieties={pkmnVarieties} pkmnName={data.pokemon.name} />
               </div>
             </PokemonInfoII>
+
+            <PokemonStatsContainer xs="12" lg="6">
+              <SubTitle>Base Stats</SubTitle>
+
+              <div id="pkmn-base-stats" className="col-xs-12 col-lg-6">
+                <div id="stats">
+                  <canvas id="radarChart" height="220" />
+                </div>
+              </div>
+            </PokemonStatsContainer>
           </MDBRow>
         </MDBContainer>
       </>

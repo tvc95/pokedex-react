@@ -114,7 +114,11 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
             // as a regional variant and introduces links to these specific forms
             if (pokeForms[idx].form_name.slice(0, 4) !== 'mega' && pokeForms[idx].form_name !== 'gmax' && pokeForms[idx].form_name !== 'origin') {
               return (
-                <Linkk to={`/data/pokemon/${pkmnVariety.name}`} key={pkmnVariety.name}>
+                <Linkk
+                  to="#"
+                  key={pkmnVariety.name}
+                  onClick={() => window.location.assign(`/data/pokemon/${pkmnVariety.name}`)}
+                >
                   <RegionVariant>
                     <img
                       src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${pkmnVariety.name}.png`}
@@ -155,42 +159,40 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: Co
 
             // Renders mega/gmax/altered forms as a normal pokemon
             return (
-              <Linkk to={`/data/pokemon/${pkmnName}`} key={pkmnVariety.name}>
-                <Container>
-                  <img
-                    src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${pkmnVariety.name}.png`}
-                    alt={`${pkmnVariety.name}`}
-                  />
+              <Container key={pkmnVariety.name}>
+                <img
+                  src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${pkmnVariety.name}.png`}
+                  alt={`${pkmnVariety.name}`}
+                />
 
-                  {pokeForms[idx].form_name && (
-                    <p><strong>{pokeForms[idx].form_name.toUpperCase()}</strong></p>
-                  )}
+                {pokeForms[idx].form_name && (
+                <p><strong>{pokeForms[idx].form_name.toUpperCase()}</strong></p>
+                )}
 
-                  <TypeSpan>
-                    {pkmnVariety.types.map((type) => {
-                      if (pkmnVariety.types.length === 1) {
-                        return (
-                          <p key={type.slot}>{type.type.name}</p>
-                        );
-                      }
-
-                      if (type.slot < 2) {
-                        return (
-                          <p key={type.slot}>
-                            {type.type.name}
-                            { }
-                            /
-                            {' '}
-                          </p>
-                        );
-                      }
+                <TypeSpan>
+                  {pkmnVariety.types.map((type) => {
+                    if (pkmnVariety.types.length === 1) {
                       return (
                         <p key={type.slot}>{type.type.name}</p>
                       );
-                    })}
-                  </TypeSpan>
-                </Container>
-              </Linkk>
+                    }
+
+                    if (type.slot < 2) {
+                      return (
+                        <p key={type.slot}>
+                          {type.type.name}
+                          { }
+                          /
+                          {' '}
+                        </p>
+                      );
+                    }
+                    return (
+                      <p key={type.slot}>{type.type.name}</p>
+                    );
+                  })}
+                </TypeSpan>
+              </Container>
             );
           }
           return null;

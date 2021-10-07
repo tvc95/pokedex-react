@@ -77,7 +77,7 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage, pkmnName }: ChainProps)
     {chain.evolves_to.map((evolution) => (
       <>
         <Linkk
-          to={`/data/pokemon/${evolution.species.name}`}
+          to="#"
           key={evolution.species.name}
           onClick={() => window.location.assign(`/data/pokemon/${evolution.species.name}`)}
         >
@@ -146,7 +146,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
   return (
     <>
       <Linkk
-        to={`/data/pokemon/${evoChain?.chain.species.name}`}
+        to="#"
         onClick={() => window.location.assign(`/data/pokemon/${evoChain?.chain.species.name}`)}
       >
         <Container
@@ -167,6 +167,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
           )}
         </Container>
       </Linkk>
+
       {evoChain?.chain.evolves_to && (
         <Evolution
           chain={evoChain.chain}

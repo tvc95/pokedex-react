@@ -44,8 +44,10 @@ export const TypeSpan = styled.span`
   display: inline-flex;
 `;
 
+// 8A9B689f
+// 9F7833
 export const RegionVariant = styled.div`
-  background-color: #CDB934;
+  background-color: rgba(222, 158, 54, 0.85); 
   border-radius: 18px;
   margin: 0.2rem auto;
   width: 104px;

@@ -185,3 +185,8 @@ export const EvoChartContainer = styled.div`
     grid-template-columns:  repeat(3, minmax(104px, 1fr));
   }
 `;
+
+export const PokemonStatsContainer = styled(MDBCol)`
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+`;
