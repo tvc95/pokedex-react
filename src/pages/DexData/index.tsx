@@ -19,6 +19,7 @@ import {
 
 import PkmnEvoChart from '../../containers/PkmnEvoChart';
 import PkmnAlternateForms from '../../containers/PkmnAltForms';
+import BaseStatsChart from '../../components/BaseStatsChart/BaseStatsChart';
 
 interface Pokemon {
   name: string;
@@ -103,7 +104,7 @@ interface PokemonVariety {
 }
 
 /**
- * Page component
+ * Page component that returns all dex data from a specific Pokémon
  * @returns
  */
 const DexData: React.FC = () => {
@@ -267,6 +268,9 @@ const DexData: React.FC = () => {
     }
   }, [data, loadData, pkmnVarieties]);
 
+  /**
+   * [Review]: this useEffect() might be useless
+   */
   useEffect(() => {
     if (location.pathname) {
       // window.location.assign(location.pathname);
@@ -274,6 +278,9 @@ const DexData: React.FC = () => {
   }, [location.pathname]);
 
   /// Render DOM
+  /**
+   * Rendering loading spinner
+   */
   if (loading || pkmnDexData === null || pkmnVarieties === []) {
     return (
       <div
@@ -294,6 +301,9 @@ const DexData: React.FC = () => {
     );
   }
 
+  /**
+   * Rendering full page
+   */
   if (loadData) {
     return (
       <>
@@ -484,12 +494,7 @@ const DexData: React.FC = () => {
 
             <PokemonStatsContainer xs="12" lg="6">
               <SubTitle>Base Stats</SubTitle>
-
-              <div id="pkmn-base-stats" className="col-xs-12 col-lg-6">
-                <div id="stats">
-                  <canvas id="radarChart" height="220" />
-                </div>
-              </div>
+              <BaseStatsChart pkmnVarieties={pkmnVarieties} />
             </PokemonStatsContainer>
           </MDBRow>
         </MDBContainer>
