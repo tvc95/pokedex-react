@@ -188,8 +188,6 @@ const DexData: React.FC = () => {
       case 'medium-slow':
         return 0.40;
       case 'medium':
-        return 0.5;
-      case 'medium-fast':
         return 0.60;
       case 'fast':
         return 0.80;
@@ -277,9 +275,19 @@ const DexData: React.FC = () => {
   /// Render DOM
   if (loading || pkmnDexData === null || pkmnVarieties === []) {
     return (
-      <div>
-        <div className="spinner-border text-info" role="status">
-          <span className="sr-only">Loading...</span>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          paddingTop: '25%',
+        }}
+      >
+        <div
+          className="spinner-border text-info"
+          role="status"
+          style={{ width: '160px', height: '160px' }}
+        >
+          <span style={{ width: '200px', height: '200px' }} className="sr-only">Loading...</span>
         </div>
       </div>
     );
@@ -464,7 +472,9 @@ const DexData: React.FC = () => {
                   <PkmnEvoChart url={pkmnDexData.evolution_chain.url} pkmnName={data.pokemon.name} />
                 </EvoChartContainer>
               </div>
+
               <hr />
+
               <div id="forms">
                 <h4><strong>Alternate forms and Regional Variants</strong></h4>
                 <PkmnAlternateForms pkmnVarieties={pkmnVarieties} pkmnName={data.pokemon.name} />

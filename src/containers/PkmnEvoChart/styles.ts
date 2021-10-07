@@ -9,8 +9,8 @@ export const Linkk = styled(Link)`
   margin: 0.2rem auto;
 `;
 
-export const Container = styled.div`
-  background-color: #cd323275;
+export const Container = styled.div<{ speciesName: string, pokeName: string}>`
+  background-color: ${(p) => ((p.speciesName === p.pokeName) ? '#cd32329f !important' : '#cd323275 !important')};
   border-radius: 18px;
   margin: 0.2rem auto;
   width: 104px;

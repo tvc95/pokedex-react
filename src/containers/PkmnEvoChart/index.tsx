@@ -63,6 +63,7 @@ interface Chain {
 interface ChainProps {
   chain: Chain;
   stage: number;
+  pkmnName: string;
 }
 
 /**
@@ -71,7 +72,7 @@ interface ChainProps {
  * @param param0
  * @returns
  */
-const Evolution: React.FC<ChainProps> = ({ chain, stage }: ChainProps) => (
+const Evolution: React.FC<ChainProps> = ({ chain, stage, pkmnName }: ChainProps) => (
   <>
     {chain.evolves_to.map((evolution) => (
       <>
@@ -80,7 +81,10 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage }: ChainProps) => (
           key={evolution.species.name}
           onClick={() => window.location.assign(`/data/pokemon/${evolution.species.name}`)}
         >
-          <Container>
+          <Container
+            pokeName={pkmnName}
+            speciesName={`${evolution.species.name}`}
+          >
             <img
               src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evolution.species.name}.png`}
               alt={`${evolution.species.name}`}
@@ -95,10 +99,12 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage }: ChainProps) => (
             <p>{evolution.evolution_details[0].trigger.name}</p>
           </Container>
         </Linkk>
+
         {evolution.evolves_to && (
           <Evolution
             chain={evolution}
             stage={2}
+            pkmnName={pkmnName}
           />
         )}
       </>
@@ -143,7 +149,10 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
         to={`/data/pokemon/${evoChain?.chain.species.name}`}
         onClick={() => window.location.assign(`/data/pokemon/${evoChain?.chain.species.name}`)}
       >
-        <Container>
+        <Container
+          pokeName={pkmnName}
+          speciesName={`${evoChain?.chain.species.name}`}
+        >
           <img
             src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evoChain?.chain.species.name}.png`}
             alt={`${evoChain?.chain.species.name}`}
@@ -162,6 +171,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
         <Evolution
           chain={evoChain.chain}
           stage={1}
+          pkmnName={pkmnName}
         />
       )}
     </>

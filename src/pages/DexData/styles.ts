@@ -10,13 +10,14 @@ export const PokemonInfoI = styled(MDBCol)`
   background-color: #F4E2E2;
   border-top-left-radius: 21px;
   border-top-right-radius: 21px;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
 
   @media (min-width: 992px) {
     border-top-left-radius: 21px;
     border-bottom-left-radius: 21px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
+    margin-bottom: 2rem;
   }
 
   #description {
