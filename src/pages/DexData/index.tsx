@@ -20,6 +20,7 @@ import {
 import PkmnEvoChart from '../../containers/PkmnEvoChart';
 import PkmnAlternateForms from '../../containers/PkmnAltForms';
 import BaseStatsChart from '../../components/BaseStatsChart/BaseStatsChart';
+import PkmnTypeCharts from '../../containers/PkmnTypeCharts/PkmnTypeCharts';
 
 interface Pokemon {
   name: string;
@@ -499,8 +500,9 @@ const DexData: React.FC = () => {
           </MDBRow>
 
           <MDBRow>
-            <PokemonTypeChart xs="12">
+            <PokemonTypeChart>
               <SubTitle>Type Chart</SubTitle>
+              <PkmnTypeCharts pkmnVarieties={pkmnVarieties} />
             </PokemonTypeChart>
           </MDBRow>
         </MDBContainer>

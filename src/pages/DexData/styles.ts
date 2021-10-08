@@ -192,9 +192,10 @@ export const PokemonStatsContainer = styled(MDBCol)`
 `;
 
 export const PokemonTypeChart = styled(MDBCol)`
-  margin-top: 1rem;
+  margin-top: 1.2rem;
   background-color: #F4E2E2;
-  padding-bottom: 2rem;
+  padding: 1rem;
+  padding-top: 0rem;
 
   @media (max-width: 992px) {
     border-top-left-radius: 21px;

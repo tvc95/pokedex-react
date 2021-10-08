@@ -14,20 +14,6 @@ interface Ability {
   is_hidden: boolean;
 }
 
-interface PokeForm {
-  form_name: string;
-  is_battle_only: boolean;
-  is_mega: boolean;
-  name: string;
-  names: Array<{
-    name: string;
-    language: {
-      name: string;
-      url: string;
-    };
-  }>;
-}
-
 interface PokemonVariety {
   abilities: Array<Ability>;
   forms: Array<{
