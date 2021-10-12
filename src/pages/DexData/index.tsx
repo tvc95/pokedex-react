@@ -505,6 +505,12 @@ const DexData: React.FC = () => {
               <PkmnTypeCharts pkmnVarieties={pkmnVarieties} />
             </PokemonTypeChart>
           </MDBRow>
+
+          <MDBRow>
+            <MDBContainer fluid>
+              <SubTitle style={{ fontSize: '2.5rem', textDecorationLine: 'underline' }}>Moveset</SubTitle>
+            </MDBContainer>
+          </MDBRow>
         </MDBContainer>
       </>
     );

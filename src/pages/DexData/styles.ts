@@ -196,6 +196,7 @@ export const PokemonTypeChart = styled(MDBCol)`
   background-color: #F4E2E2;
   padding: 1rem;
   padding-top: 0rem;
+  padding-bottom: 1.5rem;
 
   @media (max-width: 992px) {
     border-top-left-radius: 21px;
