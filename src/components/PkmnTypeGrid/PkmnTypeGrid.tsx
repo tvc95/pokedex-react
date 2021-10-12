@@ -56,8 +56,19 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList, pkmnName }: TypeGridP
     'steel',
     'fairy',
   ];
+
   const [typeInfo, setTypeInfo] = useState<DualTypeRelationsData>();
 
+  /**
+   * This function defines all type chart relations according to the
+   * Pokémon typing (mono or dual-type). If it's a dual-type Pokémon,
+   * it will compare each category of the primary type with its secondary
+   * type, in order to check immunities, weakness and resistance from the
+   * dual-type configuration
+   * @param typesData an array of types of a specific Pokémon
+   * @returns DualTypeRelationsData - an object displaying all Pokémon type
+   * relations (mono or dual type)
+   */
   const calculateTypeRelations = (typesData: TypeData[]) => {
     if (typesData.length > 1) {
       const dualTypeRelations: DualTypeRelationsData = {
@@ -171,14 +182,10 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList, pkmnName }: TypeGridP
   };
 
   /**
-   * This function will receive an array of types of a specific Pokémon,
-   * mapping through the array, in order to get all type relations from
-   * each type.
-   *
-   * Having these type relations sorted out, these relations need to be
-   * re-calculated in order to identify whether the Pokémon has weakness /
-   * resistance / immunity to a specific type and how strong is this
-   * relation
+   * This function fetches data from each type present in the list, in
+   * order to get all damage relations separately (normal damage, weakness,
+   * resistance and immunity). With all damage relations fetched, calculate
+   * the final type chart relations.
    */
   const getTypeRelations = async () => {
     const typesPromises = typeList.map(async (type) => {

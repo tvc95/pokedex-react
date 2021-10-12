@@ -21,6 +21,7 @@ import PkmnEvoChart from '../../containers/PkmnEvoChart';
 import PkmnAlternateForms from '../../containers/PkmnAltForms';
 import BaseStatsChart from '../../components/BaseStatsChart/BaseStatsChart';
 import PkmnTypeCharts from '../../containers/PkmnTypeCharts/PkmnTypeCharts';
+import PkmnMovesets from '../../containers/PkmnMovesets/PkmnMovesets';
 
 interface Pokemon {
   name: string;
@@ -104,6 +105,22 @@ interface PokemonVariety {
   weight: number;
 }
 
+interface PokemonMove {
+  move: {
+    url: string;
+    name: string;
+  }
+  version_group_details: Array<{
+    level_learned_at: number;
+    move_learn_method: {
+      name: string;
+    }
+    version_group: {
+      name: string;
+    }
+  }>
+}
+
 /**
  * Page component that returns all dex data from a specific Pokémon
  * @returns
@@ -114,6 +131,7 @@ const DexData: React.FC = () => {
   const [pathName] = useState(location.pathname);
   const [pkmnDexData, setPkmnDexData] = useState<Pokemon | null>(null);
   const [pkmnVarieties, setPkmnVarieties] = useState<PokemonVariety[]>([]);
+  const [pkmnMoves, setPkmnMoves] = useState<PokemonMove[]>([]);
   const [genName, setGenName] = useState('');
   const [trueName, setTrueName] = useState('');
   const [growthRate, setGrowthRate] = useState(0);
@@ -154,6 +172,21 @@ const DexData: React.FC = () => {
         forms {
           url
           name
+        }
+        moves {
+          move {
+            url
+            name
+          }
+          version_group_details {
+            level_learned_at
+            move_learn_method {
+              name
+            }
+            version_group {
+              name
+            }
+          }
         }
       }
     }
@@ -203,13 +236,14 @@ const DexData: React.FC = () => {
 
   /**
    * Fetches data from PokéAPI, including varieties info (mega evolutions and
-   * alternate forms)
+   * alternate forms) and moves
    */
   const fetchPkmnData = useCallback(async (pkData: any) => {
     const response = await axios.get(pkData.pokemon.species.url);
 
     setPkmnDexData(response.data);
 
+    // Fetch and set varieties
     const varieties = await response.data.varieties.map(async (variety: {
       is_default: boolean;
       pokemon: {
@@ -233,6 +267,8 @@ const DexData: React.FC = () => {
 
     const promises = await Promise.all<PokemonVariety>(varieties);
     setPkmnVarieties(promises);
+
+    setPkmnMoves(pkData.pokemon.moves);
 
     // Setting true pokemon name
     if (response.data.name.includes('-')) {
@@ -509,6 +545,7 @@ const DexData: React.FC = () => {
           <MDBRow>
             <MDBContainer fluid>
               <SubTitle style={{ fontSize: '2.5rem', textDecorationLine: 'underline' }}>Moveset</SubTitle>
+              <PkmnMovesets pkmnMoves={pkmnMoves} />
             </MDBContainer>
           </MDBRow>
         </MDBContainer>
