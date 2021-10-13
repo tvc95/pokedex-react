@@ -13,19 +13,19 @@ export const venusaur: PkmnImages = {
   links: {
     baseForms: [
       {
-        url: 'https://cdn.bulbagarden.net/upload/a/ae/003Venusaur.png',
+        url: 'https://archives.bulbagarden.net/media/upload/a/ae/003Venusaur.png',
         description: 'Base form',
       },
     ],
     megas: [
       {
-        url: 'https://cdn.bulbagarden.net/upload/7/73/003Venusaur-Mega.png',
+        url: 'https://archives.bulbagarden.net/media/upload/7/73/003Venusaur-Mega.png',
         description: 'Mega evolution form',
       },
     ],
     gmax: [
       {
-        url: 'https://cdn.bulbagarden.net/upload/8/8a/003Venusaur-Gigantamax.png',
+        url: 'https://archives.bulbagarden.net/media/upload/8/8a/003Venusaur-Gigantamax.png',
         description: 'Gigantamax form',
       },
     ],

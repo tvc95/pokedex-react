@@ -94,7 +94,7 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
   if (load) {
     return (
       <MDBContainer fluid>
-        <StyledTabs className="nav-tabs mt-3">
+        <StyledTabs className="nav-tabs mt-3 nav-fill">
           <MDBNavItem>
             <MDBNavLink
               link

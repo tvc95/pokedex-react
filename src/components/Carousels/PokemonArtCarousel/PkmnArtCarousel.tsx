@@ -13,6 +13,8 @@ interface Props {
   pkmnName: string;
 }
 
+// https://archives.bulbagarden.net/wiki/Category:Ken_Sugimori_Pok%C3%A9mon_artwork
+
 const PkmnArtCarousel: React.FC<Props> = ({ length, pkmnName }: Props) => {
   const hello = '';
   return (

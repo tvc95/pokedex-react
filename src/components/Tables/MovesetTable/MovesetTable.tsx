@@ -81,7 +81,7 @@ const MovesetTable: React.FC<TableProps> = ({ moveList, tableType }: TableProps)
               <th>PP</th>
             </Tr>
           </MDBTableHead>
-          <MDBTableBody color="red lighten-3">
+          <MDBTableBody color="rgba-red-light">
             {moveData.map((move) => (
               <Tr key={move.name}>
                 {tableType === 0 && <td>{move.levelLearned}</td>}
