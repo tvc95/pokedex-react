@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useState } from 'react';
 import {
-  MDBContainer, MDBNav, MDBNavItem, MDBNavLink, MDBTabContent, MDBTabPane,
+  MDBContainer, MDBNavItem, MDBNavLink, MDBTabContent,
 } from 'mdbreact';
 import { PkmnName, PkmnTabPane, StyledTabs } from './styles';
 import PkmnTypeGrid from '../../components/PkmnTypeGrid/PkmnTypeGrid';

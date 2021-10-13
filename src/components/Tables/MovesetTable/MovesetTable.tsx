@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import axios from 'axios';
+import { Text, Tr } from './styles';
 
 interface MoveListData {
   moveName: string;
@@ -57,42 +58,49 @@ const MovesetTable: React.FC<TableProps> = ({ moveList, tableType }: TableProps)
 
     const fetchedData = await Promise.all(movesPromises);
 
-    setMoveData(fetchedData);
+    setMoveData(fetchedData.sort((a, b) => a.levelLearned - b.levelLearned));
   };
 
   useEffect(() => {
     fetchMoveData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <MDBTable>
-        <MDBTableHead>
-          <tr>
-            {tableType === 0 && <th>Lv.</th>}
-            <th>Move</th>
-            <th>Type</th>
-            <th>Cat.</th>
-            <th>Pwr.</th>
-            <th>Acc.</th>
-            <th>PP</th>
-          </tr>
-        </MDBTableHead>
-        <MDBTableBody>
-          {moveData.map((move) => (
-            <tr key={move.name}>
-              {tableType === 0 && <td>{move.levelLearned}</td>}
-              <td>{move.name}</td>
-              <td>{move.type}</td>
-              <td>{move.category}</td>
-              <td>{move.power}</td>
-              <td>{move.accuracy}</td>
-              <td>{move.pp}</td>
-            </tr>
-          ))}
-        </MDBTableBody>
-      </MDBTable>
+      {moveData.length > 0 ? (
+        <MDBTable small hover borderless>
+          <MDBTableHead color="red lighten-2" textWhite>
+            <Tr>
+              {tableType === 0 && <th>Lv.</th>}
+              <th>Move</th>
+              <th>Type</th>
+              <th>Cat.</th>
+              <th>Pwr.</th>
+              <th>Acc.</th>
+              <th>PP</th>
+            </Tr>
+          </MDBTableHead>
+          <MDBTableBody color="red lighten-3">
+            {moveData.map((move) => (
+              <Tr key={move.name}>
+                {tableType === 0 && <td>{move.levelLearned}</td>}
+                <td>{move.name}</td>
+                <td>{move.type}</td>
+                <td>{move.category}</td>
+                <td>{move.power}</td>
+                <td>{move.accuracy}</td>
+                <td>{move.pp}</td>
+              </Tr>
+            ))}
+          </MDBTableBody>
+        </MDBTable>
+      ) : (
+        <>
+          <Text>This Pokémon learns no moves by this category</Text>
+        </>
+      )}
+
     </>
   );
 };

@@ -233,7 +233,7 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList, pkmnName }: TypeGridP
       {typeInfo?.immunity && typeInfo.immunity.length > 0 && (
         <>
           {typeInfo?.immunity.map((name) => (
-            <TypeContainer>
+            <TypeContainer key={name}>
               <MDBPopper placement="top" material domElement>
                 <img className="null" src={require(`../../assets/svg/type-icons/${name}.svg`).default} alt={name} />
                 <span>
@@ -249,7 +249,7 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList, pkmnName }: TypeGridP
       {typeInfo?.resist1x && typeInfo.resist1x.length > 0 && (
         <>
           {typeInfo?.resist2x.map((name) => (
-            <TypeContainer>
+            <TypeContainer key={name}>
               <MDBPopper placement="top" material domElement>
                 <img className="rs-2" src={require(`../../assets/svg/type-icons/${name}.svg`).default} alt={name} />
                 <span>
@@ -261,7 +261,7 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList, pkmnName }: TypeGridP
             </TypeContainer>
           ))}
           {typeInfo?.resist1x.map((name) => (
-            <TypeContainer>
+            <TypeContainer key={name}>
               <MDBPopper placement="top" material domElement>
                 <img className="rs-1" src={require(`../../assets/svg/type-icons/${name}.svg`).default} alt={name} />
                 <span>
@@ -277,7 +277,7 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList, pkmnName }: TypeGridP
       {typeInfo?.normal !== [] && (
         <>
           {typeInfo?.normal.map((name) => (
-            <TypeContainer className="">
+            <TypeContainer key={name}>
               <MDBPopper placement="top" material domElement>
                 <img src={require(`../../assets/svg/type-icons/${name}.svg`).default} alt={name} />
                 <span>
@@ -293,7 +293,7 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList, pkmnName }: TypeGridP
       {typeInfo?.weak1x !== [] && (
         <>
           {typeInfo?.weak1x.map((name) => (
-            <TypeContainer>
+            <TypeContainer key={name}>
               <MDBPopper placement="top" material domElement>
                 <img className="wk-1" src={require(`../../assets/svg/type-icons/${name}.svg`).default} alt={name} />
                 <span>
@@ -305,7 +305,7 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList, pkmnName }: TypeGridP
             </TypeContainer>
           ))}
           {typeInfo?.weak2x.map((name) => (
-            <TypeContainer>
+            <TypeContainer key={name}>
               <MDBPopper placement="top" material domElement>
                 <img className="wk-2" src={require(`../../assets/svg/type-icons/${name}.svg`).default} alt={name} />
                 <span>
