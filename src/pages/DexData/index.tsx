@@ -358,6 +358,7 @@ const DexData: React.FC = () => {
               <PkmnArtCarousel
                 pkmnId={data.pokemon.id}
                 pkmnVarieties={pkmnVarieties}
+                pkmnName={data.pokemon.name}
               />
             </PkmnImageSlides>
 

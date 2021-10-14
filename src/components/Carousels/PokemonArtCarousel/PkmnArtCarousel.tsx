@@ -43,25 +43,48 @@ interface PokemonVariety {
 
 interface Props {
   pkmnId: number;
+  pkmnName: string;
   pkmnVarieties: Array<PokemonVariety>;
 }
 
-// https://archives.bulbagarden.net/wiki/Category:Ken_Sugimori_Pok%C3%A9mon_artwork
+interface ImageData {
+  pokemonName: string;
+  imageUrl: string;
+}
 
-const PkmnArtCarousel: React.FC<Props> = ({ pkmnId, pkmnVarieties }: Props) => {
+const PkmnArtCarousel: React.FC<Props> = ({ pkmnId, pkmnName, pkmnVarieties }: Props) => {
   /// State hooks
-  const [pkmnArtwork, setPkmnArtwork] = useState<string[]>([]);
+  const [pkmnArtwork, setPkmnArtwork] = useState<ImageData[]>([]);
+  const [varietiesNames, setVarietiesNames] = useState<string[]>([]);
 
+  /**
+   * Fetches sugimori art from each Pokémon variety
+   */
   const fetchImages = async () => {
     const mapImages = pkmnVarieties.map(async (variety) => {
+      if (variety.name.includes('-totem') || variety.name.includes('-cosplay')) {
+        return {
+          pokemonName: 'notavailable',
+          imageUrl: 'notavailable',
+        };
+      }
+
       const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${variety.name}`);
 
-      return response.data.sprites.other['official-artwork'].front_default;
+      return {
+        pokemonName: variety.name,
+        imageUrl: response.data.sprites.other['official-artwork'].front_default,
+      };
     });
 
     const images = await Promise.all(mapImages);
 
-    setPkmnArtwork(images);
+    if (pkmnName.includes('alola') || pkmnName.includes('galar')) {
+      const switchImg = images.splice(1, 1);
+      images.unshift(switchImg[0]);
+    }
+
+    setPkmnArtwork(images.filter((image) => image.imageUrl !== 'notavailable'));
   };
 
   useEffect(() => {
@@ -70,7 +93,7 @@ const PkmnArtCarousel: React.FC<Props> = ({ pkmnId, pkmnVarieties }: Props) => {
     }
 
     execute();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -83,15 +106,15 @@ const PkmnArtCarousel: React.FC<Props> = ({ pkmnId, pkmnVarieties }: Props) => {
       >
         <MDBCarouselInner>
           {pkmnArtwork.map((image, idx) => (
-            <MDBCarouselItem itemId={`${idx + 1}`} key={pkmnVarieties[idx].name}>
+            <MDBCarouselItem itemId={`${idx + 1}`} key={image.pokemonName}>
               <MDBView>
                 <PkmnArt
-                  src={image}
-                  alt={pkmnVarieties[idx].name}
+                  src={image.imageUrl}
+                  alt={image.pokemonName}
                 />
               </MDBView>
               <PkmnArtCaption>
-                <Description>{pkmnVarieties[idx].name.charAt(0).toUpperCase() + pkmnVarieties[idx].name.slice(1).replace('-', ' ')}</Description>
+                <Description>{image.pokemonName.charAt(0).toUpperCase() + image.pokemonName.slice(1).replace('-', ' ')}</Description>
               </PkmnArtCaption>
             </MDBCarouselItem>
           ))}
