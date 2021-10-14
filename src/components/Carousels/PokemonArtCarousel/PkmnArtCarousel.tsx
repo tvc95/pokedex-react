@@ -1,70 +1,97 @@
-import React from 'react';
+/* eslint-disable camelcase */
+/* eslint-disable max-len */
+import React, { useEffect, useState } from 'react';
 import {
   MDBCarouselInner, MDBCarouselItem, MDBView, MDBContainer,
 } from
   'mdbreact';
-import * as pokemonImages from '../../../misc/PokemonImageLinks';
+import axios from 'axios';
 import {
   Carousel, Description, PkmnArt, PkmnArtCaption,
 } from './styles';
 
+interface Ability {
+  ability: {
+    name: string;
+  }
+  is_hidden: boolean;
+}
+
+interface PokemonVariety {
+  abilities: Array<Ability>;
+  forms: Array<{
+    name: string;
+    url: string;
+  }>;
+  name: string;
+  stats: Array<{
+    base_stat: number;
+    effort: number;
+    stat: {
+      name: string;
+    }
+  }>;
+  types: Array<{
+    slot: number;
+    type: {
+      name: string;
+      url: string;
+    };
+  }>;
+  weight: number;
+}
+
 interface Props {
-  length: number;
-  pkmnName: string;
+  pkmnId: number;
+  pkmnVarieties: Array<PokemonVariety>;
 }
 
 // https://archives.bulbagarden.net/wiki/Category:Ken_Sugimori_Pok%C3%A9mon_artwork
 
-const PkmnArtCarousel: React.FC<Props> = ({ length, pkmnName }: Props) => {
-  const hello = '';
+const PkmnArtCarousel: React.FC<Props> = ({ pkmnId, pkmnVarieties }: Props) => {
+  /// State hooks
+  const [pkmnArtwork, setPkmnArtwork] = useState<string[]>([]);
+
+  const fetchImages = async () => {
+    const mapImages = pkmnVarieties.map(async (variety) => {
+      const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${variety.name}`);
+
+      return response.data.sprites.other['official-artwork'].front_default;
+    });
+
+    const images = await Promise.all(mapImages);
+
+    setPkmnArtwork(images);
+  };
+
+  useEffect(() => {
+    async function execute() {
+      await fetchImages();
+    }
+
+    execute();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <Carousel
         activeItem={1}
-        length={length}
+        length={pkmnArtwork.length}
         showControls
         showIndicators
       >
         <MDBCarouselInner>
-          {pokemonImages.venusaur.links.baseForms.map((baseForm, idx) => (
-            <MDBCarouselItem itemId={`${idx + 1}`} key={baseForm.url}>
+          {pkmnArtwork.map((image, idx) => (
+            <MDBCarouselItem itemId={`${idx + 1}`} key={pkmnVarieties[idx].name}>
               <MDBView>
                 <PkmnArt
-                  src={baseForm.url.toString()}
-                  alt="Base form"
+                  src={image}
+                  alt={pkmnVarieties[idx].name}
                 />
               </MDBView>
               <PkmnArtCaption>
-                <Description>{baseForm.description}</Description>
-              </PkmnArtCaption>
-            </MDBCarouselItem>
-          ))}
-          {pokemonImages.venusaur.links.megas.map((megaForm, idx) => (
-            <MDBCarouselItem
-              itemId={`${(idx + 1) + (pokemonImages.venusaur.links.baseForms.length)}`}
-              key={megaForm.url}
-            >
-              <MDBView>
-                <PkmnArt
-                  src={megaForm.url.toString()}
-                  alt="Mega Evo"
-                />
-              </MDBView>
-              <PkmnArtCaption>
-                <Description>{megaForm.description}</Description>
-              </PkmnArtCaption>
-            </MDBCarouselItem>
-          ))}
-          {pokemonImages.venusaur.links.gmax.map((gmaxForm, idx) => (
-            <MDBCarouselItem itemId={`${(idx + 1) + (pokemonImages.venusaur.links.baseForms.length) + (pokemonImages.venusaur.links.megas.length)}`} key={gmaxForm.url}>
-              <MDBView>
-                <PkmnArt
-                  src={gmaxForm.url.toString()}
-                  alt="GMAX form"
-                />
-              </MDBView>
-              <PkmnArtCaption>
-                <Description>{gmaxForm.description}</Description>
+                <Description>{pkmnVarieties[idx].name.charAt(0).toUpperCase() + pkmnVarieties[idx].name.slice(1).replace('-', ' ')}</Description>
               </PkmnArtCaption>
             </MDBCarouselItem>
           ))}

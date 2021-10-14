@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-new */
 /* eslint-disable max-len */
 /* eslint-disable camelcase */

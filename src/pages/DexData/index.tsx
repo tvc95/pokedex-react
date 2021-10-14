@@ -356,8 +356,8 @@ const DexData: React.FC = () => {
           <MDBRow className="align-items-center">
             <PkmnImageSlides xs="12" lg="6">
               <PkmnArtCarousel
-                length={3}
-                pkmnName={data.pokemon.name}
+                pkmnId={data.pokemon.id}
+                pkmnVarieties={pkmnVarieties}
               />
             </PkmnImageSlides>
 

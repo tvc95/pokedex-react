@@ -64,7 +64,10 @@ const PkmnTypeCharts: React.FC<CompProps> = ({ pkmnVarieties }: CompProps) => {
                   link
                   to="#"
                   active={activeItem.toString() === `${idx}`}
-                  onClick={() => toggleState(idx)}
+                  onClick={(e: Event) => {
+                    e.preventDefault();
+                    toggleState(idx);
+                  }}
                   role="tab"
                 >
                   {formatVarietyName}

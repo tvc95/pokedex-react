@@ -100,7 +100,10 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
               link
               to="#"
               active={activeItem.toString() === '0'}
-              onClick={() => toggleState(0)}
+              onClick={(e: Event) => {
+                e.preventDefault();
+                toggleState(0);
+              }}
               role="tab"
             >
               By leveling up
@@ -112,7 +115,10 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
               link
               to="#"
               active={activeItem.toString() === '1'}
-              onClick={() => toggleState(1)}
+              onClick={(e: Event) => {
+                e.preventDefault();
+                toggleState(1);
+              }}
               role="tab"
             >
               By TM/TR
@@ -124,7 +130,10 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
               link
               to="#"
               active={activeItem.toString() === '2'}
-              onClick={() => toggleState(2)}
+              onClick={(e: Event) => {
+                e.preventDefault();
+                toggleState(2);
+              }}
               role="tab"
             >
               By Tutoring
@@ -136,7 +145,10 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
               link
               to="#"
               active={activeItem.toString() === '3'}
-              onClick={() => toggleState(3)}
+              onClick={(e: Event) => {
+                e.preventDefault();
+                toggleState(3);
+              }}
               role="tab"
             >
               By Breeding
