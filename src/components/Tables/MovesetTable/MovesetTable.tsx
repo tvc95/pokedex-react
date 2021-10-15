@@ -28,14 +28,6 @@ interface MoveData {
   levelLearned: number;
 }
 
-interface Data {
-  language: {
-    name: string;
-    url: string;
-  }
-  name: string;
-}
-
 const MovesetTable: React.FC<TableProps> = ({ moveList, tableType }: TableProps) => {
   const [moveData, setMoveData] = useState<MoveData[]>([]);
 
@@ -85,7 +77,7 @@ const MovesetTable: React.FC<TableProps> = ({ moveList, tableType }: TableProps)
             {moveData.map((move) => (
               <Tr key={move.name}>
                 {tableType === 0 && <td>{move.levelLearned}</td>}
-                <td>{move.name}</td>
+                <td>{move.name.charAt(0).toUpperCase() + move.name.slice(1).replace('-', ' ')}</td>
                 <td>{move.type}</td>
                 <td>{move.category}</td>
                 <td>{move.power}</td>
@@ -97,7 +89,7 @@ const MovesetTable: React.FC<TableProps> = ({ moveList, tableType }: TableProps)
         </MDBTable>
       ) : (
         <>
-          <Text>This Pokémon learns no moves by this category</Text>
+          <Text>Unavailable data</Text>
         </>
       )}
 

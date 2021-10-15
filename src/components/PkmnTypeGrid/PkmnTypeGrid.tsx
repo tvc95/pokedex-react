@@ -15,7 +15,6 @@ interface TypeGridProps {
       url: string;
     };
   }>;
-  pkmnName: string;
 }
 
 interface TypeData {
@@ -35,7 +34,7 @@ interface DualTypeRelationsData {
   weak2x: string[];
 }
 
-const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList, pkmnName }: TypeGridProps) => {
+const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList }: TypeGridProps) => {
   const types = [
     'normal',
     'fire',

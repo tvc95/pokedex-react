@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
-import { MDBCol, MDBContainer, MDBRow } from 'mdbreact';
+import { MDBContainer, MDBRow } from 'mdbreact';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
@@ -133,7 +133,7 @@ const DexData: React.FC = () => {
   const [pkmnVarieties, setPkmnVarieties] = useState<PokemonVariety[]>([]);
   const [pkmnMoves, setPkmnMoves] = useState<PokemonMove[]>([]);
   const [genName, setGenName] = useState('');
-  const [trueName, setTrueName] = useState('');
+  // const [trueName, setTrueName] = useState('');
   const [growthRate, setGrowthRate] = useState(0);
   const [loadData, setLoadData] = useState(false);
 
@@ -271,11 +271,11 @@ const DexData: React.FC = () => {
     setPkmnMoves(pkData.pokemon.moves);
 
     // Setting true pokemon name
-    if (response.data.name.includes('-')) {
-      setTrueName(response.data.name.slice(0, response.data.name.indexOf('-')));
-    } else {
-      setTrueName(response.data.name);
-    }
+    // if (response.data.name.includes('-')) {
+    //   setTrueName(`${response.data.name.slice(0, response.data.name.indexOf('-'))}`);
+    // } else {
+    //   setTrueName(response.data.name);
+    // }
 
     setGenName(formatGenText(response.data.generation.name));
     setGrowthRate(getGrowthRate(response.data.growth_rate.name));
@@ -346,7 +346,7 @@ const DexData: React.FC = () => {
       <>
         <DexNavbar />
         <PokemonHeader
-          name={trueName}
+          name={data.pokemon.name.charAt(0) + data.pokemon.name.slice(1).replace('-', ' ')}
           types={data.pokemon.types}
           number={data.pokemon.id}
           url={data.pokemon.species.url}
@@ -356,7 +356,6 @@ const DexData: React.FC = () => {
           <MDBRow className="align-items-center">
             <PkmnImageSlides xs="12" lg="6">
               <PkmnArtCarousel
-                pkmnId={data.pokemon.id}
                 pkmnVarieties={pkmnVarieties}
                 pkmnName={data.pokemon.name}
               />
@@ -526,7 +525,7 @@ const DexData: React.FC = () => {
 
               <div id="forms">
                 <h4><strong>Alternate forms and Regional Variants</strong></h4>
-                <PkmnAlternateForms pkmnVarieties={pkmnVarieties} pkmnName={data.pokemon.name} />
+                <PkmnAlternateForms pkmnVarieties={pkmnVarieties} />
               </div>
             </PokemonInfoII>
 

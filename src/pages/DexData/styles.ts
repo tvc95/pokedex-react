@@ -50,6 +50,10 @@ export const List = styled.ul`
   align-self: flex-end;
   padding-inline-start: 0.8rem;
 
+  @media (max-width: 425px) {
+    display: block;
+  }
+
   li {
     display: inline-block;
 

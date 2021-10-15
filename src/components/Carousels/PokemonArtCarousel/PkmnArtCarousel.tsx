@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import {
-  MDBCarouselInner, MDBCarouselItem, MDBView, MDBContainer,
+  MDBCarouselInner, MDBCarouselItem, MDBView,
 } from
   'mdbreact';
 import axios from 'axios';
@@ -42,7 +42,6 @@ interface PokemonVariety {
 }
 
 interface Props {
-  pkmnId: number;
   pkmnName: string;
   pkmnVarieties: Array<PokemonVariety>;
 }
@@ -52,10 +51,9 @@ interface ImageData {
   imageUrl: string;
 }
 
-const PkmnArtCarousel: React.FC<Props> = ({ pkmnId, pkmnName, pkmnVarieties }: Props) => {
+const PkmnArtCarousel: React.FC<Props> = ({ pkmnName, pkmnVarieties }: Props) => {
   /// State hooks
   const [pkmnArtwork, setPkmnArtwork] = useState<ImageData[]>([]);
-  const [varietiesNames, setVarietiesNames] = useState<string[]>([]);
 
   /**
    * Fetches sugimori art from each Pokémon variety

@@ -54,10 +54,9 @@ interface PokemonVariety {
 
 interface CompProps {
   pkmnVarieties: Array<PokemonVariety>;
-  pkmnName: string;
 }
 
-const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: CompProps) => {
+const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties }: CompProps) => {
   /// React hooks
   const [pokeForms, setPokeForms] = useState<PokeForm[]>([]);
   const [load, setLoad] = useState(false);

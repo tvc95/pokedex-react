@@ -99,7 +99,7 @@ const PkmnTypeCharts: React.FC<CompProps> = ({ pkmnVarieties }: CompProps) => {
               </div>
               <hr />
 
-              <PkmnTypeGrid typeList={variety.types} pkmnName={variety.name} />
+              <PkmnTypeGrid typeList={variety.types} />
             </PkmnTabPane>
           </>
         ))}

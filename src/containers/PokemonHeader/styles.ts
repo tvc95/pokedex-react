@@ -29,7 +29,7 @@ export const PkmnPrimaryInfo = styled.div`
 export const PkmnName = styled.h1`
   font-weight: 700;
 
-  font-size: 2.5rem; /*Mobile*/
+  font-size: 2.1rem; /*Mobile*/
   align-self: flex-start;
   text-transform: capitalize;
 
