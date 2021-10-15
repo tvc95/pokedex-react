@@ -133,7 +133,6 @@ const DexData: React.FC = () => {
   const [pkmnVarieties, setPkmnVarieties] = useState<PokemonVariety[]>([]);
   const [pkmnMoves, setPkmnMoves] = useState<PokemonMove[]>([]);
   const [genName, setGenName] = useState('');
-  // const [trueName, setTrueName] = useState('');
   const [growthRate, setGrowthRate] = useState(0);
   const [loadData, setLoadData] = useState(false);
 
@@ -270,13 +269,6 @@ const DexData: React.FC = () => {
 
     setPkmnMoves(pkData.pokemon.moves);
 
-    // Setting true pokemon name
-    // if (response.data.name.includes('-')) {
-    //   setTrueName(`${response.data.name.slice(0, response.data.name.indexOf('-'))}`);
-    // } else {
-    //   setTrueName(response.data.name);
-    // }
-
     setGenName(formatGenText(response.data.generation.name));
     setGrowthRate(getGrowthRate(response.data.growth_rate.name));
   }, []);
@@ -345,6 +337,7 @@ const DexData: React.FC = () => {
     return (
       <>
         <DexNavbar />
+
         <PokemonHeader
           name={data.pokemon.name.charAt(0) + data.pokemon.name.slice(1).replace('-', ' ')}
           types={data.pokemon.types}
@@ -514,7 +507,7 @@ const DexData: React.FC = () => {
                 </div>
               </div>
 
-              <div>
+              <div id="evolution-chart-div">
                 <SubTitle>Evolution Chart</SubTitle>
                 <EvoChartContainer id="evo-chart-container">
                   <PkmnEvoChart url={pkmnDexData.evolution_chain.url} pkmnName={data.pokemon.name} />
@@ -538,7 +531,7 @@ const DexData: React.FC = () => {
           <MDBRow>
             <PokemonTypeChart>
               <SubTitle>Type Chart</SubTitle>
-              <PkmnTypeCharts pkmnVarieties={pkmnVarieties} />
+              <PkmnTypeCharts pkmnVarieties={pkmnVarieties} pkmnName={data.pokemon.name.toString()} />
             </PokemonTypeChart>
           </MDBRow>
 

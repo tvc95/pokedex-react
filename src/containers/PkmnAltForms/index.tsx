@@ -105,7 +105,7 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties }: CompProps) =
         {pkmnVarieties.map((pkmnVariety, idx) => {
           if (idx > 0) {
             // If form name is an unconventional form, dismiss it
-            if ((pokeForms[idx].name.slice(0, 12) !== 'pikachu-gmax' && pokeForms[idx].name.slice(0, 7) === 'pikachu') || pokeForms[idx].form_name === 'totem-alola') {
+            if ((pokeForms[idx].name.slice(0, 12) !== 'pikachu-gmax' && pokeForms[idx].name.slice(0, 7) === 'pikachu') || pokeForms[idx].form_name === 'totem-alola' || pokeForms[idx].form_name === 'totem') {
               return null;
             }
 

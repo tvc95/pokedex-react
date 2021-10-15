@@ -1,5 +1,6 @@
+/* eslint-disable max-len */
 /* eslint-disable camelcase */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MDBContainer, MDBNavItem, MDBNavLink, MDBTabContent,
 } from 'mdbreact';
@@ -39,23 +40,48 @@ interface PokemonVariety {
 
 interface CompProps {
   pkmnVarieties: Array<PokemonVariety>;
+  pkmnName: string;
 }
 
-const PkmnTypeCharts: React.FC<CompProps> = ({ pkmnVarieties }: CompProps) => {
+const PkmnTypeCharts: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: CompProps) => {
   /// State hooks
   const [activeItem, setActiveItem] = useState(0);
 
+  /// Creates a copy of the prop pkmnVarieties to be edited locally
+  const [varieties] = useState<PokemonVariety[]>(JSON.parse(JSON.stringify(pkmnVarieties)));
+
+  /**
+   * Switches tabs in order to check a specific form type chart
+   * @param tab
+   */
   const toggleState = (tab: number) => {
     if (activeItem !== tab) {
       setActiveItem(tab);
     }
   };
 
+  /**
+   * Invert tabs if Pokémon is a regional form
+   */
+  const sortVarieties = () => {
+    if (pkmnName.includes('alola') || pkmnName.includes('galar')) {
+      const switchPoke = varieties.splice(1, 1);
+      varieties.unshift(switchPoke[0]);
+    }
+  };
+
+  useEffect(() => {
+    sortVarieties();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [varieties]);
+
   return (
     <MDBContainer fluid>
       <StyledTabs className="nav-tabs mt-3 nav-fill">
-        {pkmnVarieties.map((variety, idx) => {
+        {varieties.map((variety, idx) => {
           const formatVarietyName = variety.name.charAt(0).toUpperCase() + variety.name.slice(1).replace('-', ' ');
+
+          if (variety.name.includes('totem')) return null;
 
           return (
             <>
@@ -77,30 +103,35 @@ const PkmnTypeCharts: React.FC<CompProps> = ({ pkmnVarieties }: CompProps) => {
           );
         })}
       </StyledTabs>
+
       <MDBTabContent activeItem={activeItem.toString()}>
-        {pkmnVarieties.map((variety, idx) => (
+        {varieties.map((variety, idx) => (
           <>
-            <PkmnTabPane key={`${variety.name}`} tabId={`${idx}`} role="tabpanel">
-              <PkmnName>{variety.name.replace('-', ' ')}</PkmnName>
+            {!variety.name.includes('totem') ? (
+              <PkmnTabPane key={`${variety.name}`} tabId={`${idx}`} role="tabpanel">
+                <PkmnName>{variety.name.replace('-', ' ')}</PkmnName>
 
-              <div className="types">
-                {variety.types.map((type, i) => {
-                  if (i > 0) {
+                <div className="types">
+                  {variety.types.map((type, i) => {
+                    if (i > 0) {
+                      return (
+                        <h4>
+                          {`/${type.type.name}`}
+                        </h4>
+                      );
+                    }
                     return (
-                      <h4>
-                        {`/${type.type.name}`}
-                      </h4>
+                      <h4>{type.type.name}</h4>
                     );
-                  }
-                  return (
-                    <h4>{type.type.name}</h4>
-                  );
-                })}
-              </div>
-              <hr />
+                  })}
+                </div>
+                <hr />
 
-              <PkmnTypeGrid typeList={variety.types} />
-            </PkmnTabPane>
+                <PkmnTypeGrid typeList={variety.types} />
+              </PkmnTabPane>
+            ) : (
+              null
+            )}
           </>
         ))}
       </MDBTabContent>

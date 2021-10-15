@@ -111,6 +111,7 @@ const PkmnArtCarousel: React.FC<Props> = ({ pkmnName, pkmnVarieties }: Props) =>
                   alt={image.pokemonName}
                 />
               </MDBView>
+
               <PkmnArtCaption>
                 <Description>{image.pokemonName.charAt(0).toUpperCase() + image.pokemonName.slice(1).replace('-', ' ')}</Description>
               </PkmnArtCaption>
