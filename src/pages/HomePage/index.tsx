@@ -15,7 +15,6 @@ import {
   MainContent,
   LandingText,
   NatDexBTN,
-  RegDexBtn,
   Pokedex,
   LandingTextCol,
   LandingImageCol,
