@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
@@ -72,7 +73,6 @@ const PkmnTypeCharts: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: CompPr
 
   useEffect(() => {
     sortVarieties();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [varieties]);
 
   return (
@@ -115,13 +115,13 @@ const PkmnTypeCharts: React.FC<CompProps> = ({ pkmnVarieties, pkmnName }: CompPr
                   {variety.types.map((type, i) => {
                     if (i > 0) {
                       return (
-                        <h4>
+                        <h4 key={type.slot}>
                           {`/${type.type.name}`}
                         </h4>
                       );
                     }
                     return (
-                      <h4>{type.type.name}</h4>
+                      <h4 key={type.slot}>{type.type.name}</h4>
                     );
                   })}
                 </div>

@@ -104,6 +104,7 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage, pkmnName }: ChainProps)
             chain={evolution}
             stage={2}
             pkmnName={pkmnName}
+            key={evolution.species.url}
           />
         )}
       </>

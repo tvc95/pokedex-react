@@ -133,13 +133,13 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties }: CompProps) =
                       {pkmnVariety.types.map((type) => {
                         if (pkmnVariety.types.length === 1) {
                           return (
-                            <p>{type.type.name}</p>
+                            <p key={type.slot}>{type.type.name}</p>
                           );
                         }
 
                         if (type.slot < 2) {
                           return (
-                            <p>
+                            <p key={type.slot}>
                               {type.type.name}
                               { }
                               /
@@ -148,7 +148,7 @@ const PkmnAlternateForms: React.FC<CompProps> = ({ pkmnVarieties }: CompProps) =
                           );
                         }
                         return (
-                          <p>{type.type.name}</p>
+                          <p key={type.slot}>{type.type.name}</p>
                         );
                       })}
                     </TypeSpan>

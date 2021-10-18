@@ -1,32 +1,21 @@
+import { MDBCol, MDBContainer } from 'mdbreact';
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-
+import { useHistory } from 'react-router-dom';
+import HomeNavbar from '../../components/Navbars/HomeNavbar/HomeNavbar';
+import PkmnSearchList from '../../containers/PkmnSearchList/PkmnSearchList';
 import {
-  MDBCol, MDBContainer, MDBRow,
-} from 'mdbreact';
-import {
-  JumbotronLogo,
-  PokedexLogo,
+  BackgroundContainer,
   BackgroundLayer,
+  Body,
   InputSearch,
+  Jumbotron,
+  MainContent,
   NewSearchBar,
   SearchBtn,
-  BackgroundContainer,
-  MainContent,
-  LandingText,
-  NatDexBTN,
-  RegDexBtn,
-  Pokedex,
-  LandingTextCol,
-  LandingImageCol,
-  Body,
+  Title,
 } from './styles';
-import './form.css';
-import HomeNavbar from '../../components/Navbars/HomeNavbar/HomeNavbar';
-import PokedexLogoImg from '../../assets/images/logo_pokedex2.png';
-import PokedexImg from '../../assets/images/img_pokedex.png';
 
-const HomePage: React.FC = () => {
+const PokemonSearchPg: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
 
   const history = useHistory();
@@ -40,9 +29,9 @@ const HomePage: React.FC = () => {
       <Body />
       <HomeNavbar />
       <MDBContainer>
-        <JumbotronLogo className="d-flex justify-content-center align-items-center">
-          <PokedexLogo src={PokedexLogoImg} alt="Pokedex" className="animated fadeInUp" />
-        </JumbotronLogo>
+        <Jumbotron>
+          <Title>Search Results</Title>
+        </Jumbotron>
       </MDBContainer>
 
       <BackgroundLayer>
@@ -79,27 +68,12 @@ const HomePage: React.FC = () => {
         </BackgroundContainer>
 
         <MainContent fluid className="d-flex justify-content-center align-items-center">
-          <MDBContainer>
-            <MDBRow center middle>
-              <LandingTextCol lg="6" middle>
-                <LandingText>
-                  An up-to-date Pokédex featuring all 893 Pokémon, including the new Galar region
-                </LandingText>
-                <Link to="/dexlist">
-                  <NatDexBTN color="red darken-1">National Dex</NatDexBTN>
-                </Link>
-                {/* <RegDexBtn>Regional Dex</RegDexBtn> */}
-              </LandingTextCol>
-
-              <LandingImageCol lg="6" className="d-none d-lg-block">
-                <Pokedex src={PokedexImg} alt="Pokédex" />
-              </LandingImageCol>
-            </MDBRow>
-          </MDBContainer>
+          <PkmnSearchList />
         </MainContent>
+
       </BackgroundLayer>
     </div>
   );
 };
 
-export default HomePage;
+export default PokemonSearchPg;

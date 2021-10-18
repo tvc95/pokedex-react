@@ -13,31 +13,39 @@ import {
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import { Navbar, NavbarBrand, NavLink } from './styles';
+import ModalAbout from '../../ModalAbout/ModalAbout';
 
 class HomeNavbar extends Component {
   state = {
     isOpen: false,
+    openModal: false,
   };
 
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
   }
 
+  toggleOpenModal = () => {
+    this.setState({ openModal: !this.state.openModal });
+  }
+
   render() {
     return (
       <Router>
+        <ModalAbout show={this.state.openModal} setShow={this.toggleOpenModal} />
         <Navbar dark expand="md">
           <MDBNavbarBrand>
             <NavbarBrand className="white-text">PokéDex</NavbarBrand>
           </MDBNavbarBrand>
+
           <MDBNavbarToggler onClick={this.toggleCollapse} />
           <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
             <MDBNavbarNav right>
-              <MDBNavItem active>
-                <NavLink to="#!">Home</NavLink>
+              <MDBNavItem>
+                <NavLink to="/" onClick={() => window.location.assign('/')}>Home</NavLink>
               </MDBNavItem>
               <MDBNavItem>
-                <NavLink to="#!">About</NavLink>
+                <NavLink to="/" onClick={this.toggleOpenModal}>About</NavLink>
               </MDBNavItem>
             </MDBNavbarNav>
           </MDBCollapse>

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { MDBBtn, MDBContainer } from 'mdbreact';
-import { BtnGroup, NationalDexContainer } from './styles';
+import { MDBContainer } from 'mdbreact';
+import { useLocation } from 'react-router-dom';
+import { NationalDexContainer } from './styles';
 import PokemonBtn from '../../components/Buttons/PokemonBtn/PokemonBtn';
 
-const PkmnBtnList: React.FC = () => {
-  const [prevOffset, setPrevOffset] = useState(0);
+const PkmnSearchList: React.FC = () => {
+  const [prevOffset] = useState(0);
+  const location = useLocation();
 
   const query = gql`
     query pokemons {
-      pokemons(limit: 120, offset: ${prevOffset}) {
+      pokemons(limit: 898, offset: ${prevOffset}) {
         next
         previous
         nextOffset
@@ -47,7 +49,7 @@ const PkmnBtnList: React.FC = () => {
                 name = pokemon.name;
               }
 
-              if (pokemon.id <= 898) {
+              if (pokemon.name.includes(location.pathname.slice(8).toLowerCase())) {
                 return (
                   <PokemonBtn
                     key={pokemon.id}
@@ -61,27 +63,10 @@ const PkmnBtnList: React.FC = () => {
               return null;
             })}
           </NationalDexContainer>
-
-          <MDBContainer className="d-flex justify-content-center">
-            <BtnGroup>
-              <MDBBtn color="info" size="lg" onClick={() => setPrevOffset(data.pokemons.prevOffset)}>Previous</MDBBtn>
-              <MDBBtn
-                color="info"
-                size="lg"
-                onClick={() => {
-                  if (data.pokemons.nextOffset < 840) {
-                    setPrevOffset(data.pokemons.nextOffset);
-                  }
-                }}
-              >
-                Next
-              </MDBBtn>
-            </BtnGroup>
-          </MDBContainer>
         </MDBContainer>
       )}
     </>
   );
 };
 
-export default PkmnBtnList;
+export default PkmnSearchList;
