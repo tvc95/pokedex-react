@@ -39,7 +39,7 @@ const PkmnSearchList: React.FC = () => {
           <NationalDexContainer>
             {data.pokemons.results.map((pokemon: { id: number; name: string; image: string }) => {
               let name = '';
-              if (pokemon.name.includes('-')) {
+              if (pokemon.name.includes('-') && !pokemon.name.includes('-oh')) {
                 if (!pokemon.name.includes('-mime')) {
                   name = pokemon.name.slice(0, pokemon.name.indexOf('-'));
                 } else {
