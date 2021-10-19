@@ -27,7 +27,7 @@ Table of Contents
       * [Webapp](#Webapp)
    * [Layout](#Layout)
    * [How to use](#how-to-use)
-   * [Technologies](#🛠-Technologies)
+   * [Technologies](#🛠-technologies)
 <!--te-->
 
 # About
@@ -105,6 +105,7 @@ Please make sure to update tests as appropriate.
 2. Create a new branch with your changes: `git checkout -b my-feature`
 3. Save your changes and create a commit message telling you what you did: `git commit -m" feature: My new feature "`
 4. Submit your changes: `git push origin my-feature`
+> If you have any questions check this [guide on how to contribute](./README.md)
 
 
 ## License
