@@ -122,8 +122,8 @@ This project was developed by [Thiago Viana](https://www.linkedin.com/in/thiagov
 		</a>
 	</span>
 	<div style="margin-left: 8pt; display: inline-flex; flex-direction: column; white-space: nowrap">
-		<span>Thiago Viana</span>
-		<span>Front-end Engineer @ PBHub Soluções</span>
+		<span>Thiago Viana - Front-end Engineer @ PBHub Soluções</span>
+		<br />
 	</div>
 </div>
 
