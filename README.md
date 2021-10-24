@@ -115,12 +115,18 @@ Please make sure to update tests as appropriate.
 This project was developed by [Thiago Viana](https://www.linkedin.com/in/thiagovcarvalho/) and is under the [MIT](https://choosealicense.com/licenses/mit/) license.
 
 ### Contact me
-<a href="https://www.linkedin.com/in/thiagovcarvalho/">
- <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/9078587?v=4" width="100px;" alt="Thiago V. de Carvalho"/>
- <sub>
-  <b>Thiago Viana</b>
- </sub>
-</a>
+<div style="display: inline-flex; justify-content: center; align-items: center">
+	<span>
+		<a href="https://www.linkedin.com/in/thiagovcarvalho/">
+			<img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/9078587?v=4" width="100px;" alt="Thiago V. de Carvalho"/>
+		</a>
+	</span>
+	<div style="margin-left: 8pt; display: inline-flex; flex-direction: column; white-space: nowrap">
+		<span>Thiago Viana</span>
+		<span>Front-end Engineer @ PBHub Soluções</span>
+	</div>
+</div>
+
 
 <p align="left">
 	<a href="https://www.linkedin.com/in/thiagovcarvalho/"><img src="https://img.shields.io/static/v1?label=linkedin&message=thiagovcarvalho&color=blue&style=flat-square&logo=linkedin" /></a>
