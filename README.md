@@ -27,7 +27,10 @@ Table of Contents
       * [Webapp](#Webapp)
    * [Layout](#Layout)
    * [How to use](#how-to-use)
-   * [Technologies](#🛠-technologies)
+   * [Technologies](#-technologies)
+   * [Contributing](#contributing)
+      * [How to contribute](#how-to-contribute)
+   * [License](#license)
 <!--te-->
 
 # About
@@ -53,7 +56,7 @@ The application layout was made with Figma. It was inspired from the games (most
 </p>
 
 # How to use
-Before you begin, you will need to have the following tools installed on your machine: [Git] (https://git-scm.com), [Node.js] (https://nodejs.org/en/). In addition, it is good to have an editor to work with the code like [VSCode] (https://code.visualstudio.com/)
+Before you begin, you will need to have the following tools installed on your machine: [Git] (https://git-scm.com), [Node.js] (https://nodejs.org/en/). In addition, it is good to have an editor to work with the code like [VSCode] (https://code.visualstudio.com/).
 
 ### Running the web application (Frontend)
 ```bash
@@ -75,7 +78,7 @@ $ npm start
 ## Yarn (recommended)
 $ yarn start
 
-# The server will start at port 3000 - go to http://localhost:3000
+# The application will start at port 3000 - go to http://localhost:3000
 
 ```
 
@@ -105,13 +108,20 @@ Please make sure to update tests as appropriate.
 2. Create a new branch with your changes: `git checkout -b my-feature`
 3. Save your changes and create a commit message telling you what you did: `git commit -m" feature: My new feature "`
 4. Submit your changes: `git push origin my-feature`
-> If you have any questions check this [guide on how to contribute](./README.md)
+> If you have any questions check this [guide on how to contribute](./CONTRIBUTING.md)
 
 
-## License
+# License
 This project was developed by [Thiago Viana](https://www.linkedin.com/in/thiagovcarvalho/) and is under the [MIT](https://choosealicense.com/licenses/mit/) license.
 
 ### Contact me
+<a href="https://www.linkedin.com/in/thiagovcarvalho/">
+ <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/9078587?v=4" width="100px;" alt="Thiago V. de Carvalho"/>
+ <sub>
+  <b>Thiago Viana</b>
+ </sub>
+</a>
+
 <p align="left">
 	<a href="https://www.linkedin.com/in/thiagovcarvalho/"><img src="https://img.shields.io/static/v1?label=linkedin&message=thiagovcarvalho&color=blue&style=flat-square&logo=linkedin" /></a>
 	<a href="https://github.com/tvc95/"><img src="https://img.shields.io/static/v1?label=github&message=tvc95&color=blueviolet&style=flat-square&logo=github" /></a>
