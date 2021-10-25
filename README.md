@@ -13,7 +13,7 @@
 	<img src="https://img.shields.io/github/issues/tvc95/pokedex-react?style=flat-square" />
 	<img src="https://img.shields.io/github/forks/tvc95/pokedex-react?style=flat-square" />
 	<img src="https://img.shields.io/github/stars/tvc95/pokedex-react?style=flat-square" />
-	<img src="https://img.shields.io/github/license/tvc95/pokedex-react?style=flat-square" />
+	<img src="https://img.shields.io/github/license/tvc95/pokedex-react?style=flat-squar" />
 </p>
 
 <h4 align="center"> 
