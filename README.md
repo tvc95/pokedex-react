@@ -100,7 +100,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
-**You can contribute as well with the PokéAPI project by updating the API with data from the most recent games. By doing that, you're helping this webapp to be up-to-date!**
+**You can contribute as well with the [PokéAPI](https://github.com/PokeAPI/pokeapi) project by updating the API with data from the most recent games. By doing that, you're helping this webapp to be up-to-date!**
 
 ## How to contribute
 
@@ -115,16 +115,13 @@ Please make sure to update tests as appropriate.
 This project was developed by [Thiago Viana](https://www.linkedin.com/in/thiagovcarvalho/) and is under the [MIT](https://choosealicense.com/licenses/mit/) license.
 
 ### Contact me
-<div style="display: inline-flex; justify-content: center; align-items: center">
+<div>
 	<span>
 		<a href="https://www.linkedin.com/in/thiagovcarvalho/">
 			<img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/9078587?v=4" width="100px;" alt="Thiago V. de Carvalho"/>
 		</a>
+    <span>Thiago Viana - Front-end Engineer @ PBHub Soluções</span>
 	</span>
-	<div style="margin-left: 8pt; display: inline-flex; flex-direction: column; white-space: nowrap">
-		<span>Thiago Viana - Front-end Engineer @ PBHub Soluções</span>
-		<br />
-	</div>
 </div>
 
 
