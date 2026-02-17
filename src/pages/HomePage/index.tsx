@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { MDBCol, MDBContainer, MDBRow } from 'mdbreact';
 import {
   JumbotronLogo,
   PokedexLogo,
   BackgroundLayer,
-  InputSearch,
-  NewSearchBar,
-  SearchBtn,
   BackgroundContainer,
   MainContent,
   LandingText,
@@ -17,22 +14,17 @@ import {
   LandingTextCol,
   LandingImageCol,
   Body,
+  NewSearchBar,
 } from './styles';
 import './form.css';
 import HomeNavbar from '../../components/Navbars/HomeNavbar/HomeNavbar';
 import PokedexLogoImg from '../../assets/images/logo_pokedex2.png';
 import PokedexImg from '../../assets/images/img_pokedex.png';
 import usePokemonCount from '../../hooks/usePokemonCount';
+import SearchAutocomplete from '../../components/SearchAutocomplete/SearchAutocomplete';
 
 const HomePage: React.FC = () => {
-  const [searchInput, setSearchInput] = useState('');
   const { totalSpecies } = usePokemonCount();
-
-  const history = useHistory();
-
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setSearchInput(e.currentTarget.value);
-  };
 
   return (
     <div>
@@ -51,33 +43,7 @@ const HomePage: React.FC = () => {
       <BackgroundLayer>
         <BackgroundContainer className="container d-flex justify-content-center">
           <NewSearchBar className=" align-items-center">
-            <MDBCol size="12">
-              <InputSearch
-                material
-                containerClassName="mt-0 mb-2"
-                hint="Search for a Pokemon"
-                value={searchInput}
-                onChange={handleInputChange}
-                onKeyPress={(e: React.KeyboardEvent) => {
-                  if (e.key === 'Enter') {
-                    history.push(`/search/${searchInput}`);
-                  }
-                }}
-                append={(
-                  <SearchBtn
-                    type="submit"
-                    color="primary"
-                    className="m-0 px-3 py-2 z-depth-0"
-                    onClick={(e: React.FormEvent<HTMLInputElement>) => {
-                      e.preventDefault();
-                      history.push(`/search/${searchInput}`);
-                    }}
-                  >
-                    Search
-                  </SearchBtn>
-                )}
-              />
-            </MDBCol>
+            <SearchAutocomplete placeholder="Search for a Pokémon" />
           </NewSearchBar>
         </BackgroundContainer>
 
