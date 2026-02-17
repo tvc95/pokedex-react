@@ -50,7 +50,7 @@ const formatName = (name: string) => name.charAt(0).toUpperCase() + name.slice(1
 
 interface SearchAutocompleteProps {
   /** Placeholder text for the input */
-  placeholder?: string;
+  placeholder: string;
 }
 
 /**
@@ -64,7 +64,7 @@ interface SearchAutocompleteProps {
  * - Navigates to the Pokémon detail page or search results page
  */
 const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
-  placeholder = 'Search for a Pokémon',
+  placeholder,
 }: SearchAutocompleteProps) => {
   const [inputValue, setInputValue] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
