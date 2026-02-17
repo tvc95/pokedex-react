@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { MDBBtn, MDBContainer, MDBRow } from 'mdbreact';
 import React from 'react';
 
@@ -45,7 +44,7 @@ import {
  */
 const DexData: React.FC = () => {
   const {
-    graphqlData,
+    graphqlPokemon,
     pokemon,
     varieties,
     moves,
@@ -78,11 +77,13 @@ const DexData: React.FC = () => {
   }
 
   // ── Loading state ────────────────────────────────────────────────────
-  if (loading || !ready) {
+  if (loading || !ready || !graphqlPokemon || !pokemon) {
     return <LoadingSpinner size="lg" fullPage />;
   }
 
-  const gql = graphqlData.pokemon;
+  // At this point both graphqlPokemon and pokemon are guaranteed non-null
+  // thanks to the guard above.
+  const pkm = graphqlPokemon;
 
   // ── Full page ────────────────────────────────────────────────────────
   return (
@@ -90,42 +91,42 @@ const DexData: React.FC = () => {
       <DexNavbar />
 
       <PokemonHeader
-        name={formatPokemonName(gql.name)}
-        types={gql.types}
-        number={gql.id}
-        url={gql.species.url}
+        name={formatPokemonName(pkm.name)}
+        types={pkm.types}
+        number={pkm.id}
+        url={pkm.species.url}
       />
 
       <MDBContainer fluid style={{ marginTop: '1rem' }}>
         {/* ── Row 1: Art carousel + primary info ──────────────────── */}
         <MDBRow className="align-items-center">
           <PkmnImageSlides xs="12" lg="6">
-            <PkmnArtCarousel pkmnVarieties={varieties} pkmnName={gql.name} />
+            <PkmnArtCarousel pkmnVarieties={varieties} pkmnName={pkm.name} />
           </PkmnImageSlides>
 
           <PokemonInfoI xs="12" lg="6">
             <PkmnDescription
               subTitle={SubTitle}
-              flavorTextEntries={pokemon!.flavor_text_entries}
+              flavorTextEntries={pokemon.flavor_text_entries}
               genName={genName}
             />
 
             <PkmnAbilities
               subTitle={SubTitle}
               list={List}
-              abilities={gql.abilities}
+              abilities={pkm.abilities}
             />
 
             <PkmnGenderRatio
               subTitle={SubTitle}
-              genderRate={pokemon!.gender_rate}
+              genderRate={pokemon.gender_rate}
             />
 
             <PkmnPhysicalStats
               wrapper={PkmnPhysicalInfo}
-              height={gql.height}
-              weight={gql.weight}
-              captureRate={pokemon!.capture_rate}
+              height={pkm.height}
+              weight={pkm.weight}
+              captureRate={pokemon.capture_rate}
             />
           </PokemonInfoI>
         </MDBRow>
@@ -136,13 +137,13 @@ const DexData: React.FC = () => {
             <PkmnEggInfo
               subTitle={SubTitle}
               list={List}
-              eggGroups={pokemon!.egg_groups}
-              hatchCounter={pokemon!.hatch_counter}
+              eggGroups={pokemon.egg_groups}
+              hatchCounter={pokemon.hatch_counter}
             />
 
             <PkmnLevelingRate
               subTitle={SubTitle}
-              growthRateName={pokemon!.growth_rate.name}
+              growthRateName={pokemon.growth_rate.name}
               growthRate={growthRate}
             />
 
@@ -150,8 +151,8 @@ const DexData: React.FC = () => {
               <SubTitle>Evolution Chart</SubTitle>
               <EvoChartContainer id="evo-chart-container">
                 <PkmnEvoChart
-                  url={pokemon!.evolution_chain.url}
-                  pkmnName={gql.name}
+                  url={pokemon.evolution_chain.url}
+                  pkmnName={pkm.name}
                 />
               </EvoChartContainer>
             </div>
@@ -178,7 +179,7 @@ const DexData: React.FC = () => {
             <SubTitle>Type Chart</SubTitle>
             <PkmnTypeCharts
               pkmnVarieties={varieties}
-              pkmnName={gql.name.toString()}
+              pkmnName={pkm.name.toString()}
             />
           </PokemonTypeChart>
         </MDBRow>

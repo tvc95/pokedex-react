@@ -1,7 +1,5 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import { FlavorText } from '../../types/pokemon';
-import { Description } from '../Carousels/PokemonArtCarousel/styles';
 
 interface PkmnDescriptionProps {
   /** SubTitle styled component passed from parent to keep styling consistent */
@@ -37,7 +35,6 @@ const PkmnDescription: React.FC<PkmnDescriptionProps> = ({
       <small>
         <em>
           First introduced in
-          {' '}
           {genName}
         </em>
       </small>

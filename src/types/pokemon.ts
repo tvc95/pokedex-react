@@ -109,3 +109,41 @@ export interface MoveListData {
     versionGroup: string;
   };
 }
+
+// ---------------------------------------------------------------------------
+// GraphQL query result types
+// ---------------------------------------------------------------------------
+
+/**
+ * Shape of the "pokemon" field returned by the GraphQL query in
+ * usePokemonData. These mirror the exact field names from the
+ * graphql-pokeapi schema (which uses snake_case).
+ */
+export interface PokemonGraphQL {
+  is_default: boolean;
+  name: string;
+  species: { url: string };
+  types: Array<{
+    slot: number;
+    type: { name: string };
+  }>;
+  id: number;
+  order: number;
+  height: number;
+  weight: number;
+  abilities: Ability[];
+  stats: Array<{
+    stat: { name: string };
+    base_stat: number;
+  }>;
+  base_experience: number;
+  forms: Array<{ url: string; name: string }>;
+  moves: PokemonMove[];
+}
+
+/**
+ * Top-level shape of the useQuery data response.
+ */
+export interface PokemonQueryData {
+  pokemon: PokemonGraphQL;
+}
