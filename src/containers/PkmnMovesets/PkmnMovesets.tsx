@@ -3,39 +3,18 @@
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
 import {
-  MDBContainer, MDBNavItem, MDBNavLink, MDBTabContent, MDBTabPane,
+  MDBContainer,
+  MDBNavItem,
+  MDBNavLink,
+  MDBTabContent,
+  MDBTabPane,
 } from 'mdbreact';
 import { StyledTabs } from './styles';
 import MovesetTable from '../../components/Tables/MovesetTable/MovesetTable';
-
-interface PokemonMove {
-  move: {
-    url: string;
-    name: string;
-  }
-  version_group_details: Array<{
-    level_learned_at: number;
-    move_learn_method: {
-      name: string;
-    }
-    version_group: {
-      name: string;
-    }
-  }>
-}
+import { PokemonMove, MoveListData } from '../../types/pokemon';
 
 interface CompProps {
   pkmnMoves: Array<PokemonMove>;
-}
-
-interface MoveListData {
-  moveName: string;
-  url: string;
-  versionDetails: {
-    levelLearned: number;
-    learningMethod: string;
-    versionGroup: string;
-  }
 }
 
 const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
@@ -61,9 +40,12 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
    */
   const setMoveLists = async () => {
     const formattedMoveData = pkmnMoves.map((move) => {
-      const levelLearned = move.version_group_details[move.version_group_details.length - 1].level_learned_at;
-      const learningMethod = move.version_group_details[move.version_group_details.length - 1].move_learn_method.name;
-      const versionGroup = move.version_group_details[move.version_group_details.length - 1].version_group.name;
+      const levelLearned = move.version_group_details[move.version_group_details.length - 1]
+        .level_learned_at;
+      const learningMethod = move.version_group_details[move.version_group_details.length - 1]
+        .move_learn_method.name;
+      const versionGroup = move.version_group_details[move.version_group_details.length - 1]
+        .version_group.name;
 
       return {
         moveName: move.move.name,
@@ -77,13 +59,29 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
     });
 
     // Filters formatted data to split moveset into categories
-    setLevelUpMoveList(formattedMoveData.filter((move) => move.versionDetails.learningMethod === 'level-up'));
+    setLevelUpMoveList(
+      formattedMoveData.filter(
+        (move) => move.versionDetails.learningMethod === 'level-up',
+      ),
+    );
 
-    setMachineMoveList(formattedMoveData.filter((move) => move.versionDetails.learningMethod === 'machine'));
+    setMachineMoveList(
+      formattedMoveData.filter(
+        (move) => move.versionDetails.learningMethod === 'machine',
+      ),
+    );
 
-    setTutoringMoveList(formattedMoveData.filter((move) => move.versionDetails.learningMethod === 'tutor'));
+    setTutoringMoveList(
+      formattedMoveData.filter(
+        (move) => move.versionDetails.learningMethod === 'tutor',
+      ),
+    );
 
-    setBreedingMoveList(formattedMoveData.filter((move) => move.versionDetails.learningMethod === 'egg'));
+    setBreedingMoveList(
+      formattedMoveData.filter(
+        (move) => move.versionDetails.learningMethod === 'egg',
+      ),
+    );
 
     setLoad(true);
   };
@@ -159,28 +157,16 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
 
         <MDBTabContent activeItem={activeItem.toString()}>
           <MDBTabPane tabId="0" role="tabpanel">
-            <MovesetTable
-              moveList={levelUpMoveList}
-              tableType={0}
-            />
+            <MovesetTable moveList={levelUpMoveList} tableType={0} />
           </MDBTabPane>
           <MDBTabPane tabId="1" role="tabpanel">
-            <MovesetTable
-              moveList={machineMoveList}
-              tableType={1}
-            />
+            <MovesetTable moveList={machineMoveList} tableType={1} />
           </MDBTabPane>
           <MDBTabPane tabId="2" role="tabpanel">
-            <MovesetTable
-              moveList={tutoringMoveList}
-              tableType={2}
-            />
+            <MovesetTable moveList={tutoringMoveList} tableType={2} />
           </MDBTabPane>
           <MDBTabPane tabId="3" role="tabpanel">
-            <MovesetTable
-              moveList={breedingMoveList}
-              tableType={3}
-            />
+            <MovesetTable moveList={breedingMoveList} tableType={3} />
           </MDBTabPane>
         </MDBTabContent>
       </MDBContainer>
