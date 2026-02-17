@@ -2,15 +2,15 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
-import { MDBBtn, MDBContainer, MDBRow } from "mdbreact";
-import React, { useEffect, useState, useCallback } from "react";
-import { useLocation } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
-import axios from "axios";
+import { MDBBtn, MDBContainer, MDBRow } from 'mdbreact';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
+import { gql, useQuery } from '@apollo/client';
+import axios from 'axios';
 
-import DexNavbar from "../../components/Navbars/DexNavbar/DexNavbar";
-import PokemonHeader from "../../containers/PokemonHeader/PokemonHeader";
-import PkmnArtCarousel from "../../components/Carousels/PokemonArtCarousel/PkmnArtCarousel";
+import DexNavbar from '../../components/Navbars/DexNavbar/DexNavbar';
+import PokemonHeader from '../../containers/PokemonHeader/PokemonHeader';
+import PkmnArtCarousel from '../../components/Carousels/PokemonArtCarousel/PkmnArtCarousel';
 
 import {
   EvoChartContainer,
@@ -22,7 +22,7 @@ import {
   PokemonStatsContainer,
   PokemonTypeChart,
   SubTitle,
-} from "./styles";
+} from './styles';
 
 import {
   Pokemon,
@@ -30,13 +30,13 @@ import {
   PokemonVariety,
   PokemonMove,
   EggGroup,
-} from "../../types/pokemon";
+} from '../../types/pokemon';
 
-import PkmnEvoChart from "../../containers/PkmnEvoChart";
-import PkmnAlternateForms from "../../containers/PkmnAltForms";
-import BaseStatsChart from "../../components/BaseStatsChart/BaseStatsChart";
-import PkmnTypeCharts from "../../containers/PkmnTypeCharts/PkmnTypeCharts";
-import PkmnMovesets from "../../containers/PkmnMovesets/PkmnMovesets";
+import PkmnEvoChart from '../../containers/PkmnEvoChart';
+import PkmnAlternateForms from '../../containers/PkmnAltForms';
+import BaseStatsChart from '../../components/BaseStatsChart/BaseStatsChart';
+import PkmnTypeCharts from '../../containers/PkmnTypeCharts/PkmnTypeCharts';
+import PkmnMovesets from '../../containers/PkmnMovesets/PkmnMovesets';
 
 /**
  * Page component that returns all dex data from a specific Pokémon
@@ -49,7 +49,7 @@ const DexData: React.FC = () => {
   const [pkmnDexData, setPkmnDexData] = useState<Pokemon | null>(null);
   const [pkmnVarieties, setPkmnVarieties] = useState<PokemonVariety[]>([]);
   const [pkmnMoves, setPkmnMoves] = useState<PokemonMove[]>([]);
-  const [genName, setGenName] = useState("");
+  const [genName, setGenName] = useState('');
   const [growthRate, setGrowthRate] = useState(0);
   const [loadData, setLoadData] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
@@ -119,7 +119,7 @@ const DexData: React.FC = () => {
    * @returns the formatted input text
    */
   const formatGenText = (text: string) => {
-    const [gen, number] = text.split("-");
+    const [gen, number] = text.split('-');
 
     const outputText = `${gen.charAt(0).toUpperCase() + gen.substr(1)} ${number.toUpperCase()}`;
 
@@ -136,17 +136,17 @@ const DexData: React.FC = () => {
    */
   const getGrowthRate = (rate: string) => {
     switch (rate) {
-      case "fast-then-very-slow":
+      case 'fast-then-very-slow':
         return 0.1;
-      case "slow":
+      case 'slow':
         return 0.2;
-      case "medium-slow":
+      case 'medium-slow':
         return 0.4;
-      case "medium":
+      case 'medium':
         return 0.6;
-      case "fast":
+      case 'fast':
         return 0.8;
-      case "slow-then-very-fast":
+      case 'slow-then-very-fast':
         return 0.9;
       default:
         return 0;
@@ -195,7 +195,7 @@ const DexData: React.FC = () => {
       setGenName(formatGenText(response.data.generation.name));
       setGrowthRate(getGrowthRate(response.data.growth_rate.name));
     } catch (err) {
-      setFetchError("Failed to load Pokémon data. Please try again later.");
+      setFetchError('Failed to load Pokémon data. Please try again later.');
     }
   }, []);
 
@@ -231,15 +231,15 @@ const DexData: React.FC = () => {
     return (
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "15%",
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingTop: '15%',
         }}
       >
         <h2>Oops! Something went wrong.</h2>
-        <p>{fetchError || "Could not load Pokémon data from the server."}</p>
+        <p>{fetchError || 'Could not load Pokémon data from the server.'}</p>
         <MDBBtn color="info" onClick={() => window.location.reload()}>
           Try Again
         </MDBBtn>
@@ -254,17 +254,17 @@ const DexData: React.FC = () => {
     return (
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          paddingTop: "25%",
+          display: 'flex',
+          justifyContent: 'center',
+          paddingTop: '25%',
         }}
       >
         <div
           className="spinner-border text-info"
           role="status"
-          style={{ width: "160px", height: "160px" }}
+          style={{ width: '160px', height: '160px' }}
         >
-          <span style={{ width: "200px", height: "200px" }} className="sr-only">
+          <span style={{ width: '200px', height: '200px' }} className="sr-only">
             Loading...
           </span>
         </div>
@@ -282,15 +282,15 @@ const DexData: React.FC = () => {
 
         <PokemonHeader
           name={
-            data.pokemon.name.charAt(0) +
-            data.pokemon.name.slice(1).replace("-", " ")
+            data.pokemon.name.charAt(0)
+            + data.pokemon.name.slice(1).replace('-', ' ')
           }
           types={data.pokemon.types}
           number={data.pokemon.id}
           url={data.pokemon.species.url}
         />
 
-        <MDBContainer fluid style={{ marginTop: "1rem" }}>
+        <MDBContainer fluid style={{ marginTop: '1rem' }}>
           <MDBRow className="align-items-center">
             <PkmnImageSlides xs="12" lg="6">
               <PkmnArtCarousel
@@ -305,18 +305,20 @@ const DexData: React.FC = () => {
                 <p id="flavor-txt">
                   {pkmnDexData?.flavor_text_entries
                     .filter(
-                      (entry) =>
-                        entry.language.name === "en" &&
-                        (entry.version.name === "x" ||
-                          entry.version.name === "ultra-sun" ||
-                          entry.version.name === "sword"),
+                      (entry) => entry.language.name === 'en'
+                        && (entry.version.name === 'x'
+                          || entry.version.name === 'ultra-sun'
+                          || entry.version.name === 'sword'),
                     )
                     .slice(0, 2)
                     .map((entry) => `${entry.flavor_text} `)}
                 </p>
                 <p>
                   <small>
-                    <em>First introduced in {genName}</em>
+                    <em>
+                      First introduced in
+                      {genName}
+                    </em>
                   </small>
                 </p>
               </div>
@@ -340,7 +342,7 @@ const DexData: React.FC = () => {
 
               <div id="gender-ratio">
                 <SubTitle>Gender Ratio</SubTitle>
-                <div className="progress" style={{ height: "1.5rem" }}>
+                <div className="progress" style={{ height: '1.5rem' }}>
                   {pkmnDexData.gender_rate !== -1 ? (
                     <>
                       <div
@@ -351,7 +353,9 @@ const DexData: React.FC = () => {
                         }}
                       >
                         <strong>
-                          {`${12.5 * (8 - pkmnDexData.gender_rate)}%`} (M)
+                          {`${12.5 * (8 - pkmnDexData.gender_rate)}%`}
+                          {' '}
+                          (M)
                         </strong>
                       </div>
                       <div
@@ -360,7 +364,9 @@ const DexData: React.FC = () => {
                         style={{ width: `${12.5 * pkmnDexData.gender_rate}%` }}
                       >
                         <strong>
-                          {`${12.5 * pkmnDexData.gender_rate}%`} (F)
+                          {`${12.5 * pkmnDexData.gender_rate}%`}
+                          {' '}
+                          (F)
                         </strong>
                       </div>
                     </>
@@ -381,7 +387,10 @@ const DexData: React.FC = () => {
               <PkmnPhysicalInfo>
                 <div id="height">
                   <h2>Height</h2>
-                  <h3>{data.pokemon.height / 10}m</h3>
+                  <h3>
+                    {data.pokemon.height / 10}
+                    m
+                  </h3>
                 </div>
 
                 <div id="weight">
@@ -395,7 +404,8 @@ const DexData: React.FC = () => {
                 <div id="catch-rate">
                   <h2>Catch rate</h2>
                   <h3>
-                    {((pkmnDexData.capture_rate * 100) / 378).toFixed(1)}%
+                    {((pkmnDexData.capture_rate * 100) / 378).toFixed(1)}
+                    %
                   </h3>
                 </div>
               </PkmnPhysicalInfo>
@@ -420,24 +430,26 @@ const DexData: React.FC = () => {
               <div id="hatching-time">
                 <SubTitle>Hatching time</SubTitle>
                 <p>
-                  {(pkmnDexData.hatch_counter + 1) * 250} steps (approximately)
+                  {(pkmnDexData.hatch_counter + 1) * 250}
+                  {' '}
+                  steps (approximately)
                 </p>
               </div>
 
               <div id="leveling-rate">
                 <SubTitle>Leveling rate</SubTitle>
-                <div className="progress" style={{ height: "1.5rem" }}>
+                <div className="progress" style={{ height: '1.5rem' }}>
                   <div
                     className="progress-bar progress-bar-striped bg-success"
                     role="progressbar"
                     style={{ width: `${100 * growthRate}%` }}
                   >
-                    {pkmnDexData.growth_rate.name !== "slow-then-very-fast" ? (
+                    {pkmnDexData.growth_rate.name !== 'slow-then-very-fast' ? (
                       <strong>
                         {growthRate >= 0.4 && pkmnDexData.growth_rate.name}
                       </strong>
                     ) : (
-                      <strong>{growthRate >= 0.4 && "erratic"}</strong>
+                      <strong>{growthRate >= 0.4 && 'erratic'}</strong>
                     )}
                   </div>
                   <div
@@ -445,12 +457,12 @@ const DexData: React.FC = () => {
                     role="progressbar"
                     style={{ width: `${100 - 100 * growthRate}%` }}
                   >
-                    {pkmnDexData.growth_rate.name !== "fast-then-very-slow" ? (
+                    {pkmnDexData.growth_rate.name !== 'fast-then-very-slow' ? (
                       <strong>
                         {growthRate < 0.4 && pkmnDexData.growth_rate.name}
                       </strong>
                     ) : (
-                      <strong>{growthRate < 0.4 && "fluctuating"}</strong>
+                      <strong>{growthRate < 0.4 && 'fluctuating'}</strong>
                     )}
                   </div>
                 </div>
@@ -495,7 +507,7 @@ const DexData: React.FC = () => {
           <MDBRow>
             <MDBContainer fluid>
               <SubTitle
-                style={{ fontSize: "2.5rem", textDecorationLine: "underline" }}
+                style={{ fontSize: '2.5rem', textDecorationLine: 'underline' }}
               >
                 Moveset
               </SubTitle>

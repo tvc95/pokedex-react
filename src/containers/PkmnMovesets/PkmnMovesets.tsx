@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   MDBContainer,
   MDBNavItem,
   MDBNavLink,
   MDBTabContent,
   MDBTabPane,
-} from "mdbreact";
-import { StyledTabs } from "./styles";
-import MovesetTable from "../../components/Tables/MovesetTable/MovesetTable";
-import { PokemonMove, MoveListData } from "../../types/pokemon";
+} from 'mdbreact';
+import { StyledTabs } from './styles';
+import MovesetTable from '../../components/Tables/MovesetTable/MovesetTable';
+import { PokemonMove, MoveListData } from '../../types/pokemon';
 
 interface CompProps {
   pkmnMoves: Array<PokemonMove>;
@@ -40,15 +40,12 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
    */
   const setMoveLists = async () => {
     const formattedMoveData = pkmnMoves.map((move) => {
-      const levelLearned =
-        move.version_group_details[move.version_group_details.length - 1]
-          .level_learned_at;
-      const learningMethod =
-        move.version_group_details[move.version_group_details.length - 1]
-          .move_learn_method.name;
-      const versionGroup =
-        move.version_group_details[move.version_group_details.length - 1]
-          .version_group.name;
+      const levelLearned = move.version_group_details[move.version_group_details.length - 1]
+        .level_learned_at;
+      const learningMethod = move.version_group_details[move.version_group_details.length - 1]
+        .move_learn_method.name;
+      const versionGroup = move.version_group_details[move.version_group_details.length - 1]
+        .version_group.name;
 
       return {
         moveName: move.move.name,
@@ -64,25 +61,25 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
     // Filters formatted data to split moveset into categories
     setLevelUpMoveList(
       formattedMoveData.filter(
-        (move) => move.versionDetails.learningMethod === "level-up",
+        (move) => move.versionDetails.learningMethod === 'level-up',
       ),
     );
 
     setMachineMoveList(
       formattedMoveData.filter(
-        (move) => move.versionDetails.learningMethod === "machine",
+        (move) => move.versionDetails.learningMethod === 'machine',
       ),
     );
 
     setTutoringMoveList(
       formattedMoveData.filter(
-        (move) => move.versionDetails.learningMethod === "tutor",
+        (move) => move.versionDetails.learningMethod === 'tutor',
       ),
     );
 
     setBreedingMoveList(
       formattedMoveData.filter(
-        (move) => move.versionDetails.learningMethod === "egg",
+        (move) => move.versionDetails.learningMethod === 'egg',
       ),
     );
 
@@ -101,7 +98,7 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
             <MDBNavLink
               link
               to="#"
-              active={activeItem.toString() === "0"}
+              active={activeItem.toString() === '0'}
               onClick={(e: Event) => {
                 e.preventDefault();
                 toggleState(0);
@@ -116,7 +113,7 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
             <MDBNavLink
               link
               to="#"
-              active={activeItem.toString() === "1"}
+              active={activeItem.toString() === '1'}
               onClick={(e: Event) => {
                 e.preventDefault();
                 toggleState(1);
@@ -131,7 +128,7 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
             <MDBNavLink
               link
               to="#"
-              active={activeItem.toString() === "2"}
+              active={activeItem.toString() === '2'}
               onClick={(e: Event) => {
                 e.preventDefault();
                 toggleState(2);
@@ -146,7 +143,7 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
             <MDBNavLink
               link
               to="#"
-              active={activeItem.toString() === "3"}
+              active={activeItem.toString() === '3'}
               onClick={(e: Event) => {
                 e.preventDefault();
                 toggleState(3);

@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useHistory } from "react-router-dom";
-import { Container, Linkk } from "./styles";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { Container, Linkk } from './styles';
 
 interface EvoDetails {
   gender: unknown;
@@ -85,9 +85,7 @@ const Evolution: React.FC<ChainProps> = ({
         <Linkk
           to="#"
           key={evolution.species.name}
-          onClick={() =>
-            history.push(`/data/pokemon/${evolution.species.name}`)
-          }
+          onClick={() => history.push(`/data/pokemon/${evolution.species.name}`)}
         >
           <Container
             pokeName={pkmnName}
@@ -98,7 +96,10 @@ const Evolution: React.FC<ChainProps> = ({
               alt={`${evolution.species.name}`}
             />
             <p>
-              <strong>Stage {stage}</strong>
+              <strong>
+                Stage
+                {stage}
+              </strong>
             </p>
             <p>{evolution.evolution_details[0].trigger.name}</p>
           </Container>
@@ -156,9 +157,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({
     <>
       <Linkk
         to="#"
-        onClick={() =>
-          history.push(`/data/pokemon/${evoChain?.chain.species.name}`)
-        }
+        onClick={() => history.push(`/data/pokemon/${evoChain?.chain.species.name}`)}
       >
         <Container
           pokeName={pkmnName}

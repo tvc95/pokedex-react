@@ -2,10 +2,10 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable max-len */
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { MDBPopper } from "mdbreact";
-import { TypeContainer, TypeGrid } from "./styles";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { MDBPopper } from 'mdbreact';
+import { TypeContainer, TypeGrid } from './styles';
 
 interface TypeGridProps {
   typeList: Array<{
@@ -36,24 +36,24 @@ interface DualTypeRelationsData {
 
 const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList }: TypeGridProps) => {
   const types = [
-    "normal",
-    "fire",
-    "fighting",
-    "water",
-    "flying",
-    "grass",
-    "poison",
-    "electric",
-    "ground",
-    "psychic",
-    "rock",
-    "ice",
-    "bug",
-    "dragon",
-    "ghost",
-    "dark",
-    "steel",
-    "fairy",
+    'normal',
+    'fire',
+    'fighting',
+    'water',
+    'flying',
+    'grass',
+    'poison',
+    'electric',
+    'ground',
+    'psychic',
+    'rock',
+    'ice',
+    'bug',
+    'dragon',
+    'ghost',
+    'dark',
+    'steel',
+    'fairy',
   ];
 
   const [typeInfo, setTypeInfo] = useState<DualTypeRelationsData>();
@@ -85,9 +85,7 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList }: TypeGridProps) => {
 
       // Comparing immunity types
       if (primaryType.immunity.length > 0) {
-        primaryType.immunity.forEach((typeName: string) =>
-          dualTypeRelations.immunity.push(typeName),
-        );
+        primaryType.immunity.forEach((typeName: string) => dualTypeRelations.immunity.push(typeName));
       }
 
       // Comparing normal damage types
@@ -215,10 +213,9 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList }: TypeGridProps) => {
 
         // Filters full types array in order to remove weaknesses/resistances/immunity, leaving only normal damage.
         const filterNormalDmg = normalDamage.filter(
-          (pokeType) =>
-            !mapDoubles.includes(pokeType) &&
-            !mapHalf.includes(pokeType) &&
-            !mapImmune.includes(pokeType),
+          (pokeType) => !mapDoubles.includes(pokeType)
+            && !mapHalf.includes(pokeType)
+            && !mapImmune.includes(pokeType),
         );
 
         return {
@@ -264,7 +261,9 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList }: TypeGridProps) => {
                   alt={name}
                 />
                 <span>
-                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`} || Immune
+                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`}
+                  {' '}
+                  || Immune
                   (x0.0)
                 </span>
               </MDBPopper>
@@ -285,7 +284,9 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList }: TypeGridProps) => {
                   alt={name}
                 />
                 <span>
-                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`} ||
+                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`}
+                  {' '}
+                  ||
                   Resistant (x0.25)
                 </span>
               </MDBPopper>
@@ -302,7 +303,9 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList }: TypeGridProps) => {
                   alt={name}
                 />
                 <span>
-                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`} ||
+                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`}
+                  {' '}
+                  ||
                   Resistant (x0.5)
                 </span>
               </MDBPopper>
@@ -322,7 +325,9 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList }: TypeGridProps) => {
                   alt={name}
                 />
                 <span>
-                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`} || Normal
+                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`}
+                  {' '}
+                  || Normal
                   damage
                 </span>
               </MDBPopper>
@@ -343,7 +348,9 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList }: TypeGridProps) => {
                   alt={name}
                 />
                 <span>
-                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`} || Weak
+                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`}
+                  {' '}
+                  || Weak
                   (x2.0)
                 </span>
               </MDBPopper>
@@ -360,7 +367,9 @@ const PkmnTypeGrid: React.FC<TypeGridProps> = ({ typeList }: TypeGridProps) => {
                   alt={name}
                 />
                 <span>
-                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`} || Weak
+                  {`${name.charAt(0).toUpperCase() + name.slice(1)}`}
+                  {' '}
+                  || Weak
                   (x4.0)
                 </span>
               </MDBPopper>

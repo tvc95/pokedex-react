@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { gql, useQuery } from "@apollo/client";
-import { MDBBtn, MDBContainer } from "mdbreact";
-import { BtnGroup, NationalDexContainer } from "./styles";
-import PokemonBtn from "../../components/Buttons/PokemonBtn/PokemonBtn";
+import React, { useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
+import { MDBBtn, MDBContainer } from 'mdbreact';
+import { BtnGroup, NationalDexContainer } from './styles';
+import PokemonBtn from '../../components/Buttons/PokemonBtn/PokemonBtn';
 
 const PkmnBtnList: React.FC = () => {
   const [prevOffset, setPrevOffset] = useState(0);
@@ -31,7 +31,7 @@ const PkmnBtnList: React.FC = () => {
   return (
     <>
       {error && (
-        <div style={{ textAlign: "center", padding: "2rem" }}>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
           <h3>Could not load Pokémon list.</h3>
           <p>Please check your connection and try again.</p>
           <MDBBtn color="info" onClick={() => window.location.reload()}>
@@ -48,15 +48,15 @@ const PkmnBtnList: React.FC = () => {
           <NationalDexContainer>
             {data.pokemons.results.map(
               (pokemon: { id: number; name: string; image: string }) => {
-                let name = "";
+                let name = '';
                 if (
-                  pokemon.name.includes("-") &&
-                  !pokemon.name.includes("-oh")
+                  pokemon.name.includes('-')
+                  && !pokemon.name.includes('-oh')
                 ) {
-                  if (!pokemon.name.includes("-mime")) {
-                    name = pokemon.name.slice(0, pokemon.name.indexOf("-"));
+                  if (!pokemon.name.includes('-mime')) {
+                    name = pokemon.name.slice(0, pokemon.name.indexOf('-'));
                   } else {
-                    name = pokemon.name.replace("-", ". ");
+                    name = pokemon.name.replace('-', '. ');
                   }
                 } else {
                   name = pokemon.name;
