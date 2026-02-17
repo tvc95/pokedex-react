@@ -50,85 +50,85 @@ const PkmnBtnList: React.FC = () => {
     Math.floor((maxSpeciesId - 1) / PAGE_SIZE) * PAGE_SIZE,
   );
 
+  if (error) {
+    return (
+      <div style={{ textAlign: 'center', padding: '2rem' }}>
+        <h3>Could not load Pokémon list.</h3>
+        <p>Please check your connection and try again.</p>
+        <MDBBtn color="info" onClick={() => window.location.reload()}>
+          Try Again
+        </MDBBtn>
+      </div>
+    );
+  }
+
+  if (loading || !data) {
+    return (
+      <div className="spinner-border text-info" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+
   return (
-    <>
-      {error && (
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
-          <h3>Could not load Pokémon list.</h3>
-          <p>Please check your connection and try again.</p>
-          <MDBBtn color="info" onClick={() => window.location.reload()}>
-            Try Again
+    <MDBContainer>
+      <NationalDexContainer>
+        {data.pokemons.results.map(
+          (pokemon: { id: number; name: string; image: string }) => {
+            let name = '';
+            if (pokemon.name.includes('-') && !pokemon.name.includes('-oh')) {
+              if (!pokemon.name.includes('-mime')) {
+                name = pokemon.name.slice(0, pokemon.name.indexOf('-'));
+              } else {
+                name = pokemon.name.replace('-', '. ');
+              }
+            } else {
+              name = pokemon.name;
+            }
+
+            // Only render Pokémon that are actual species (not alternate
+            // forms which have IDs above the species count)
+            if (pokemon.id <= maxSpeciesId) {
+              return (
+                <PokemonBtn
+                  key={pokemon.id}
+                  pkmnIconPath={pokemon.image}
+                  pkmnName={pokemon.name}
+                  trueName={name}
+                  pkmnNumber={pokemon.id}
+                />
+              );
+            }
+            return null;
+          },
+        )}
+      </NationalDexContainer>
+
+      <MDBContainer className="d-flex justify-content-center">
+        <BtnGroup>
+          <MDBBtn
+            color="info"
+            size="lg"
+            disabled={prevOffset === 0}
+            onClick={() => setPrevOffset(data.pokemons.prevOffset)}
+          >
+            Previous
           </MDBBtn>
-        </div>
-      )}
-      {loading ? (
-        <div className="spinner-border text-info" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      ) : (
-        <MDBContainer>
-          <NationalDexContainer>
-            {data.pokemons.results.map(
-              (pokemon: { id: number; name: string; image: string }) => {
-                let name = '';
-                if (
-                  pokemon.name.includes('-')
-                  && !pokemon.name.includes('-oh')
-                ) {
-                  if (!pokemon.name.includes('-mime')) {
-                    name = pokemon.name.slice(0, pokemon.name.indexOf('-'));
-                  } else {
-                    name = pokemon.name.replace('-', '. ');
-                  }
-                } else {
-                  name = pokemon.name;
-                }
-
-                // Only render Pokémon that are actual species (not alternate
-                // forms which have IDs above the species count)
-                if (pokemon.id <= maxSpeciesId) {
-                  return (
-                    <PokemonBtn
-                      key={pokemon.id}
-                      pkmnIconPath={pokemon.image}
-                      pkmnName={pokemon.name}
-                      trueName={name}
-                      pkmnNumber={pokemon.id}
-                    />
-                  );
-                }
-                return null;
-              },
-            )}
-          </NationalDexContainer>
-
-          <MDBContainer className="d-flex justify-content-center">
-            <BtnGroup>
-              <MDBBtn
-                color="info"
-                size="lg"
-                disabled={prevOffset === 0}
-                onClick={() => setPrevOffset(data.pokemons.prevOffset)}
-              >
-                Previous
-              </MDBBtn>
-              <MDBBtn
-                color="info"
-                size="lg"
-                disabled={prevOffset >= lastPageOffset}
-                onClick={() => {
-                  if (data.pokemons.nextOffset <= lastPageOffset) {
-                    setPrevOffset(data.pokemons.nextOffset);
-                  }
-                }}
-              >
-                Next
-              </MDBBtn>
-            </BtnGroup>
-          </MDBContainer>
-        </MDBContainer>
-      )}
-    </>
+          <MDBBtn
+            color="info"
+            size="lg"
+            disabled={prevOffset >= lastPageOffset}
+            onClick={() => {
+              if (data.pokemons.nextOffset <= lastPageOffset) {
+                setPrevOffset(data.pokemons.nextOffset);
+              }
+            }}
+          >
+            Next
+          </MDBBtn>
+        </BtnGroup>
+      </MDBContainer>
+    </MDBContainer>
   );
 };
 
