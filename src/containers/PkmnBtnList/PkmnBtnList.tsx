@@ -3,9 +3,13 @@ import { gql, useQuery } from '@apollo/client';
 import { MDBBtn, MDBContainer } from 'mdbreact';
 import { BtnGroup, NationalDexContainer } from './styles';
 import PokemonBtn from '../../components/Buttons/PokemonBtn/PokemonBtn';
+import usePokemonCount from '../../hooks/usePokemonCount';
+
+const PAGE_SIZE = 120;
 
 const PkmnBtnList: React.FC = () => {
   const [prevOffset, setPrevOffset] = useState(0);
+  const { totalSpecies } = usePokemonCount();
 
   const query = gql`
     query pokemons($limit: Int!, $offset: Int!) {
@@ -25,8 +29,26 @@ const PkmnBtnList: React.FC = () => {
   `;
 
   const { loading, data, error } = useQuery(query, {
-    variables: { limit: 120, offset: prevOffset },
+    variables: { limit: PAGE_SIZE, offset: prevOffset },
   });
+
+  /**
+   * The maximum valid species ID. If the API count is available we use
+   * it; otherwise fall back to a safe default that will be updated on
+   * the next render once the count loads.
+   */
+  const maxSpeciesId = totalSpecies ?? 1025;
+
+  /**
+   * Calculate the last valid offset for the "Next" button so that
+   * pagination never goes beyond the total number of species.
+   * For example, with 1025 species and PAGE_SIZE 120, the last
+   * page starts at offset 960.
+   */
+  const lastPageOffset = Math.max(
+    0,
+    Math.floor((maxSpeciesId - 1) / PAGE_SIZE) * PAGE_SIZE,
+  );
 
   return (
     <>
@@ -62,7 +84,9 @@ const PkmnBtnList: React.FC = () => {
                   name = pokemon.name;
                 }
 
-                if (pokemon.id <= 898) {
+                // Only render Pokémon that are actual species (not alternate
+                // forms which have IDs above the species count)
+                if (pokemon.id <= maxSpeciesId) {
                   return (
                     <PokemonBtn
                       key={pokemon.id}
@@ -83,6 +107,7 @@ const PkmnBtnList: React.FC = () => {
               <MDBBtn
                 color="info"
                 size="lg"
+                disabled={prevOffset === 0}
                 onClick={() => setPrevOffset(data.pokemons.prevOffset)}
               >
                 Previous
@@ -90,8 +115,9 @@ const PkmnBtnList: React.FC = () => {
               <MDBBtn
                 color="info"
                 size="lg"
+                disabled={prevOffset >= lastPageOffset}
                 onClick={() => {
-                  if (data.pokemons.nextOffset <= 840) {
+                  if (data.pokemons.nextOffset <= lastPageOffset) {
                     setPrevOffset(data.pokemons.nextOffset);
                   }
                 }}
