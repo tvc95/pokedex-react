@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { Container, Linkk } from './styles';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 interface EvoDetails {
   gender: unknown;
@@ -144,13 +145,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({
   }, [evoChain, url, pkmnName]);
 
   if (loading) {
-    return (
-      <div>
-        <div className="spinner-border text-info" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner size="sm" fullPage={false} />;
   }
 
   return (

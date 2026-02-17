@@ -5,6 +5,7 @@ import { BtnGroup, NationalDexContainer } from './styles';
 import PokemonBtn from '../../components/Buttons/PokemonBtn/PokemonBtn';
 import usePokemonCount from '../../hooks/usePokemonCount';
 import formatPokemonName from '../../utils/formatPokemonName';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const PAGE_SIZE = 120;
 
@@ -64,11 +65,7 @@ const PkmnBtnList: React.FC = () => {
   }
 
   if (loading || !data) {
-    return (
-      <div className="spinner-border text-info" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>
-    );
+    return <LoadingSpinner size="sm" fullPage={false} />;
   }
 
   return (

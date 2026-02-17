@@ -37,6 +37,7 @@ import PkmnAlternateForms from '../../containers/PkmnAltForms';
 import BaseStatsChart from '../../components/BaseStatsChart/BaseStatsChart';
 import PkmnTypeCharts from '../../containers/PkmnTypeCharts/PkmnTypeCharts';
 import PkmnMovesets from '../../containers/PkmnMovesets/PkmnMovesets';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 /**
  * Page component that returns all dex data from a specific Pokémon
@@ -251,25 +252,7 @@ const DexData: React.FC = () => {
    * Rendering loading spinner
    */
   if (loading || pkmnDexData === null || pkmnVarieties.length === 0) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          paddingTop: '25%',
-        }}
-      >
-        <div
-          className="spinner-border text-info"
-          role="status"
-          style={{ width: '160px', height: '160px' }}
-        >
-          <span style={{ width: '200px', height: '200px' }} className="sr-only">
-            Loading...
-          </span>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner size="lg" fullPage />;
   }
 
   /**
