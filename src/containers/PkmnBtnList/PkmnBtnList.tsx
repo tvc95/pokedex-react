@@ -4,6 +4,7 @@ import { MDBBtn, MDBContainer } from 'mdbreact';
 import { BtnGroup, NationalDexContainer } from './styles';
 import PokemonBtn from '../../components/Buttons/PokemonBtn/PokemonBtn';
 import usePokemonCount from '../../hooks/usePokemonCount';
+import formatPokemonName from '../../utils/formatPokemonName';
 
 const PAGE_SIZE = 120;
 
@@ -75,17 +76,6 @@ const PkmnBtnList: React.FC = () => {
       <NationalDexContainer>
         {data.pokemons.results.map(
           (pokemon: { id: number; name: string; image: string }) => {
-            let name = '';
-            if (pokemon.name.includes('-') && !pokemon.name.includes('-oh')) {
-              if (!pokemon.name.includes('-mime')) {
-                name = pokemon.name.slice(0, pokemon.name.indexOf('-'));
-              } else {
-                name = pokemon.name.replace('-', '. ');
-              }
-            } else {
-              name = pokemon.name;
-            }
-
             // Only render Pokémon that are actual species (not alternate
             // forms which have IDs above the species count)
             if (pokemon.id <= maxSpeciesId) {
@@ -94,7 +84,7 @@ const PkmnBtnList: React.FC = () => {
                   key={pokemon.id}
                   pkmnIconPath={pokemon.image}
                   pkmnName={pokemon.name}
-                  trueName={name}
+                  trueName={formatPokemonName(pokemon.name)}
                   pkmnNumber={pokemon.id}
                 />
               );

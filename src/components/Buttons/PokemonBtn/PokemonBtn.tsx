@@ -8,15 +8,16 @@ interface PokemonBtnProps {
   pkmnNumber: number;
 }
 
-const PokemonBtn: React.FC<PokemonBtnProps> = (
-  {
-    pkmnIconPath, pkmnName, pkmnNumber, trueName,
-  }: PokemonBtnProps,
-) => (
+const PokemonBtn: React.FC<PokemonBtnProps> = ({
+  pkmnIconPath,
+  pkmnName,
+  pkmnNumber,
+  trueName,
+}: PokemonBtnProps) => (
   <PokemonBtnLink to={`/data/pokemon/${pkmnName}`}>
     <PokemonIcon src={`${pkmnIconPath}`} alt={`${pkmnNumber}-${trueName}`} />
     <br />
-    {trueName.charAt(0).toUpperCase() + trueName.slice(1)}
+    {trueName}
   </PokemonBtnLink>
 );
 
