@@ -2,7 +2,9 @@
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import { Container, Linkk } from './styles';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 interface EvoDetails {
   gender: unknown;
@@ -22,9 +24,9 @@ interface EvoDetails {
   time_of_day: string;
   trade_species: unknown;
   trigger: {
-    name: string,
-    url: string,
-  },
+    name: string;
+    url: string;
+  };
   turn_upside_down: boolean;
 }
 
@@ -63,6 +65,7 @@ interface ChainProps {
   chain: Chain;
   stage: number;
   pkmnName: string;
+  history: ReturnType<typeof useHistory>;
 }
 
 /**
@@ -71,14 +74,19 @@ interface ChainProps {
  * @param param0
  * @returns
  */
-const Evolution: React.FC<ChainProps> = ({ chain, stage, pkmnName }: ChainProps) => (
+const Evolution: React.FC<ChainProps> = ({
+  chain,
+  stage,
+  pkmnName,
+  history,
+}: ChainProps) => (
   <>
     {chain.evolves_to.map((evolution) => (
       <>
         <Linkk
           to="#"
           key={evolution.species.name}
-          onClick={() => window.location.assign(`/data/pokemon/${evolution.species.name}`)}
+          onClick={() => history.push(`/data/pokemon/${evolution.species.name}`)}
         >
           <Container
             pokeName={pkmnName}
@@ -91,7 +99,6 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage, pkmnName }: ChainProps)
             <p>
               <strong>
                 Stage
-                {' '}
                 {stage}
               </strong>
             </p>
@@ -104,6 +111,7 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage, pkmnName }: ChainProps)
             chain={evolution}
             stage={2}
             pkmnName={pkmnName}
+            history={history}
             key={evolution.species.url}
           />
         )}
@@ -116,10 +124,13 @@ const Evolution: React.FC<ChainProps> = ({ chain, stage, pkmnName }: ChainProps)
  * Function component for evolution charts
  * @returns JSX.Element
  */
-const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps) => {
+const PkmnEvoChart: React.FC<EvoChainProps> = ({
+  url,
+  pkmnName,
+}: EvoChainProps) => {
   const [evoChain, setEvoChain] = useState<EvolutionChain | null>(null);
   const [loading, setLoading] = useState(true);
-  // const history = useHistory();
+  const history = useHistory();
 
   useEffect(() => {
     async function fetchEvoChain(pokeurl: string): Promise<void> {
@@ -134,20 +145,14 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
   }, [evoChain, url, pkmnName]);
 
   if (loading) {
-    return (
-      <div>
-        <div className="spinner-border text-info" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner size="sm" fullPage={false} />;
   }
 
   return (
     <>
       <Linkk
         to="#"
-        onClick={() => window.location.assign(`/data/pokemon/${evoChain?.chain.species.name}`)}
+        onClick={() => history.push(`/data/pokemon/${evoChain?.chain.species.name}`)}
       >
         <Container
           pokeName={pkmnName}
@@ -158,13 +163,11 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
             alt={`${evoChain?.chain.species.name}`}
           />
 
-          <p><strong>Basic</strong></p>
+          <p>
+            <strong>Basic</strong>
+          </p>
 
-          {evoChain?.chain.is_baby ? (
-            <p>Baby</p>
-          ) : (
-            <p>Lv. 1</p>
-          )}
+          {evoChain?.chain.is_baby ? <p>Baby</p> : <p>Lv. 1</p>}
         </Container>
       </Linkk>
 
@@ -173,6 +176,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({ url, pkmnName }: EvoChainProps)
           chain={evoChain.chain}
           stage={1}
           pkmnName={pkmnName}
+          history={history}
         />
       )}
     </>
