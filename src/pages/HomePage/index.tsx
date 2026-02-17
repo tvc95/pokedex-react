@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import {
-  MDBCol, MDBContainer, MDBRow,
-} from 'mdbreact';
+import { MDBCol, MDBContainer, MDBRow } from 'mdbreact';
 import {
   JumbotronLogo,
   PokedexLogo,
@@ -24,9 +22,11 @@ import './form.css';
 import HomeNavbar from '../../components/Navbars/HomeNavbar/HomeNavbar';
 import PokedexLogoImg from '../../assets/images/logo_pokedex2.png';
 import PokedexImg from '../../assets/images/img_pokedex.png';
+import usePokemonCount from '../../hooks/usePokemonCount';
 
 const HomePage: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
+  const { totalSpecies } = usePokemonCount();
 
   const history = useHistory();
 
@@ -40,7 +40,11 @@ const HomePage: React.FC = () => {
       <HomeNavbar />
       <MDBContainer>
         <JumbotronLogo className="d-flex justify-content-center align-items-center">
-          <PokedexLogo src={PokedexLogoImg} alt="Pokedex" className="animated fadeInUp" />
+          <PokedexLogo
+            src={PokedexLogoImg}
+            alt="Pokedex"
+            className="animated fadeInUp"
+          />
         </JumbotronLogo>
       </MDBContainer>
 
@@ -77,12 +81,17 @@ const HomePage: React.FC = () => {
           </NewSearchBar>
         </BackgroundContainer>
 
-        <MainContent fluid className="d-flex justify-content-center align-items-center">
+        <MainContent
+          fluid
+          className="d-flex justify-content-center align-items-center"
+        >
           <MDBContainer>
             <MDBRow center middle>
               <LandingTextCol lg="6" middle>
                 <LandingText>
-                  An up-to-date Pokédex featuring all 893 Pokémon, including the new Galar region
+                  {totalSpecies
+                    ? `An up-to-date Pokédex featuring all ${totalSpecies} Pokémon`
+                    : 'An up-to-date Pokédex featuring all known Pokémon'}
                 </LandingText>
                 <Link to="/dexlist">
                   <NatDexBTN color="red darken-1">National Dex</NatDexBTN>
