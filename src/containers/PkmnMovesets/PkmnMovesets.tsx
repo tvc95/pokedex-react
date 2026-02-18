@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable max-len */
-/* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect, useState, useCallback, KeyboardEvent,
+} from 'react';
 import {
   MDBContainer,
   MDBNavItem,
@@ -17,6 +17,14 @@ interface CompProps {
   pkmnMoves: Array<PokemonMove>;
 }
 
+/** Tab configuration — single source of truth for labels and IDs */
+const TABS = [
+  { id: 0, label: 'By leveling up', panelId: 'moveset-panel-0' },
+  { id: 1, label: 'By TM/TR', panelId: 'moveset-panel-1' },
+  { id: 2, label: 'By Tutoring', panelId: 'moveset-panel-2' },
+  { id: 3, label: 'By Breeding', panelId: 'moveset-panel-3' },
+] as const;
+
 const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
   const [activeItem, setActiveItem] = useState(0);
   const [levelUpMoveList, setLevelUpMoveList] = useState<MoveListData[]>([]);
@@ -25,9 +33,6 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
   const [tutoringMoveList, setTutoringMoveList] = useState<MoveListData[]>([]);
   const [load, setLoad] = useState(false);
 
-  /**
-   * Handles tab change
-   */
   const toggleState = (tab: number) => {
     if (activeItem !== tab) {
       setActiveItem(tab);
@@ -35,54 +40,77 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
   };
 
   /**
-   * Formats full move data and splits them into categories of move
-   * lists (level up, machine, breeding and tutoring)
+   * Keyboard handler following the WAI-ARIA Tabs pattern:
+   * - ArrowRight / ArrowLeft: move between tabs
+   * - Home: jump to first tab
+   * - End: jump to last tab
    */
+  const handleTabKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLElement>) => {
+      let newIndex: number | null = null;
+
+      switch (e.key) {
+        case 'ArrowRight':
+          newIndex = (activeItem + 1) % TABS.length;
+          break;
+        case 'ArrowLeft':
+          newIndex = (activeItem - 1 + TABS.length) % TABS.length;
+          break;
+        case 'Home':
+          newIndex = 0;
+          break;
+        case 'End':
+          newIndex = TABS.length - 1;
+          break;
+        default:
+          return;
+      }
+
+      e.preventDefault();
+      setActiveItem(newIndex);
+
+      // Move focus to the newly active tab
+      const tabEl = document.getElementById(`moveset-tab-${newIndex}`);
+      if (tabEl) tabEl.focus();
+    },
+    [activeItem],
+  );
+
   const setMoveLists = async () => {
     const formattedMoveData = pkmnMoves.map((move) => {
-      const levelLearned = move.version_group_details[move.version_group_details.length - 1]
-        .level_learned_at;
-      const learningMethod = move.version_group_details[move.version_group_details.length - 1]
-        .move_learn_method.name;
-      const versionGroup = move.version_group_details[move.version_group_details.length - 1]
-        .version_group.name;
+      const lastDetail = move.version_group_details[move.version_group_details.length - 1];
 
       return {
         moveName: move.move.name,
         url: move.move.url,
         versionDetails: {
-          levelLearned,
-          learningMethod,
-          versionGroup,
+          levelLearned: lastDetail.level_learned_at,
+          learningMethod: lastDetail.move_learn_method.name,
+          versionGroup: lastDetail.version_group.name,
         },
       };
     });
 
-    // Filters formatted data to split moveset into categories
     setLevelUpMoveList(
       formattedMoveData.filter(
-        (move) => move.versionDetails.learningMethod === 'level-up',
+        (m) => m.versionDetails.learningMethod === 'level-up',
       ),
     );
-
     setMachineMoveList(
       formattedMoveData.filter(
-        (move) => move.versionDetails.learningMethod === 'machine',
+        (m) => m.versionDetails.learningMethod === 'machine',
       ),
     );
-
     setTutoringMoveList(
       formattedMoveData.filter(
-        (move) => move.versionDetails.learningMethod === 'tutor',
+        (m) => m.versionDetails.learningMethod === 'tutor',
       ),
     );
-
     setBreedingMoveList(
       formattedMoveData.filter(
-        (move) => move.versionDetails.learningMethod === 'egg',
+        (m) => m.versionDetails.learningMethod === 'egg',
       ),
     );
-
     setLoad(true);
   };
 
@@ -90,90 +118,62 @@ const PkmnMovesets: React.FC<CompProps> = ({ pkmnMoves }: CompProps) => {
     setMoveLists();
   }, []);
 
-  if (load) {
-    return (
-      <MDBContainer fluid>
-        <StyledTabs className="nav-tabs mt-3 nav-fill">
-          <MDBNavItem>
+  if (!load) return null;
+
+  const moveLists = [
+    levelUpMoveList,
+    machineMoveList,
+    tutoringMoveList,
+    breedingMoveList,
+  ];
+
+  return (
+    <MDBContainer fluid>
+      {/* Tab list with proper ARIA roles and keyboard navigation */}
+      <StyledTabs
+        className="nav-tabs mt-3 nav-fill"
+        role="tablist"
+        aria-label="Moveset categories"
+        onKeyDown={handleTabKeyDown}
+      >
+        {TABS.map((tab) => (
+          <MDBNavItem key={tab.id} role="presentation">
             <MDBNavLink
+              id={`moveset-tab-${tab.id}`}
               link
               to="#"
-              active={activeItem.toString() === '0'}
+              active={activeItem === tab.id}
               onClick={(e: Event) => {
                 e.preventDefault();
-                toggleState(0);
+                toggleState(tab.id);
               }}
               role="tab"
+              aria-selected={activeItem === tab.id}
+              aria-controls={tab.panelId}
+              tabIndex={activeItem === tab.id ? 0 : -1}
             >
-              By leveling up
+              {tab.label}
             </MDBNavLink>
           </MDBNavItem>
+        ))}
+      </StyledTabs>
 
-          <MDBNavItem>
-            <MDBNavLink
-              link
-              to="#"
-              active={activeItem.toString() === '1'}
-              onClick={(e: Event) => {
-                e.preventDefault();
-                toggleState(1);
-              }}
-              role="tab"
-            >
-              By TM/TR
-            </MDBNavLink>
-          </MDBNavItem>
-
-          <MDBNavItem>
-            <MDBNavLink
-              link
-              to="#"
-              active={activeItem.toString() === '2'}
-              onClick={(e: Event) => {
-                e.preventDefault();
-                toggleState(2);
-              }}
-              role="tab"
-            >
-              By Tutoring
-            </MDBNavLink>
-          </MDBNavItem>
-
-          <MDBNavItem>
-            <MDBNavLink
-              link
-              to="#"
-              active={activeItem.toString() === '3'}
-              onClick={(e: Event) => {
-                e.preventDefault();
-                toggleState(3);
-              }}
-              role="tab"
-            >
-              By Breeding
-            </MDBNavLink>
-          </MDBNavItem>
-        </StyledTabs>
-
-        <MDBTabContent activeItem={activeItem.toString()}>
-          <MDBTabPane tabId="0" role="tabpanel">
-            <MovesetTable moveList={levelUpMoveList} tableType={0} />
+      {/* Tab panels */}
+      <MDBTabContent activeItem={activeItem.toString()}>
+        {TABS.map((tab, idx) => (
+          <MDBTabPane
+            key={tab.id}
+            tabId={tab.id.toString()}
+            role="tabpanel"
+            id={tab.panelId}
+            aria-labelledby={`moveset-tab-${tab.id}`}
+          >
+            <MovesetTable moveList={moveLists[idx]} tableType={tab.id} />
           </MDBTabPane>
-          <MDBTabPane tabId="1" role="tabpanel">
-            <MovesetTable moveList={machineMoveList} tableType={1} />
-          </MDBTabPane>
-          <MDBTabPane tabId="2" role="tabpanel">
-            <MovesetTable moveList={tutoringMoveList} tableType={2} />
-          </MDBTabPane>
-          <MDBTabPane tabId="3" role="tabpanel">
-            <MovesetTable moveList={breedingMoveList} tableType={3} />
-          </MDBTabPane>
-        </MDBTabContent>
-      </MDBContainer>
-    );
-  }
-
-  return null;
+        ))}
+      </MDBTabContent>
+    </MDBContainer>
+  );
 };
 
 export default PkmnMovesets;

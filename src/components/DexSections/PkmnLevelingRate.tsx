@@ -20,8 +20,8 @@ const getDisplayName = (name: string): string => {
 
 /**
  * Renders a dual progress bar showing the Pokémon's leveling rate.
- * The green portion represents speed, the dark portion represents
- * the remainder.
+ * Includes ARIA attributes so screen readers announce the rate
+ * (e.g. "Leveling rate: medium, 60%").
  */
 const PkmnLevelingRate: React.FC<PkmnLevelingRateProps> = ({
   subTitle: SubTitle,
@@ -29,24 +29,33 @@ const PkmnLevelingRate: React.FC<PkmnLevelingRateProps> = ({
   growthRate,
 }: PkmnLevelingRateProps) => {
   const displayName = getDisplayName(growthRateName);
-  const greenPercent = 100 * growthRate;
-  const darkPercent = 100 - greenPercent;
+  const greenPercent = Math.round(100 * growthRate);
 
   return (
     <div id="leveling-rate">
       <SubTitle>Leveling rate</SubTitle>
-      <div className="progress" style={{ height: '1.5rem' }}>
+      <div
+        className="progress"
+        style={{ height: '1.5rem' }}
+        role="group"
+        aria-label={`Leveling rate: ${displayName}`}
+      >
         <div
           className="progress-bar progress-bar-striped bg-success"
           role="progressbar"
           style={{ width: `${greenPercent}%` }}
+          aria-valuenow={greenPercent}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`Leveling speed: ${displayName}, ${greenPercent}%`}
         >
           <strong>{growthRate >= 0.4 && displayName}</strong>
         </div>
         <div
           className="progress-bar bg-dark"
           role="progressbar"
-          style={{ width: `${darkPercent}%` }}
+          style={{ width: `${100 - greenPercent}%` }}
+          aria-hidden="true"
         >
           <strong>{growthRate < 0.4 && displayName}</strong>
         </div>

@@ -1,11 +1,9 @@
 /* eslint-disable camelcase */
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import {
-  MDBCarouselInner, MDBCarouselItem, MDBView,
-} from
-  'mdbreact';
+import { MDBCarouselInner, MDBCarouselItem, MDBView } from 'mdbreact';
 import axios from 'axios';
+import formatPokemonName from '../../../utils/formatPokemonName';
 import {
   Carousel, Description, PkmnArt, PkmnArtCaption,
 } from './styles';
@@ -13,7 +11,7 @@ import {
 interface Ability {
   ability: {
     name: string;
-  }
+  };
   is_hidden: boolean;
 }
 
@@ -29,7 +27,7 @@ interface PokemonVariety {
     effort: number;
     stat: {
       name: string;
-    }
+    };
   }>;
   types: Array<{
     slot: number;
@@ -51,7 +49,10 @@ interface ImageData {
   imageUrl: string;
 }
 
-const PkmnArtCarousel: React.FC<Props> = ({ pkmnName, pkmnVarieties }: Props) => {
+const PkmnArtCarousel: React.FC<Props> = ({
+  pkmnName,
+  pkmnVarieties,
+}: Props) => {
   /// State hooks
   const [pkmnArtwork, setPkmnArtwork] = useState<ImageData[]>([]);
 
@@ -60,14 +61,19 @@ const PkmnArtCarousel: React.FC<Props> = ({ pkmnName, pkmnVarieties }: Props) =>
    */
   const fetchImages = async () => {
     const mapImages = pkmnVarieties.map(async (variety) => {
-      if (variety.name.includes('-totem') || variety.name.includes('-cosplay')) {
+      if (
+        variety.name.includes('-totem')
+        || variety.name.includes('-cosplay')
+      ) {
         return {
           pokemonName: 'notavailable',
           imageUrl: 'notavailable',
         };
       }
 
-      const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${variety.name}`);
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${variety.name}`,
+      );
 
       return {
         pokemonName: variety.name,
@@ -101,6 +107,7 @@ const PkmnArtCarousel: React.FC<Props> = ({ pkmnName, pkmnVarieties }: Props) =>
         length={pkmnArtwork.length}
         showControls
         showIndicators
+        aria-label={`Official artwork for ${formatPokemonName(pkmnName)} and its forms`}
       >
         <MDBCarouselInner>
           {pkmnArtwork.map((image, idx) => (
@@ -108,12 +115,14 @@ const PkmnArtCarousel: React.FC<Props> = ({ pkmnName, pkmnVarieties }: Props) =>
               <MDBView>
                 <PkmnArt
                   src={image.imageUrl}
-                  alt={image.pokemonName}
+                  alt={`Official artwork of ${formatPokemonName(image.pokemonName)}`}
                 />
               </MDBView>
 
               <PkmnArtCaption>
-                <Description>{image.pokemonName.charAt(0).toUpperCase() + image.pokemonName.slice(1).replace('-', ' ')}</Description>
+                <Description>
+                  {formatPokemonName(image.pokemonName)}
+                </Description>
               </PkmnArtCaption>
             </MDBCarouselItem>
           ))}

@@ -29,7 +29,9 @@ const PkmnDescription: React.FC<PkmnDescriptionProps> = ({
               || entry.version.name === 'scarlet'),
         )
         .slice(0, 2)
-        .map((entry) => `${entry.flavor_text} `)}
+        .map((entry) => (
+          <span key={entry.version.name}>{`${entry.flavor_text} `}</span>
+        ))}
     </p>
     <p>
       <small>
