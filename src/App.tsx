@@ -1,9 +1,9 @@
-import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-import GlobalStyle from "./styles/global";
-import Routes from "./routes/index";
+import GlobalStyle from './styles/global';
+import Routes from './routes/index';
 
 /**
  * Shared QueryClient instance. Configures sensible defaults:

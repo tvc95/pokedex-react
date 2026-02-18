@@ -1,14 +1,14 @@
-import { useQuery as useReactQuery } from "react-query";
-import { useLocation } from "react-router-dom";
-import { gql, useQuery as useApolloQuery } from "@apollo/client";
-import axios from "axios";
+import { useQuery as useReactQuery } from 'react-query';
+import { useLocation } from 'react-router-dom';
+import { gql, useQuery as useApolloQuery } from '@apollo/client';
+import axios from 'axios';
 import {
   Pokemon,
   PokemonVariety,
   PokemonMove,
   PokemonQueryData,
   PokemonGraphQL,
-} from "../types/pokemon";
+} from '../types/pokemon';
 
 // ---------------------------------------------------------------------------
 // Helper functions (pure, no side effects — easy to unit test)
@@ -20,7 +20,7 @@ import {
  * @returns e.g. "Generation IV"
  */
 export const formatGenText = (text: string): string => {
-  const [gen, number] = text.split("-");
+  const [gen, number] = text.split('-');
   return `${gen.charAt(0).toUpperCase() + gen.substr(1)} ${number.toUpperCase()}`;
 };
 
@@ -30,17 +30,17 @@ export const formatGenText = (text: string): string => {
  */
 export const getGrowthRate = (rate: string): number => {
   switch (rate) {
-    case "fast-then-very-slow":
+    case 'fast-then-very-slow':
       return 0.1;
-    case "slow":
+    case 'slow':
       return 0.2;
-    case "medium-slow":
+    case 'medium-slow':
       return 0.4;
-    case "medium":
+    case 'medium':
       return 0.6;
-    case "fast":
+    case 'fast':
       return 0.8;
-    case "slow-then-very-fast":
+    case 'slow-then-very-fast':
       return 0.9;
     default:
       return 0;
@@ -209,7 +209,7 @@ const usePokemonData = (): UsePokemonDataResult => {
     isLoading: speciesLoading,
     error: speciesError,
   } = useReactQuery(
-    ["pokemonSpecies", speciesUrl],
+    ['pokemonSpecies', speciesUrl],
     () => fetchSpeciesData(speciesUrl!),
     {
       enabled: !!speciesUrl,
@@ -223,10 +223,9 @@ const usePokemonData = (): UsePokemonDataResult => {
 
   let errorMessage: string | null = null;
   if (gqlError) {
-    errorMessage = "Could not load Pokémon data from the server.";
+    errorMessage = 'Could not load Pokémon data from the server.';
   } else if (speciesError) {
-    errorMessage =
-      "Failed to load Pokémon species data. Please try again later.";
+    errorMessage = 'Failed to load Pokémon species data. Please try again later.';
   }
 
   return {
@@ -234,7 +233,7 @@ const usePokemonData = (): UsePokemonDataResult => {
     pokemon: speciesData?.pokemon ?? null,
     varieties: speciesData?.varieties ?? [],
     moves: gqlData?.pokemon?.moves ?? [],
-    genName: speciesData?.genName ?? "",
+    genName: speciesData?.genName ?? '',
     growthRate: speciesData?.growthRate ?? 0,
     loading: isLoading,
     ready: isReady,

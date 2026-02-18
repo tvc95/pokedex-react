@@ -1,5 +1,5 @@
-import { useQuery } from "react-query";
-import axios from "axios";
+import { useQuery } from 'react-query';
+import axios from 'axios';
 
 interface PokemonNameEntry {
   name: string;
@@ -14,13 +14,13 @@ interface PokemonNameEntry {
 const fetchPokemonNames = async (): Promise<PokemonNameEntry[]> => {
   // Get total species count
   const countRes = await axios.get(
-    "https://pokeapi.co/api/v2/pokemon-species?limit=1",
+    'https://pokeapi.co/api/v2/pokemon-species?limit=1',
   );
   const totalSpecies: number = countRes.data.count;
 
   // Fetch all names via GraphQL (single request)
   const response = await axios.post(
-    "https://graphql-pokeapi.vercel.app/api/graphql",
+    'https://graphql-pokeapi.vercel.app/api/graphql',
     {
       query: `
         query pokemons($limit: Int) {
@@ -55,7 +55,7 @@ const usePokemonNames = () => {
     data: pokemonList,
     isLoading,
     error,
-  } = useQuery("pokemonNamesList", fetchPokemonNames, {
+  } = useQuery('pokemonNamesList', fetchPokemonNames, {
     staleTime: Infinity,
   });
 
@@ -87,7 +87,7 @@ const usePokemonNames = () => {
   return {
     pokemonList: list,
     loading: isLoading,
-    error: error ? "Could not load Pokémon list for search." : null,
+    error: error ? 'Could not load Pokémon list for search.' : null,
     filterByName,
   };
 };

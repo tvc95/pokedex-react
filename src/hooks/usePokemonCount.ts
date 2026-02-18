@@ -1,5 +1,5 @@
-import { useQuery } from "react-query";
-import axios from "axios";
+import { useQuery } from 'react-query';
+import axios from 'axios';
 
 /**
  * Fetches the total number of Pokémon species from the PokéAPI.
@@ -8,7 +8,7 @@ import axios from "axios";
  */
 const fetchSpeciesCount = async (): Promise<number> => {
   const response = await axios.get(
-    "https://pokeapi.co/api/v2/pokemon-species?limit=1",
+    'https://pokeapi.co/api/v2/pokemon-species?limit=1',
   );
   return response.data.count;
 };
@@ -30,14 +30,14 @@ const usePokemonCount = () => {
     data: totalSpecies,
     isLoading,
     error,
-  } = useQuery("pokemonSpeciesCount", fetchSpeciesCount, {
+  } = useQuery('pokemonSpeciesCount', fetchSpeciesCount, {
     staleTime: Infinity,
   });
 
   return {
     totalSpecies: totalSpecies ?? null,
     loading: isLoading,
-    error: error ? "Could not fetch Pokémon count." : null,
+    error: error ? 'Could not fetch Pokémon count.' : null,
   };
 };
 
