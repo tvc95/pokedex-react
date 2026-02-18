@@ -15,6 +15,7 @@ const HomePage = lazy(() => import('../pages/HomePage/index'));
 const DexData = lazy(() => import('../pages/DexData/index'));
 const PokemonListPg = lazy(() => import('../pages/PokemonList'));
 const PokemonSearchPg = lazy(() => import('../pages/PokemonSearch'));
+const NotFound = lazy(() => import('../pages/NotFound'));
 
 const Routes: React.FC = () => (
   <Suspense fallback={<LoadingSpinner size="md" fullPage />}>
@@ -23,6 +24,7 @@ const Routes: React.FC = () => (
       <Route path="/dexlist" component={PokemonListPg} />
       <Route path="/data/pokemon/:pkmnName" component={DexData} />
       <Route path="/search/:searchWord" component={PokemonSearchPg} />
+      <Route component={NotFound} />
     </Switch>
   </Suspense>
 );
