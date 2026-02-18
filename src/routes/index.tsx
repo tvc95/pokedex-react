@@ -22,7 +22,10 @@ const Routes: React.FC = () => (
     <Switch>
       <Route path="/" exact component={HomePage} />
       <Route path="/dexlist" component={PokemonListPg} />
-      <Route path="/data/pokemon/:pkmnName" component={DexData} />
+      <Route
+        path="/data/pokemon/:pkmnName"
+        render={({ match }) => <DexData key={match.params.pkmnName} />}
+      />
       <Route path="/search/:searchWord" component={PokemonSearchPg} />
       <Route component={NotFound} />
     </Switch>

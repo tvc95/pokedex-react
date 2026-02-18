@@ -56,49 +56,52 @@ const PkmnArtCarousel: React.FC<Props> = ({
   /// State hooks
   const [pkmnArtwork, setPkmnArtwork] = useState<ImageData[]>([]);
 
-  /**
-   * Fetches sugimori art from each Pokémon variety
-   */
-  const fetchImages = async () => {
-    const mapImages = pkmnVarieties.map(async (variety) => {
-      if (
-        variety.name.includes('-totem')
-        || variety.name.includes('-cosplay')
-      ) {
+  useEffect(() => {
+    let cancelled = false;
+
+    async function execute() {
+      const mapImages = pkmnVarieties.map(async (variety) => {
+        if (
+          variety.name.includes('-totem')
+          || variety.name.includes('-cosplay')
+        ) {
+          return {
+            pokemonName: 'notavailable',
+            imageUrl: 'notavailable',
+          };
+        }
+
+        const response = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/${variety.name}`,
+        );
+
         return {
-          pokemonName: 'notavailable',
-          imageUrl: 'notavailable',
+          pokemonName: variety.name,
+          imageUrl:
+            response.data.sprites.other['official-artwork'].front_default,
         };
+      });
+
+      const images = await Promise.all(mapImages);
+
+      if (pkmnName.includes('alola') || pkmnName.includes('galar')) {
+        const switchImg = images.splice(1, 1);
+        images.unshift(switchImg[0]);
       }
 
-      const response = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon/${variety.name}`,
-      );
-
-      return {
-        pokemonName: variety.name,
-        imageUrl: response.data.sprites.other['official-artwork'].front_default,
-      };
-    });
-
-    const images = await Promise.all(mapImages);
-
-    if (pkmnName.includes('alola') || pkmnName.includes('galar')) {
-      const switchImg = images.splice(1, 1);
-      images.unshift(switchImg[0]);
-    }
-
-    setPkmnArtwork(images.filter((image) => image.imageUrl !== 'notavailable'));
-  };
-
-  useEffect(() => {
-    async function execute() {
-      await fetchImages();
+      if (!cancelled) {
+        setPkmnArtwork(
+          images.filter((image) => image.imageUrl !== 'notavailable'),
+        );
+      }
     }
 
     execute();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [pkmnName, pkmnVarieties]);
 
   return (
     <>

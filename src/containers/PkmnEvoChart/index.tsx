@@ -135,16 +135,23 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({
   const history = useHistory();
 
   useEffect(() => {
+    let cancelled = false;
+
     async function fetchEvoChain(pokeurl: string): Promise<void> {
+      setLoading(true);
       const response = await axios.get(pokeurl);
-      setEvoChain(response.data);
-      setLoading(false);
+      if (!cancelled) {
+        setEvoChain(response.data);
+        setLoading(false);
+      }
     }
 
-    if (evoChain === null) {
-      fetchEvoChain(url);
-    }
-  }, [evoChain, url, pkmnName]);
+    fetchEvoChain(url);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [url]);
 
   if (loading) {
     return <LoadingSpinner size="sm" fullPage={false} />;
