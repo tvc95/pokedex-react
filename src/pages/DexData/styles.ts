@@ -183,7 +183,7 @@ export const EvoChartContainer = styled.div`
   align-items: center;
   justify-content: center;
   grid-gap: 1rem;
-  grid-template-columns: repeat(1, minmax(104px, 1fr));
+  grid-template-columns: repeat(2, minmax(104px, 1fr));
   grid-template-rows: repeat(auto-fill, minmax(104px, 1fr));
 
   @media (min-width: 400px) {
