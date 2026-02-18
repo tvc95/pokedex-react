@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import axios from 'axios';
 
 interface PokemonNameEntry {
@@ -8,76 +8,58 @@ interface PokemonNameEntry {
 }
 
 /**
- * Module-level cache so the full list is only fetched once per session.
+ * Fetches the complete list of Pokémon names, IDs, and sprite URLs.
+ * First gets the total count, then fetches all in a single GraphQL call.
  */
-let cachedList: PokemonNameEntry[] | null = null;
+const fetchPokemonNames = async (): Promise<PokemonNameEntry[]> => {
+  // Get total species count
+  const countRes = await axios.get(
+    'https://pokeapi.co/api/v2/pokemon-species?limit=1',
+  );
+  const totalSpecies: number = countRes.data.count;
+
+  // Fetch all names via GraphQL (single request)
+  const response = await axios.post(
+    'https://graphql-pokeapi.vercel.app/api/graphql',
+    {
+      query: `
+        query pokemons($limit: Int) {
+          pokemons(limit: $limit, offset: 0) {
+            results {
+              name
+              id
+              image
+            }
+          }
+        }
+      `,
+      variables: { limit: totalSpecies },
+    },
+  );
+
+  return response.data.data.pokemons.results.filter(
+    (p: PokemonNameEntry) => p.id <= totalSpecies,
+  );
+};
 
 /**
- * Custom hook that loads the complete list of Pokémon names from the
- * PokéAPI (via the GraphQL wrapper) and provides a local filter function
- * for instant autocomplete. The full list is fetched once and cached in
- * memory.
+ * Custom hook that provides the full Pokémon name list and a local
+ * filter function for instant autocomplete.
  *
- * Using the REST endpoint pokemon-species?limit=<count> would also work,
- * but the GraphQL wrapper already returns image URLs which are useful
- * for showing sprites in the suggestions dropdown.
+ * React Query handles caching, deduplication, and retry. The name list
+ * is fetched once and cached indefinitely (staleTime: Infinity) since
+ * the Pokémon list only changes with new game releases.
  */
 const usePokemonNames = () => {
-  const [pokemonList, setPokemonList] = useState<PokemonNameEntry[]>(
-    cachedList ?? [],
-  );
-  const [loading, setLoading] = useState(cachedList === null);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    data: pokemonList,
+    isLoading,
+    error,
+  } = useQuery('pokemonNamesList', fetchPokemonNames, {
+    staleTime: Infinity,
+  });
 
-  useEffect(() => {
-    if (cachedList !== null) {
-      setPokemonList(cachedList);
-      setLoading(false);
-      return;
-    }
-
-    const fetchList = async () => {
-      try {
-        // First get the total species count
-        const countRes = await axios.get(
-          'https://pokeapi.co/api/v2/pokemon-species?limit=1',
-        );
-        const totalSpecies = countRes.data.count;
-
-        // Fetch all names via GraphQL (single request)
-        const response = await axios.post(
-          'https://graphql-pokeapi.vercel.app/api/graphql',
-          {
-            query: `
-              query pokemons($limit: Int) {
-                pokemons(limit: $limit, offset: 0) {
-                  results {
-                    name
-                    id
-                    image
-                  }
-                }
-              }
-            `,
-            variables: { limit: totalSpecies },
-          },
-        );
-
-        const results: PokemonNameEntry[] = response.data.data.pokemons.results.filter(
-          (p: PokemonNameEntry) => p.id <= totalSpecies,
-        );
-
-        cachedList = results;
-        setPokemonList(results);
-      } catch (err) {
-        setError('Could not load Pokémon list for search.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchList();
-  }, []);
+  const list = pokemonList ?? [];
 
   /**
    * Filters the cached list by a search term. Matches against the
@@ -88,11 +70,10 @@ const usePokemonNames = () => {
     if (!term || term.length < 2) return [];
 
     const lower = term.toLowerCase();
-
     const prefixMatches: PokemonNameEntry[] = [];
     const substringMatches: PokemonNameEntry[] = [];
 
-    pokemonList.forEach((pokemon) => {
+    list.forEach((pokemon) => {
       if (pokemon.name.startsWith(lower)) {
         prefixMatches.push(pokemon);
       } else if (pokemon.name.includes(lower)) {
@@ -100,14 +81,13 @@ const usePokemonNames = () => {
       }
     });
 
-    // Show prefix matches first, then substring matches, cap at 8
     return [...prefixMatches, ...substringMatches].slice(0, 8);
   };
 
   return {
-    pokemonList,
-    loading,
-    error,
+    pokemonList: list,
+    loading: isLoading,
+    error: error ? 'Could not load Pokémon list for search.' : null,
     filterByName,
   };
 };

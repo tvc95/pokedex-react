@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { Container, Linkk } from './styles';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+import formatPokemonName from '../../utils/formatPokemonName';
 
 interface EvoDetails {
   gender: unknown;
@@ -87,6 +88,7 @@ const Evolution: React.FC<ChainProps> = ({
           to="#"
           key={evolution.species.name}
           onClick={() => history.push(`/data/pokemon/${evolution.species.name}`)}
+          aria-label={`View ${formatPokemonName(evolution.species.name)} details`}
         >
           <Container
             pokeName={pkmnName}
@@ -94,7 +96,7 @@ const Evolution: React.FC<ChainProps> = ({
           >
             <img
               src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evolution.species.name}.png`}
-              alt={`${evolution.species.name}`}
+              alt={`${formatPokemonName(evolution.species.name)} sprite, evolution stage ${stage}`}
             />
             <p>
               <strong>
@@ -133,16 +135,23 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({
   const history = useHistory();
 
   useEffect(() => {
+    let cancelled = false;
+
     async function fetchEvoChain(pokeurl: string): Promise<void> {
+      setLoading(true);
       const response = await axios.get(pokeurl);
-      setEvoChain(response.data);
-      setLoading(false);
+      if (!cancelled) {
+        setEvoChain(response.data);
+        setLoading(false);
+      }
     }
 
-    if (evoChain === null) {
-      fetchEvoChain(url);
-    }
-  }, [evoChain, url, pkmnName]);
+    fetchEvoChain(url);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [url]);
 
   if (loading) {
     return <LoadingSpinner size="sm" fullPage={false} />;
@@ -153,6 +162,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({
       <Linkk
         to="#"
         onClick={() => history.push(`/data/pokemon/${evoChain?.chain.species.name}`)}
+        aria-label={`View ${formatPokemonName(evoChain?.chain.species.name ?? '')} details`}
       >
         <Container
           pokeName={pkmnName}
@@ -160,7 +170,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({
         >
           <img
             src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evoChain?.chain.species.name}.png`}
-            alt={`${evoChain?.chain.species.name}`}
+            alt={`${formatPokemonName(evoChain?.chain.species.name ?? '')} sprite, base form`}
           />
 
           <p>
