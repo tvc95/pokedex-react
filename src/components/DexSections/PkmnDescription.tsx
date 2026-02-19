@@ -37,7 +37,7 @@ const PkmnDescription: React.FC<PkmnDescriptionProps> = ({
       <small>
         <em>
           First introduced in
-          {genName}
+          {` ${genName}`}
         </em>
       </small>
     </p>
