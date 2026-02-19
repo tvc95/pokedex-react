@@ -39,8 +39,11 @@ export const PokemonInfoI = styled(MDBCol)`
 export const SubTitle = styled.h3`
   margin-top: 1.5rem;
   font-family: Advent Pro;
-  font-size: xx-large;
   font-weight: 700;
+  font-size: 1.5rem;
+  @media (min-width: 768px) {
+    font-size: xx-large;
+  }
 `;
 
 export const List = styled.ul`

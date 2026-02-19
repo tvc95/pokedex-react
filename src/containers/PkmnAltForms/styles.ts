@@ -7,18 +7,18 @@ export const AltForms = styled.div`
   align-items: center;
   justify-content: center;
   grid-gap: 1rem;
-  grid-template-columns:  repeat(1, minmax(104px, 1fr));
+  grid-template-columns: repeat(1, minmax(104px, 1fr));
   grid-template-rows: repeat(auto-fill, minmax(104px, 1fr));
 
   @media (min-width: 400px) {
-    grid-template-columns:  repeat(3, minmax(104px, 1fr));
+    grid-template-columns: repeat(3, minmax(104px, 1fr));
   }
 `;
 
 export const Linkk = styled(Link)`
   width: 104px;
   height: 104px;
-  
+
   margin: 0.2rem auto;
 `;
 
@@ -47,17 +47,22 @@ export const TypeSpan = styled.span`
 // 8A9B689f
 // 9F7833
 export const RegionVariant = styled.div`
-  background-color: rgba(222, 158, 54, 0.85); 
+  background-color: rgba(222, 158, 54, 0.85);
   border-radius: 18px;
   margin: 0.2rem auto;
   width: 104px;
   height: 104px;
 
-  text-anchor: middle;
-  text-align: center;
   font-family: Advent Pro;
   font-style: normal;
   color: black;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-anchor: middle;
 
   p {
     margin-bottom: 0;
