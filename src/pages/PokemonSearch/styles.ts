@@ -1,5 +1,9 @@
 import {
-  MDBBtn, MDBContainer, MDBInputGroup, MDBJumbotron, MDBRow,
+  MDBBtn,
+  MDBContainer,
+  MDBInputGroup,
+  MDBJumbotron,
+  MDBRow,
 } from 'mdbreact';
 import styled, { createGlobalStyle } from 'styled-components';
 import backgroundImage from '../../assets/images/backgroundlanding.png';
@@ -29,7 +33,7 @@ export const Title = styled.h1`
 `;
 
 export const BackgroundLayer = styled.div`
-  background: #A81818;
+  background: #a81818;
   border-radius: 30px;
   border-bottom-right-radius: 0rem;
   border-bottom-left-radius: 0rem;
@@ -44,15 +48,15 @@ export const BackgroundContainer = styled.div`
 `;
 
 export const NewSearchBar = styled(MDBRow)`
-  z-index:1;
+  z-index: 1;
   margin-top: 0.85rem;
-  width: 900px;
-
+  width: 100%;
+  max-width: 900px;
 `;
 
 export const InputSearch = styled(MDBInputGroup)`
   z-index: 2;
-  color: #FFFFFF;
+  color: #ffffff;
 
   /* Font info */
   font-family: Advent Pro;
@@ -77,7 +81,7 @@ export const SearchBtn = styled(MDBBtn)`
 
 export const MainContent = styled(MDBContainer)`
   margin-top: 0.8rem;
-  background: #CD3232;
+  background: #cd3232;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   border-bottom-right-radius: 0px;
@@ -85,8 +89,6 @@ export const MainContent = styled(MDBContainer)`
   border: none;
   /* Grid */
   padding: 2rem;
-  
-  box-shadow: 0px -8px 10px 2px rgba(0, 0, 0, 0.1) ;
 
-
+  box-shadow: 0px -8px 10px 2px rgba(0, 0, 0, 0.1);
 `;

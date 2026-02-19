@@ -2,7 +2,10 @@
 import {
   MDBBtn,
   MDBCol,
-  MDBContainer, MDBInputGroup, MDBJumbotron, MDBRow,
+  MDBContainer,
+  MDBInputGroup,
+  MDBJumbotron,
+  MDBRow,
 } from 'mdbreact';
 import styled, { createGlobalStyle } from 'styled-components';
 import backgroundImage from '../../assets/images/bg2.png';
@@ -37,7 +40,7 @@ export const PokedexLogo = styled.img`
 `;
 
 export const BackgroundLayer = styled.div`
-  background: #A81818;
+  background: #a81818;
   border-radius: 30px;
   border-bottom-right-radius: 0rem;
   border-bottom-left-radius: 0rem;
@@ -60,14 +63,14 @@ export const Div = styled.div`
 `;
 
 export const NewSearchBar = styled(MDBRow)`
-  z-index:1;
+  z-index: 1;
   margin-top: 0.85rem;
-  width: 900px;
-
+  width: 100%;
+  max-width: 900px;
 `;
 
 export const SearchBar = styled(MDBContainer)`
-  z-index:1;
+  z-index: 1;
   margin-top: 0.85rem;
   background: #810101;
   border-radius: 2.1875rem;
@@ -78,12 +81,12 @@ export const SearchIcon = styled.img`
   z-index: 1;
   width: 1.5rem;
   height: 1.5rem;
-  opacity: .50;
+  opacity: 0.5;
 `;
 
 export const InputSearch = styled(MDBInputGroup)`
   z-index: 2;
-  color: #FFFFFF;
+  color: #ffffff;
 
   /* Font info */
   font-family: Advent Pro;
@@ -92,7 +95,7 @@ export const InputSearch = styled(MDBInputGroup)`
   font-size: larger;
 
   ::placeholder {
-    color: rgba(217, 217, 217, 0.7);
+    color: rgba(255, 139, 139, 0.7);
   }
 `;
 
@@ -108,7 +111,7 @@ export const SearchBtn = styled(MDBBtn)`
 
 export const MainContent = styled(MDBContainer)`
   margin-top: 0.8rem;
-  background: #CD3232;
+  background: #cd3232;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   border-bottom-right-radius: 0px;
@@ -116,43 +119,41 @@ export const MainContent = styled(MDBContainer)`
   border: none;
   /* Grid */
   padding: 2rem;
-  
-  box-shadow: 0px -8px 10px 2px rgba(0, 0, 0, 0.1) ;
 
-
+  box-shadow: 0px -8px 10px 2px rgba(0, 0, 0, 0.1);
 `;
 
 export const LandingTextCol = styled(MDBCol)`
-    @media(min-width: 768px) and (max-width: 991px) {
-      padding-left: 3.5rem;
-      padding-right: 3.5rem;
-    }
-    @media(min-width: 1440px) {
-      /* padding-left: 4rem; */
-    }
+  @media (min-width: 768px) and (max-width: 991px) {
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+  }
+  @media (min-width: 1440px) {
+    /* padding-left: 4rem; */
+  }
 `;
 
 export const LandingText = styled.p`
-/* Font info */
-    font-family: Advent Pro;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 2rem;
-    color: white;
+  /* Font info */
+  font-family: Advent Pro;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 2rem;
+  color: white;
 
-    @media(min-width: 768px) and (max-width: 991px) {
-      font-size: 2.6rem;
-    }
+  @media (min-width: 768px) and (max-width: 991px) {
+    font-size: 2.6rem;
+  }
 
-    @media(min-width: 1440px) {
-      font-size: 2.8rem;
-      /* padding-right: 2rem; */
-      /* font-weight: 500; */
-    }
+  @media (min-width: 1440px) {
+    font-size: 2.8rem;
+    /* padding-right: 2rem; */
+    /* font-weight: 500; */
+  }
 `;
 
 export const NatDexBTN = styled(MDBBtn)`
-  background: #E55858 !important;
+  background: #e55858 !important;
   border: none;
   margin-right: 0.6rem;
   border-radius: 8px;
@@ -167,15 +168,14 @@ export const NatDexBTN = styled(MDBBtn)`
     background: #e74848 !important;
   }
 
-  :active{
+  :active {
     background: #b83737 !important;
   }
 
-  @media(max-width: 1023px) {
-      width: 100%;
-      margin: 0rem 0rem 1rem 0rem;
+  @media (max-width: 1023px) {
+    width: 100%;
+    margin: 0rem 0rem 1rem 0rem;
   }
-
 `;
 
 export const RegDexBtn = styled(MDBBtn)`
@@ -194,21 +194,20 @@ export const RegDexBtn = styled(MDBBtn)`
     background: #4bc2c2 !important;
   }
 
-  :active{
+  :active {
     background: #31a5a5 !important;
   }
 
-  @media(max-width: 1023px) {
-      width: 100%;
-      margin: 0rem 0rem 1rem 0rem;
+  @media (max-width: 1023px) {
+    width: 100%;
+    margin: 0rem 0rem 1rem 0rem;
   }
-
 `;
 
 export const LandingImageCol = styled(MDBCol)`
-    @media(min-width: 1200px) {
-      padding-right: 4rem;
-    }
+  @media (min-width: 1200px) {
+    padding-right: 4rem;
+  }
 `;
 
 export const Pokedex = styled.img`
@@ -216,5 +215,4 @@ export const Pokedex = styled.img`
   z-index: 2;
   opacity: 0.15;
   max-width: 100%;
-
 `;

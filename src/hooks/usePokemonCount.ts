@@ -1,58 +1,44 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import axios from 'axios';
 
 /**
- * Cache the species count at module level so it persists across
- * component mounts without needing a global state library.
+ * Fetches the total number of Pokémon species from the PokéAPI.
+ * Uses limit=1 to get just the count metadata without downloading
+ * the entire species list.
  */
-let cachedCount: number | null = null;
+const fetchSpeciesCount = async (): Promise<number> => {
+  const response = await axios.get(
+    'https://pokeapi.co/api/v2/pokemon-species?limit=1',
+  );
+  return response.data.count;
+};
 
 /**
- * Custom hook that fetches the total number of Pokémon species
- * from the PokéAPI. The count is fetched once and cached in memory
- * so subsequent calls return instantly.
+ * Custom hook that returns the total number of Pokémon species.
  *
- * This replaces all hardcoded Pokémon limits (893, 898, 840, etc.)
- * and ensures the app stays up-to-date as new generations are released.
+ * Powered by React Query, which provides:
+ * - Automatic caching (fetched once, reused everywhere)
+ * - Deduplication (multiple components calling this hook = 1 request)
+ * - Automatic retry on failure
+ * - staleTime: Infinity because the species count rarely changes
  *
- * @returns {{ totalSpecies: number | null, loading: boolean, error: string | null }}
+ * This replaces the previous manual useState + useEffect + module-level
+ * cache approach with a single useQuery call.
  */
 const usePokemonCount = () => {
-  const [totalSpecies, setTotalSpecies] = useState<number | null>(cachedCount);
-  const [loading, setLoading] = useState(cachedCount === null);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    data: totalSpecies,
+    isLoading,
+    error,
+  } = useQuery('pokemonSpeciesCount', fetchSpeciesCount, {
+    staleTime: Infinity,
+  });
 
-  useEffect(() => {
-    // If we already have the count cached, skip the fetch
-    if (cachedCount !== null) {
-      setTotalSpecies(cachedCount);
-      setLoading(false);
-      return;
-    }
-
-    const fetchCount = async () => {
-      try {
-        // Fetch with limit=1 to get just the count without downloading
-        // the entire species list. The API returns a "count" field
-        // with the total number of Pokémon species.
-        const response = await axios.get(
-          'https://pokeapi.co/api/v2/pokemon-species?limit=1',
-        );
-
-        const { count } = response.data;
-        cachedCount = count;
-        setTotalSpecies(count);
-      } catch (err) {
-        setError('Could not fetch Pokémon count.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCount();
-  }, []);
-
-  return { totalSpecies, loading, error };
+  return {
+    totalSpecies: totalSpecies ?? null,
+    loading: isLoading,
+    error: error ? 'Could not fetch Pokémon count.' : null,
+  };
 };
 
 export default usePokemonCount;

@@ -19,6 +19,10 @@ export const SuggestionsDropdown = styled.ul`
   padding: 0;
   max-height: 320px;
   overflow-y: auto;
+
+  @media (max-width: 568px) {
+    max-height: 50vh;
+  }
 `;
 
 export const SuggestionItem = styled.li<{ isActive: boolean }>`
