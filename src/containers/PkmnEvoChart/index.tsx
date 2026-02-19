@@ -95,7 +95,7 @@ const Evolution: React.FC<ChainProps> = ({
             speciesName={`${evolution.species.name}`}
           >
             <img
-              src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evolution.species.name}.png`}
+              src={`https://raw.githubusercontent.com/remokon/gen-9-sprites/refs/heads/main/gen-5-style/${evolution.species.name}.png`}
               alt={`${formatPokemonName(evolution.species.name)} sprite, evolution stage ${stage}`}
             />
             <p>
@@ -169,7 +169,7 @@ const PkmnEvoChart: React.FC<EvoChainProps> = ({
           speciesName={`${evoChain?.chain.species.name}`}
         >
           <img
-            src={`https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/${evoChain?.chain.species.name}.png`}
+            src={`https://raw.githubusercontent.com/remokon/gen-9-sprites/refs/heads/main/gen-5-style/${evoChain?.chain.species.name}.png`}
             alt={`${formatPokemonName(evoChain?.chain.species.name ?? '')} sprite, base form`}
           />
 

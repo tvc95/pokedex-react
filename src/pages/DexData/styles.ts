@@ -7,7 +7,7 @@ export const PkmnImageSlides = styled(MDBCol)`
 `;
 
 export const PokemonInfoI = styled(MDBCol)`
-  background-color: #F4E2E2;
+  background-color: #f4e2e2;
   border-top-left-radius: 21px;
   border-top-right-radius: 21px;
   margin-bottom: 0;
@@ -39,8 +39,11 @@ export const PokemonInfoI = styled(MDBCol)`
 export const SubTitle = styled.h3`
   margin-top: 1.5rem;
   font-family: Advent Pro;
-  font-size: xx-large;
   font-weight: 700;
+  font-size: 1.5rem;
+  @media (min-width: 768px) {
+    font-size: xx-large;
+  }
 `;
 
 export const List = styled.ul`
@@ -63,7 +66,7 @@ export const List = styled.ul`
 
     .is-hidden-false span,
     .egg-gp span {
-      background-color: #CD3232;
+      background-color: #cd3232;
       border-radius: 52px;
       text-anchor: middle;
       font-size: 1.1rem;
@@ -92,7 +95,6 @@ export const List = styled.ul`
       margin: 0 0.2rem;
     }
   }
-
 `;
 
 export const PkmnPhysicalInfo = styled.div`
@@ -119,10 +121,13 @@ export const PkmnPhysicalInfo = styled.div`
       }
     }
 
-    h3{
+    h3 {
       font-weight: 700;
-      font-size: 2.2rem;
+      font-size: 1.6rem; /* mobile */
 
+      @media (min-width: 576px) {
+        font-size: 2.2rem;
+      }
       @media (min-width: 992px) {
         font-size: 3.5rem;
       }
@@ -131,7 +136,7 @@ export const PkmnPhysicalInfo = styled.div`
 `;
 
 export const PokemonInfoII = styled(MDBCol)`
-  background-color: #F4E2E2;
+  background-color: #f4e2e2;
   border-bottom-left-radius: 21px;
   border-bottom-right-radius: 21px;
   padding-bottom: 2rem;
@@ -173,7 +178,6 @@ export const PokemonInfoII = styled(MDBCol)`
   }
 
   #leveling-rate {
-    
   }
 `;
 
@@ -182,11 +186,11 @@ export const EvoChartContainer = styled.div`
   align-items: center;
   justify-content: center;
   grid-gap: 1rem;
-  grid-template-columns:  repeat(1, minmax(104px, 1fr));
+  grid-template-columns: repeat(2, minmax(104px, 1fr));
   grid-template-rows: repeat(auto-fill, minmax(104px, 1fr));
 
   @media (min-width: 400px) {
-    grid-template-columns:  repeat(3, minmax(104px, 1fr));
+    grid-template-columns: repeat(3, minmax(104px, 1fr));
   }
 `;
 
@@ -197,7 +201,7 @@ export const PokemonStatsContainer = styled(MDBCol)`
 
 export const PokemonTypeChart = styled(MDBCol)`
   margin-top: 1.2rem;
-  background-color: #F4E2E2;
+  background-color: #f4e2e2;
   padding: 1rem;
   padding-top: 0rem;
   padding-bottom: 1.5rem;

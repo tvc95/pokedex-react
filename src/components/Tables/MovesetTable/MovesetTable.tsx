@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import axios from 'axios';
-import { Text, Tr } from './styles';
+import { Text, Tr, MDBTableWrapper } from './styles';
 
 interface MoveListData {
   moveName: string;
@@ -10,7 +10,7 @@ interface MoveListData {
     levelLearned: number;
     learningMethod: string;
     versionGroup: string;
-  }
+  };
 }
 
 interface TableProps {
@@ -28,7 +28,10 @@ interface MoveData {
   levelLearned: number;
 }
 
-const MovesetTable: React.FC<TableProps> = ({ moveList, tableType }: TableProps) => {
+const MovesetTable: React.FC<TableProps> = ({
+  moveList,
+  tableType,
+}: TableProps) => {
   const [moveData, setMoveData] = useState<MoveData[]>([]);
 
   const fetchMoveData = async () => {
@@ -61,38 +64,42 @@ const MovesetTable: React.FC<TableProps> = ({ moveList, tableType }: TableProps)
   return (
     <>
       {moveData.length > 0 ? (
-        <MDBTable small hover borderless>
-          <MDBTableHead color="red lighten-2" textWhite>
-            <Tr>
-              {tableType === 0 && <th>Lv.</th>}
-              <th>Move</th>
-              <th>Type</th>
-              <th>Cat.</th>
-              <th>Pwr.</th>
-              <th>Acc.</th>
-              <th>PP</th>
-            </Tr>
-          </MDBTableHead>
-          <MDBTableBody color="rgba-red-light">
-            {moveData.map((move) => (
-              <Tr key={move.name}>
-                {tableType === 0 && <td>{move.levelLearned}</td>}
-                <td>{move.name.charAt(0).toUpperCase() + move.name.slice(1).replace('-', ' ')}</td>
-                <td>{move.type}</td>
-                <td>{move.category}</td>
-                <td>{move.power}</td>
-                <td>{move.accuracy}</td>
-                <td>{move.pp}</td>
+        <MDBTableWrapper>
+          <MDBTable small hover borderless>
+            <MDBTableHead color="red lighten-2" textWhite>
+              <Tr>
+                {tableType === 0 && <th>Lv.</th>}
+                <th>Move</th>
+                <th>Type</th>
+                <th>Cat.</th>
+                <th>Pwr.</th>
+                <th>Acc.</th>
+                <th>PP</th>
               </Tr>
-            ))}
-          </MDBTableBody>
-        </MDBTable>
+            </MDBTableHead>
+            <MDBTableBody color="rgba-red-light">
+              {moveData.map((move) => (
+                <Tr key={move.name}>
+                  {tableType === 0 && <td>{move.levelLearned}</td>}
+                  <td>
+                    {move.name.charAt(0).toUpperCase()
+                      + move.name.slice(1).replace('-', ' ')}
+                  </td>
+                  <td>{move.type}</td>
+                  <td>{move.category}</td>
+                  <td>{move.power}</td>
+                  <td>{move.accuracy}</td>
+                  <td>{move.pp}</td>
+                </Tr>
+              ))}
+            </MDBTableBody>
+          </MDBTable>
+        </MDBTableWrapper>
       ) : (
         <>
           <Text>Unavailable data</Text>
         </>
       )}
-
     </>
   );
 };
