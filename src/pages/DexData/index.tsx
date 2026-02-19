@@ -1,5 +1,5 @@
 import { MDBBtn, MDBContainer, MDBRow } from 'mdbreact';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import DexNavbar from '../../components/Navbars/DexNavbar/DexNavbar';
 import PokemonHeader from '../../containers/PokemonHeader/PokemonHeader';
@@ -54,6 +54,8 @@ const DexData: React.FC = () => {
     ready,
     error,
   } = usePokemonData();
+
+  useEffect(() => window.scrollTo(0, 0), []);
 
   // ── Error state ──────────────────────────────────────────────────────
   if (error) {
